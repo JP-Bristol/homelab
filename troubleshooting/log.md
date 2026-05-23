@@ -19,3 +19,9 @@
 und remote Stand nicht synchron.
 **Fix** Token mit repo-Scope erstellt, git pull --allow-unreleated-histories 
 --rebase, dann push erfolgreich
+
+## 2026-05-23 - SSH Key nicht gefunden in CMD
+
+**Symptome:** cat und ssh-copy-id nicht erkannt in CMD.
+**Ursachen:** CMD kennt diese Befehle nicht, falsche Shell.
+**Fix:** PowerShell verwenden, ab jetzt immer PowerShell.
