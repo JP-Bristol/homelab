@@ -39,3 +39,8 @@ sudo systemctl restart ssh
 - IP festlegen 192.168.x.x
 - MAC-Adresse des Pi: op addr -> ether Zeile
 
+## 9. Git SSH-Key für Github eingerichten
+- SSH-Key auf dem Pi erstellt
+- Public Key auf Github hinterlegt unter Settings -> SSH Keys
+- Remote auf SSH unmgestellt:
+  git remote set-ur origin git@github.com:DEIN-USERNAME/homelab.git
