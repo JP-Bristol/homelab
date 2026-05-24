@@ -32,3 +32,10 @@ chmod 600 ~/.ssh/authorized_keys
 sudo nano /etc/ssh/sshd_config 
 -> PasswordAuthentication no
 sudo systemctl restart ssh
+
+## 7. Statische IP am Router servieren
+- Router-Oberfläche aujfrufen 192.168.x.x
+- Einstellungen -> IPv4 -> Statisches DHCP - Heimnetwerk -> MAC-Adresse des Pi eintragen
+- IP festlegen 192.168.x.x
+- MAC-Adresse des Pi: op addr -> ether Zeile
+
