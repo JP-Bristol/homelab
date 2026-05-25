@@ -39,8 +39,19 @@ sudo systemctl restart ssh
 - IP festlegen 192.168.x.x
 - MAC-Adresse des Pi: op addr -> ether Zeile
 
-## 9. Git SSH-Key für Github eingerichten
+## 8. Git SSH-Key für Github eingerichten
 - SSH-Key auf dem Pi erstellt
 - Public Key auf Github hinterlegt unter Settings -> SSH Keys
 - Remote auf SSH unmgestellt:
   git remote set-ur origin git@github.com:DEIN-USERNAME/homelab.git
+
+## 9 Docker Installation auf Raspberry pi
+- Installationskript von Docker ausführen:
+curl -fsSL https://get.docker.com | sh
+- Bentzer zur Docker Gruppe hinzufügen:
+sudo usermod -aG docker $USER
+- Neu einloggen: 
+exit
+- Testen ob docker läuft:
+docker run hello-world
+
