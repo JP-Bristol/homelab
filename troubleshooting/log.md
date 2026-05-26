@@ -53,3 +53,4 @@ FTLCONF_dns_listeningMode: all
 **Symptom:** Permission denied beim git add
 **Ursache:** Docker-Verzeichnis data/ gehört root, Git hat keine Rechte
 **Fix:** services/pihole/data/ in .gitignore eingetragen
+
