@@ -40,10 +40,10 @@ Pihole setzt Passwort nur beim ersten Start aus der .env
 ## 2026-05-26 - Easybox 803 verteil DNS nicht an Geräte
 **Symptom:** Fehlermeldung „Server nicht gefunden“ (Website lässt sich nicht laden)
 **Ursache:** Die Easybox 803 verteilt fehlerhafte DNS-Server-Daten per DHCP.
-**Fix:** DNS-Server auf den Endgeräten manuell eingetragen, DNS=IP des Pi -> 192.168.x.x
+**Fix:** DNS-Server auf den Endgeräten manuell eingetragen, DNS=IP des Pi -> 192.168.2.x
 
 ## 2026-05-26 - Pi-hole kennt das lokale Netz nicht
-**Symptom:** Fehlermeldung in den Pi-hole/FTL-Logs: dnsmasq: ignoring query from non-local network 192.168.2.90
+**Symptom:** Fehlermeldung in den Pi-hole/FTL-Logs: dnsmasq: ignoring query from non-local network 192.168.2.x
 **Ursache:** Pi-hole (ab v6) blockiert standardmäßig Anfragen, die über Docker-Subnetze oder andere Schnittstellen reinkommen, da es sie als „nicht-lokal“ einstuft.
 **Fix:** In der docker-compose.yml unter environment: den Listening-Modus auf all umstellen. 
 FTLCONF_dns_listeningMode: all
@@ -54,3 +54,8 @@ FTLCONF_dns_listeningMode: all
 **Ursache:** Docker-Verzeichnis data/ gehört root, Git hat keine Rechte
 **Fix:** services/pihole/data/ in .gitignore eingetragen
 
+## 2026-05-27 — Uptime Kuma Pihole Monitor zeigt 403
+
+**Symptom:** Fehlermeldung "Request failed with status code 403"
+**Ursache:** pi-hole antwortet, verweigert jedoch den zugriff
+**Fix:** in Uptime Kuma -> Pihole monitor -> Edit -> Url ändern auf "http://192.168.2.x:8080/admin/login" -> save
