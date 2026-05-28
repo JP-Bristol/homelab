@@ -59,3 +59,18 @@ FTLCONF_dns_listeningMode: all
 **Symptom:** Fehlermeldung "Request failed with status code 403"
 **Ursache:** pi-hole antwortet, verweigert jedoch den zugriff
 **Fix:** in Uptime Kuma -> Pihole monitor -> Edit -> Url ändern auf "http://192.168.2.x:8080/admin/login" -> save
+
+## 2026-05-28 - Uptime Kuma: Discord-Benachrichtigung fehlt
+
+**Symptom:** Uptime Kuma sendet keine Benachrichtigungen an Discord.
+**Ursache:** Die Benachrichtigungsgruppe war dem Pi-hole-Monitor nicht zugewiesen.
+**Fix:** 
+  1. In Uptime Kuma den **Pi-hole Monitor** aufrufen und auf **Bearbeiten** (*Edit*) klicken.
+  2. Zum Bereich **Benachrichtigungen** (*Notifications*) scrollen.
+  3. Den Schieberegler bei `My Discord Alert` auf **Aktiviert** (*ON*) stellen.
+
+## 2026-05-28 - Uptime Kuma: Keine Discord-Benachrichtigung (DNS-Fehler)
+
+**Symptom:** Uptime Kuma sendet trotz Monitor-Ausfall keine Benachrichtigungen an Discord.
+**Ursache:** Lokaler DNS-Ausfall (z. B. Pi-hole war down). Uptime Kuma konnte die Domain `discord.com` für den Webhook nicht auflösen.
+**Fix:**  Im uptime-kuma Docker-Container docker-compose.yml einen sekundären, externen DNS-Server (`9.9.9.9`) fest eintragen. 
