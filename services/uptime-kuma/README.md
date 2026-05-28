@@ -23,7 +23,18 @@ Um Uptime Kuma auf den neusten Version zu aktualisieren, folgende Befehle nachei
  - docker compose down 
  - docker compose up -d
 
+## 5. Anpassung in der `docker-compose.yml`
+
+### Externer DNS
+In der docker-compose.yml ist ein externer DNS-Server (9.9.9.9) eingetragen.
+Grund: Wenn Pihole ausfällt kann Uptime Kuma sonst keine Discord-Benachrichtigungen schicken.
+Ohne diesen Eintrag ist Uptime Kuma vom selben DNS abhängig den es überwacht. 
+
 ## 4. ## Bekannte Probleme
 
 - Monitor zeigt 403 → URL auf /admin/login ändern
   Weitere Details: troubleshooting/log.md
+- Wenn lokaler DNS-Server (z.B. Pi-hole) ausfällt, kann uptime Kuma keine Benachrichtung schicken.
+  Weitere Detail: troubleshooting/log.md
+
+
