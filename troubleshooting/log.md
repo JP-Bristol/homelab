@@ -1,5 +1,15 @@
 # Troubleshooting-Log
 
+## Troubleshoot Vorlage
+## YYYY-MM-DD - [System/Software]: [Kurztitel des Problems] 
+
+**Symptom:** *Was hast du gesehen? Fehlermeldung, unerwartetes Verhalten – immer aus Benutzerperspektive.
+**Ursache:** *Warum ist es passiert? Die technische Erklärung für den Fehler.
+**Fix:** 
+	-**Wo:** *(In welcher App, Datei, GUI oder welchem Menü?)*
+	-**Was:** *(Welche Änderung, welcher Befehl, welcher Schieberegler?)*
+	-**Hinweis/Prävention:** *(Optional: Was hilft in Zukunft? z.B. Doku ergänzt, PW-Manager empfohlen)*
+
 ## 2026-05-22 - Pi started nicht
 
 **Symptom:** Pi bootet nicht, keine Netzwerkverbindung.
