@@ -55,3 +55,9 @@ exit
 - Testen ob docker läuft:
 docker run hello-world
 
+## 10. DNS auf Pihole setzen (Pi selbst)
+sudo nmcli con mod "Wired connection 1" ipv4.dns "192.168.x.x"
+sudo nmcli con up "Wired connection 1"
+
+## 11. Nützliche Tools installieren
+sudo apt install -y traceroute
