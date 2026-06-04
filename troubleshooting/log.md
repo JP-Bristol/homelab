@@ -84,3 +84,14 @@ FTLCONF_dns_listeningMode: all
 **Symptom:** Uptime Kuma sendet trotz Monitor-Ausfall keine Benachrichtigungen an Discord.
 **Ursache:** Lokaler DNS-Ausfall (z. B. Pi-hole war down). Uptime Kuma konnte die Domain `discord.com` für den Webhook nicht auflösen.
 **Fix:**  Im uptime-kuma Docker-Container docker-compose.yml einen sekundären, externen DNS-Server (`9.9.9.9`) fest eintragen. 
+
+
+## 2026-06-06 - Raspberry Pi nutzt noch den DNS-Server der Easybox (Router)
+
+**Symptom:** Der Raspberry Pi nutzt noch den DNS-Server der Easybox (Router) statt den eigenen Pi-hole DNS.
+**Ursache:** Die Easybox verteilt den Pi-hole DNS nicht zuverlässig per DHCP an die Geräte im Netzwerk (siehe separaten Log-Eintrag vom 2026-05-26 - Easybox 803 verteil DNS nicht an Geräte).
+**Fix:**
+  1. Namen der aktiven Netzwerkverbindung über den NetworkManager ermitteln: sudo nmcli con show (Ergebnis hier: "Wired connection 1")
+  2. Den DNS-Server der Verbindung manuell auf die Pi-hole IP (z. B.     192.168.x.x) umstellen: sudo nmcli con mod "Wired connection 1" ipv4.dns     "192.168.x.x"
+  3. Die Verbindung neu laden, um die Änderungen zu aktivieren: sudo nmcli con up "Wired connection 1" 
+
