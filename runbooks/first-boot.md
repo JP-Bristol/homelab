@@ -61,3 +61,19 @@ sudo nmcli con up "Wired connection 1"
 
 ## 11. Nützliche Tools installieren
 sudo apt install -y traceroute
+
+## 12. Services starten
+# Pihole zuerst - DNS muss als erstes laufen
+cd ~/homelab/services/pihole
+cd ~/homelab/services/pihole
+cp .env.example .env
+nano .env  # Passwort setzen
+docker compose up -d
+
+# Uptime Kuma
+cd ~/homelab/services/uptime-kuma
+docker compose up -d
+
+# Nginx Proxy Manager
+cd ~/homelab/services/nginx-proxy-manager
+docker compose up -d

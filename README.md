@@ -17,17 +17,19 @@ Mein Homelab - Lernprojekt, gestartet Mai 2026.
 |-------------|------|--------|----------------|
 | Pihole      | 8080 |✅ läuft| DNS & Adblocker|
 | Uptime Kuma | 3001 |✅ läuft| Monitoring & Benachrichtigungen |
-
+| Nginx Proxy Manager | 81 | ✅ läuft | Reverse Proxy |
 
 ## Status
 
 Woche 1 abgeschlossen.
+Woche 2 fast durch.
 
 ### Läuft
  - Docker
  - Pihole (DNS & Adblocker)
  - Uptime Kuma (Monitoring)
+ - Nginx Proxy Manager 
 
 ### Geplant
- - Nginx Proxy Manager
  - Backups
+ - Wiki
