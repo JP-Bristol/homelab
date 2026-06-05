@@ -95,3 +95,24 @@ FTLCONF_dns_listeningMode: all
   2. Den DNS-Server der Verbindung manuell auf die Pi-hole IP (z. B.     192.168.x.x) umstellen: sudo nmcli con mod "Wired connection 1" ipv4.dns     "192.168.x.x"
   3. Die Verbindung neu laden, um die Änderungen zu aktivieren: sudo nmcli con up "Wired connection 1" 
 
+
+## 2026-06-08 Fehler beim aurufen von http://pihole.home.
+
+**Symptom:** Beim Aufrufen von http://pihole.home erscheint die Fehlermeldung "403 - Oops! Access denied.".
+**Ursache:** Mit dem Update auf Pi-hole v6 hat sich die Webserver-Struktur geändert. Der direkte Zugriff auf den Root-Pfad (/) ohne das Anhängen von /admin führt zu einem Rechtefehler (Access Denied).
+**Fix:**
+1. Im Nginx Proxy Manager die Proxy-Weiterleitung für pihole.home bearbeiten (Edit)
+2. Reiter **Custom Locations** → Add Location
+3. Werte eintragen:
+   - Location: `/`
+   - Scheme: `http`
+   - Forward Hostname: `192.168.2.x`
+   - Forward Port: `8080`
+4. Save klicken und Seite neu laden
+
+## 2026-06-08 Fehler Domainauflösung in Uptime Kuma
+
+**Symptom:** Uptime Kuma kann eine über den Nginx Proxy Manager (NPM) eingerichtete Domain (z. B. http://pihole.home) nicht auflösen. Fehlermeldung: getaddrinfo ENOTFOUND pihole.home.
+**Ursache:** Uptime Kuma läuft in einem isolierten Docker-Container. Lokale DNS-Einträge oder Einträge in der hosts-Datei des Windows-Clients sind innerhalb des Docker-Netzwerks nicht bekannt.
+**Fix:** IP-Adresse und Port direkt in Uptime Kuma verwenden (z. B. http://192.168.x.x:8080/admin/login) statt Domainnamen.
+Langfristige Lösung: Lokale DNS-Einträge in Pihole pflegen damit Container die Domain auflösen können. (TODO)
