@@ -96,7 +96,7 @@ FTLCONF_dns_listeningMode: all
   3. Die Verbindung neu laden, um die Änderungen zu aktivieren: sudo nmcli con up "Wired connection 1" 
 
 
-## 2026-06-08 Fehler beim aurufen von http://pihole.home.
+## 2026-06-06 Fehler beim aurufen von http://pihole.home.
 
 **Symptom:** Beim Aufrufen von http://pihole.home erscheint die Fehlermeldung "403 - Oops! Access denied.".
 **Ursache:** Mit dem Update auf Pi-hole v6 hat sich die Webserver-Struktur geändert. Der direkte Zugriff auf den Root-Pfad (/) ohne das Anhängen von /admin führt zu einem Rechtefehler (Access Denied).
@@ -110,9 +110,19 @@ FTLCONF_dns_listeningMode: all
    - Forward Port: `8080`
 4. Save klicken und Seite neu laden
 
-## 2026-06-08 Fehler Domainauflösung in Uptime Kuma
+## 2026-06-06 Fehler Domainauflösung in Uptime Kuma
 
 **Symptom:** Uptime Kuma kann eine über den Nginx Proxy Manager (NPM) eingerichtete Domain (z. B. http://pihole.home) nicht auflösen. Fehlermeldung: getaddrinfo ENOTFOUND pihole.home.
 **Ursache:** Uptime Kuma läuft in einem isolierten Docker-Container. Lokale DNS-Einträge oder Einträge in der hosts-Datei des Windows-Clients sind innerhalb des Docker-Netzwerks nicht bekannt.
 **Fix:** IP-Adresse und Port direkt in Uptime Kuma verwenden (z. B. http://192.168.x.x:8080/admin/login) statt Domainnamen.
 Langfristige Lösung: Lokale DNS-Einträge in Pihole pflegen damit Container die Domain auflösen können. (TODO)
+
+## 2026-06-07 Fehler Erstellen von Dateien/Ordnern auf externem Datenträger
+
+**Symptom:** Erstellen von Dateien/Ordnern auf externem Datenträger schlägt fehl.
+ - Befehl: mkdir -p /mnt/backup/2026-06-07/homelab
+ - Fehler: failed: No such file or directory (oder Permission denied)
+**Ursache:** Das Verzeichnis /mnt/backup gehörte root, weshalb mein Standard-User keine Schreibrechte hat.
+**Fix:** 
+ - Besitzer des Mount-Points auf meinen User ändern:
+sudo chown arasaka:arasaka /mnt/backup
