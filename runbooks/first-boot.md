@@ -77,3 +77,53 @@ docker compose up -d
 # Nginx Proxy Manager
 cd ~/homelab/services/nginx-proxy-manager
 docker compose up -d
+
+
+## 13. Backup-Einrichtung (Ersteinrichtung)
+
+Diese Schritte sind nur einmalig notwendig, um das Backup-System auf einem neuen Raspberry Pi einzurichten.
+
+### Schritt 1: USB-Stick dauerhaft mounten
+1. Mount-Verzeichnis erstellen:
+   ```bash
+   sudo mkdir -p /mnt/backup
+   ```
+2. UUID des USB-Sticks herausfinden (z. B. von `/dev/sda1` ablesen):
+   ```bash
+   sudo blkid
+   ```
+3. Die `/etc/fstab` mit Root-Rechten öffnen:
+   ```bash
+   sudo nano /etc/fstab
+   ```
+4. Folgende Zeile am Ende hinzufügen (ersetzen Sie `DEINE-UUID-HIER` mit der echten UUID):
+   ```text
+   UUID=DEINE-UUID-HIER /mnt/backup ext4 defaults,nofail 0 2
+   ```
+   *(Hinweis: `nofail` sorgt dafür, dass der Pi auch startet, wenn der USB-Stick mal nicht eingesteckt ist).*
+
+5. System-Dienste neu laden und Stick mounten:
+   ```bash
+   sudo systemctl daemon-reload
+   sudo mount -a
+   ```
+
+### Schritt 2: Berechtigungen anpassen
+Der Benutzer `arasaka` muss Schreibrechte auf dem Stick haben:
+```bash
+sudo chown -R arasaka:arasaka /mnt/backup
+```
+
+### Schritt 3: Skript aktivieren & automatisieren
+1. Das Backup-Skript ausführbar machen:
+   ```bash
+   chmod 700 ~/homelab/runbooks/backup.sh
+   ```
+2. Den Cron-Editor für den aktuellen Benutzer öffnen:
+   ```bash
+   crontab -e
+   ```
+3. Ganz unten die folgende Zeile einfügen, damit das Skript täglich um 03:00 Uhr läuft:
+   ```text
+   0 3 * * * /bin/bash ~/homelab/runbooks/backup.sh >> /var/log/backup.log 2>&1
+   ```
