@@ -126,3 +126,32 @@ Langfristige Lösung: Lokale DNS-Einträge in Pihole pflegen damit Container die
 **Fix:** 
  - Besitzer des Mount-Points auf meinen User ändern:
 sudo chown arasaka:arasaka /mnt/backup
+
+
+## 2026-06-08 Cron führt das Backup-Skript nicht aus.
+
+**Symptom:** Kein automatisches Backup, keine Log-Datei. Manueller Test ergab: Permission denied beim Schreiben nach /var/log/backup.log.
+
+**Ursache:** Das Verzeichnis /var/log/ gehört root. Der Benutzer, unter dem der Cron-Job läuft, hat keine Schreibberechtigung.
+
+**Fix:** Log-Pfad in das Home-Verzeichnis verschoben (~/homelab/logs/backup.log). Anpassung der Crontab auf absolute Pfade, um Umgebungskonflikte zu vermeiden.
+
+## 2026-06-08 rsync-Fehler während des Backups
+
+**Symptom:** Während des Backups treten Fehler in der Log-Datei auf (z. B. "file has vanished" oder Datei-Zugriffsfehler), da sich Dateien ändern, während rsync sie kopiert.
+
+**Ursache:** rsync versucht Dateien zu kopieren, die während des Kopiervorgangs von laufenden Diensten verändert oder neu geschrieben werden.
+
+**Fix:**
+1. --ignore-errors hinzugefügt, damit das Backup bei einzelnen Datei-Fehlern nicht vollständig abbricht.
+2. --exclude='logs/' hinzugefügt, damit die Log-Datei des Backup-Prozesses nicht während des Schreibens erneut gesichert wird.
+
+Aktueller Stand der Backup-Befehle:
+```bash
+rsync -av --ignore-errors --exclude='logs/' ~/homelab/ $BACKUP_DIR/homelab/
+rsync -av --ignore-errors ~/homelab/services/pihole/data/ $BACKUP_DIR/pihole-data/
+rsync -av --ignore-errors ~/homelab/services/uptime-kuma/data/ $BACKUP_DIR/uptime-kuma-data/
+rsync -av --ignore-errors ~/homelab/services/nginx-proxy-manager/data/ $BACKUP_DIR/npm-data/
+```
+
+TODO: Strategie für konsistente Docker-Volume-Backups (z. B. docker pause oder Datenbank-Dumps) implementieren

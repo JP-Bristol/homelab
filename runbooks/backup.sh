@@ -8,12 +8,12 @@ echo "Backup startet: $DATE"
 mkdir -p $BACKUP_DIR
 
 # Homelab Configs
-rsync -av ~/homelab/ $BACKUP_DIR/homelab/
+rsync -av --ignore-errors  --exclude='backup.log' ~/homelab/ $BACKUP_DIR/homelab/
 
 # Service Daten
-rsync -av ~/homelab/services/pihole/data/ $BACKUP_DIR/pihole-data/
-rsync -av ~/homelab/services/uptime-kuma/data/ $BACKUP_DIR/uptime-kuma-data/
-rsync -av ~/homelab/services/nginx-proxy-manager/data/ $BACKUP_DIR/npm-data/
+rsync -av --ignore-errors ~/homelab/services/pihole/data/ $BACKUP_DIR/pihole-data/
+rsync -av --ignore-errors ~/homelab/services/uptime-kuma/data/ $BACKUP_DIR/uptime-kuma-data/
+rsync -av --ignore-errors ~/homelab/services/nginx-proxy-manager/data/ $BACKUP_DIR/npm-data/
 
 echo "Backup fertig: $BACKUP_DIR"
 
