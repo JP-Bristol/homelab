@@ -145,6 +145,7 @@ sudo chown arasaka:arasaka /mnt/backup
 **Fix:**
 1. --ignore-errors hinzugefügt, damit das Backup bei einzelnen Datei-Fehlern nicht vollständig abbricht.
 2. --exclude='logs/' hinzugefügt, damit die Log-Datei des Backup-Prozesses nicht während des Schreibens erneut gesichert wird.
+3. `--exclude='.git/'` hinzugefügt um Git-Objekte nicht zu sichern.
 
 Aktueller Stand der Backup-Befehle:
 ```bash
