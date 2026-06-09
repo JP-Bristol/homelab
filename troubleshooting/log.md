@@ -156,3 +156,13 @@ rsync -av --ignore-errors ~/homelab/services/nginx-proxy-manager/data/ $BACKUP_D
 ```
 
 TODO: Strategie für konsistente Docker-Volume-Backups (z. B. docker pause oder Datenbank-Dumps) implementieren
+
+## 2026-06-09 - git push schlägt fehl: kein upstream Branch
+
+**Symptom:** `fatal: The current branch master has no upstream branch`
+
+**Ursache:** Lokaler Branch heißt `master`, GitHub erwartet `main`.
+
+**Fix:**
+1. Branch umbenennen: `git branch -M main`
+2. Push mit upstream setzen: `git push -u origin main`
