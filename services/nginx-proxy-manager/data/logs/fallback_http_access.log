@@ -1,7 +1,0 @@
-[08/Jun/2026:19:09:56 +0200] 200 - GET http pihole.home "/" [Client 192.168.2.60] [Length 568] [Gzip 1.86] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36" "-"
-[08/Jun/2026:19:09:56 +0200] 400 - GET http pihole.home "/favicon.ico" [Client 127.0.0.1] [Length 230] [Gzip -] "-" "-"
-[09/Jun/2026:14:08:38 +0200] 304 - GET http pihole.home "/" [Client 192.168.2.60] [Length 0] [Gzip -] "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/149.0.0.0 Safari/537.36" "-"
-[09/Jun/2026:14:08:39 +0200] 400 - GET http pihole.home "/favicon.ico" [Client 127.0.0.1] [Length 230] [Gzip -] "-" "-"
-[09/Jun/2026:14:08:54 +0200] 200 - GET http pihole.home "/" [Client 192.168.2.60] [Length 568] [Gzip 1.86] "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0" "-"
-[09/Jun/2026:14:09:25 +0200] 404 - GET http 192.168.2.90 "/admin" [Client 192.168.2.60] [Length 122] [Gzip 1.35] "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:151.0) Gecko/20100101 Firefox/151.0" "-"
-[09/Jun/2026:14:09:25 +0200] 400 - GET http 192.168.2.90 "/favicon.ico" [Client 127.0.0.1] [Length 230] [Gzip -] "-" "-"

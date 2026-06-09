@@ -2,3 +2,5 @@
 *.env
 *secrets/
 services/pihole/data/
+services/*/data/
+logs/
