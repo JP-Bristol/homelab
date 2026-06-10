@@ -22,7 +22,7 @@ Das korrekte Laufwerk sorgfältig prüfen (Datenverlustgefahr!)
 z. B. `pi-homelab` (eindeutig und aussagekräftig)
 
 - **Benutzerkonto:**
-Benutzername z. B. `arasaka`  
+Benutzername z. B. `jp`  
 Passwort nach eigenen Sicherheitsrichtlinien setzen  
 Hinweis: Auf korrektes Tastaturlayout achten (Sonderzeichen!)
 
@@ -42,7 +42,7 @@ Empfohlen: **deaktivieren**
 #### 1.1.2 Funktion prüfen (Erster Boot)
 Nach dem Flashen und Start des Raspberry Pi erfolgt der erste SSH-Test:
 ```Bash
-ssh arasaka@<ip>
+ssh jp@<ip>
 ```
 **Hinweis**
 
@@ -60,7 +60,7 @@ Dadurch wird der alte gespeicherte SSH-Fingerprint aus `known_hosts` entfernt.
 
 #### 1.2.1 Verbindung herstellen
 ```bash 
-ssh arasaka@192.168.1.x
+ssh jp@192.168.1.x
 ```
 
 #### 1.2.2 IP Herausfinden 
@@ -161,7 +161,7 @@ Den kompletten Output kopieren (beginnt mit ssh-ed25519)
 #### 1.5.3 Key auf dem Raspberry Pi hinterlegen
 Per SSH auf den Pi einloggen:
 ```bash
-ssh arasaka@<ip>
+ssh jp@<ip>
 ```
 
 Dann auf dem Pi:
@@ -188,7 +188,7 @@ Bedeutung:
 #### 1.5.5 Verbindung testen
 Zurück auf dem lokalen Rechner:
 ```bash
-ssh arasaka@<ip>
+ssh jp@<ip>
 ```
 
 ---
@@ -221,7 +221,7 @@ sudo systemctl restart ssh
 Bevor die aktuelle Sitzung geschlossen wird:
 - Neue SSH-Verbindung in separatem Terminal testen:
 ```bash
-ssh arasaka@<ip>
+ssh jp@<ip>
 ```
 Hinweis
 Nur wenn der Login per Key funktioniert, sollte die alte Session beendet werden.
@@ -363,7 +363,7 @@ ping  192.168.x.x
 ```
 SSH-Verbindung prüfen:
 ```Bash
-ssh arasaka@192.168.x.x
+ssh jp@192.168.x.x
 ```
 **Hinweis**
 Die gewählte IP-Adresse sollte:
@@ -438,9 +438,9 @@ Prüfen:
 df -h
 ```
 ### 2.3 Berechtigungen
-Der Benutzer `arasaka` benötigt Schreibrechte auf dem Backup-Datenträger.
+Der Benutzer `jp` benötigt Schreibrechte auf dem Backup-Datenträger.
 ```Bash
-sudo  chown  -R arasaka:arasaka /mnt/backup
+sudo  chown  -R jp:jp /mnt/backup
 ```
 Prüfen:
 ```Bash
@@ -529,7 +529,7 @@ tail -100 ~/homelab/logs/backup.log
 ```
 **Keine Schreibrechte auf USB-Stick**
 ```Bash
-sudo  chown  -R arasaka:arasaka /mnt/backup
+sudo  chown  -R jp:jp /mnt/backup
 ```
 ---
 ## 3. Services 

@@ -142,7 +142,7 @@ docker logs <container>
 ```
 **Berechtigungsprobleme**
 ```Bash
-sudo chown -R arasaka:arasaka /mnt/backup
+sudo chown -R jp:jp /mnt/backup
 ```
 **Hinweis:**
 Weitere bekannte Probleme → `troubleshooting/log.md`

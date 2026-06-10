@@ -164,7 +164,7 @@ Langfristige Lösung: Lokale DNS-Einträge in Pihole pflegen damit Container die
 **Fix:** 
  - Besitzer des Mount-Points auf meinen User ändern:
 ```Bash
-sudo chown arasaka:arasaka /mnt/backup
+sudo chown jp:jp /mnt/backup
 ```
 
 ## 2026-06-08 Cron führt das Backup-Skript nicht aus.
