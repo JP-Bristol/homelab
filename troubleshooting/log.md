@@ -205,3 +205,67 @@ TODO: Strategie für konsistente Docker-Volume-Backups (z. B. docker pause oder 
 **Fix:**
 1. Branch umbenennen: `git branch -M main`
 2. Push mit upstream setzen: `git push -u origin main`
+
+## 2026-06-10 - Backup Restore schlägt fehl (Permission denied)
+
+**Symptom:** Fehler beim Wiederherstellen von Service-Backups.
+Beispiel:
+```text
+rsync: failed: Permission denied
+```
+
+**Ursache:** Das data-Verzeichnis des betroffenen Services gehört dem Benutzer root und kann vom Restore-Prozess nicht beschrieben werden.
+
+**Fix:** Eigentümer des Verzeichnisses korrigieren:
+```Bash
+sudo chown -R USER:USER ~/homelab/services/<service>/data/
+```
+
+Beispiel:
+```Bash
+sudo chown -R jp:jp ~/homelab/services/pihole/data/
+```
+
+**Verifikation:**
+
+Eigentümer prüfen:
+```Bash
+ls -ld ~/homelab/services/<service>/data/
+```
+Anschließend den Restore erneut ausführen.
+
+```Bash
+docker compose up -d
+docker ps
+```
+Prüfen, ob der Service erfolgreich startet und die Konfigurationen wieder vorhanden sind.
+
+
+## 2026-06-10 - Restore schlägt fehl (Docker-Permission)
+
+**Symptom:** Fehler beim Wiederherstellen von Service-Backups.
+Beispiel:
+```text
+rsync: [generator] failed to set times on "/home/jp/homelab/services/pihole/data/.": Operation not permitted 
+```
+
+**Ursache:** Der aktuelle Benutzer besitzt Schreibrechte auf die Dateien, darf jedoch bestimmte Dateiattribute (Gruppeninformationen oder Zeitstempel) nicht setzen. Dies tritt häufig bei Docker-Volumes oder gemounteten Verzeichnissen auf.
+
+**Fix:** rsync ohne Übernahme von Gruppeninformationen und Zeitstempeln ausführen:
+```Bash
+rsync -av --no-group --no-times /mnt/backup/DATUM/SERVICE-data/ ~/homelab/services/SERVICE/data/
+```
+Beispiel:
+```Bash
+rsync -av --no-group --no-times /mnt/backup/2026-06-10/pihole-data/ ~/homelab/services/pihole/data/
+```
+
+**Verifikation:**
+Restore erneut ausführen.
+
+```Bash
+docker compose up -d
+docker ps
+```
+Prüfen, ob der Service erfolgreich startet und die Konfigurationen wieder vorhanden sind.
+
