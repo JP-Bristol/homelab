@@ -219,14 +219,18 @@ Erwartung:
 cd ~/homelab/services/nginx-proxy-manager
 docker compose down
 ```
-
-### 7.2 **Daten wiederherstellen**
+### 7.2 **Berechtigungen setzen**
 ```bash
-rsync -av /mnt/backup/DATUM/nginx-proxy-manager-data/ \
+sudo chown -R USER:USER ~/homelab/services/nginx-proxy-manager/data/
+```
+
+### 7.3 **Daten wiederherstellen**
+```bash
+rsync -av --no-group --no-times /mnt/backup/DATUM/nginx-proxy-manager-data/ \
 ~/homelab/services/nginx-proxy-manager/data/
 ```
 
-### 7.3 **Service starten**
+### 7.4 **Service starten**
 ```bash
 docker compose up -d
 ```

@@ -195,9 +195,14 @@ cd ~/homelab/services/uptime-kuma
 docker compose down
 ```
 
+**Berechtigungen setzen**
+```bash
+sudo chown -R USER:USER ~/homelab/services/uptime-kuma/data/
+```
+
 **Daten wiederherstellen**
 ```bash
-rsync -av /mnt/backup/DATUM/uptime-kuma-data/ \
+rsync -av --no-group --no-times /mnt/backup/DATUM/uptime-kuma-data/ \
 ~/homelab/services/uptime-kuma/data/
 ```
 

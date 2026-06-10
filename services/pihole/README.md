@@ -230,9 +230,14 @@ cd ~/homelab/services/pihole
 docker compose down
 ```
 
+**Berechtigungen setzen**
+```bash
+sudo chown -R USER:USER ~/homelab/services/pihole/data/
+```
+
 **Daten wiederherstellen**
 ```bash
-rsync -av /mnt/backup/DATUM/pihole-data/ \
+rsync -av --no-group --no-times /mnt/backup/DATUM/pihole-data/ \
 ~/homelab/services/pihole/data/
 ```
 

@@ -86,20 +86,24 @@ Dieses Schema gilt für alle Services im Homelab
 ```Bash
 docker compose down
 ```
-**Schritt 3: Daten wiederherstellen**
+**Schritt 3: Berechtigungen setzen**
 ```Bash
-rsync -av /mnt/backup/<DATUM>/<service>/data/ <service-path>/data/
+sudo chown -R USER:USER ~/homelab/services/SERVICE/data/
 ```
-**Schritt 4: Service starten**
+**Schritt 4: Daten wiederherstellen**
+```Bash
+rsync -av --no-group --no-times /mnt/backup/<DATUM>/<service>/data/ <service-path>/data/
+```
+**Schritt 5: Service starten**
 ```Bash
 docker compose up -d
 ```
-**Schritt 5: Funktion prüfen**
+**Schritt 6: Funktion prüfen**
 -   Web UI erreichbar?
 -   Logs fehlerfrei?
 -   Kernfunktion getestet?
 
-**Schritt 6: Optional – Logs prüfen**
+**Schritt 7: Optional – Logs prüfen**
 ```Bash
 docker logs <container>
 ```
