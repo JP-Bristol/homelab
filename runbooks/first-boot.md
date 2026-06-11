@@ -498,11 +498,11 @@ ls  -ld /mnt/backup
 ```
 **Script-Pfad**
 ```Bash
-~/homelab/runbooks/backup.sh
+~/homelab/scripts/backup.sh
 ```
 **Berechtigungen setzen**
 ```Bash
-chmod  700 ~/homelab/runbooks/backup.sh
+chmod  700 ~/homelab/scripts/backup.sh
 ```
 **Manueller Testlauf**
 ```Bash

@@ -12,7 +12,7 @@ Schutz vor Datenverlust durch automatisierte tägliche Sicherungen.
 
 **Backup-Script Pfad**
 ```
-~/homelab/runbooks/backup.sh
+~/homelab/scripts/backup.sh
 ```
 
 **Ausführung**

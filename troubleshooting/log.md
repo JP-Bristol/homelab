@@ -280,12 +280,12 @@ Fehlermeldung in `backup.log`:
 **Ursache:** Der Cronjob verweist auf einen falschen Pfad.
 Aktueller Speicherort des Scripts:
 ```text
-~/homelab/runbooks/backup.sh
+~/homelab/scripts/backup.sh
 ```
 
 **Fix:** Crontab Eintrag korrigieren:
 ```Bash
-0 3 * * * /bin/bash ~/homelab/runbooks/backup.sh >> ~/homelab/logs/backup.log 2>&1
+0 3 * * * /bin/bash ~/homelab/scripts/backup.sh >> ~/homelab/logs/backup.log 2>&1
 ```
 
 **Hinweis (TODO)**
@@ -297,7 +297,7 @@ backup.sh sollte langfristig aus dem Runbooks-Verzeichnis in einen dedizierten S
 **Verifikation:**
 1. Script manuell ausführen
 ```Bash
- /bin/bash ~/homelab/runbooks/backup.sh >> ~/homelab/logs/backup.log 2>&1
+ /bin/bash ~/homelab/scripts/backup.sh >> ~/homelab/logs/backup.log 2>&1
 ```
 
 2. Logs Prüfen
