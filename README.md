@@ -52,6 +52,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   `services/pihole/README.md`
 -   `services/uptime-kuma/README.md`
 -   `services/nginx-proxy-manager/README.md`
+-   `runbooks/first-boot.md`
 -   `runbooks/backup-restore.md`
 
 ## Repo-Struktur
