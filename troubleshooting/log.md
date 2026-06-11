@@ -269,3 +269,57 @@ docker ps
 ```
 Prüfen, ob der Service erfolgreich startet und die Konfigurationen wieder vorhanden sind.
 
+## 2026-06-11 - Backup Cronjob schlägt fehl (Script nicht gefunden)
+
+**Symptom:** Backup-Cronjob läuft nicht erfolgreich.
+Fehlermeldung in `backup.log`:
+```text
+/bin/bash: /home/jp/homelab/scripts/backup.sh: No such file or directory
+```
+
+**Ursache:** Der Cronjob verweist auf einen falschen Pfad.
+Aktueller Speicherort des Scripts:
+```text
+~/homelab/runbooks/backup.sh
+```
+
+**Fix:** Crontab Eintrag korrigieren:
+```Bash
+0 3 * * * /bin/bash ~/homelab/runbooks/backup.sh >> ~/homelab/logs/backup.log 2>&1
+```
+
+**Hinweis (TODO)**
+backup.sh sollte langfristig aus dem Runbooks-Verzeichnis in einen dedizierten Scripts-Ordner verschoben werden:
+```Bash
+~/homelab/scripts/backup.sh
+```
+
+**Verifikation:**
+1. Script manuell ausführen
+```Bash
+ /bin/bash ~/homelab/runbooks/backup.sh >> ~/homelab/logs/backup.log 2>&1
+```
+
+2. Logs Prüfen
+```Bash
+cat ~/homelab/logs/backup.log
+```
+Erwartung:
+```Bash
+Backup fertig: /mnt/backup/2026-06-11
+```
+
+3. Backup-Verzeichnis prüfen
+```Bash
+ls -l /mnt/backup/
+```
+Erwartung:
+```Bash
+2026-06-11
+```
+**Zusatzprüfung (Zeitverhalten)**
+Cron-Ausführung prüfen:
+```Bash
+ls -l /mnt/backup/
+```
+Erwartung: täglich neuer Ordner um 03:00 Uhr
