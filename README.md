@@ -57,14 +57,23 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 
 ## Repo-Struktur
 ``` 
-homelab/ 
-├── README.md 
-├── services/ │ 
-|	├── pihole/ │ 
-|	├── uptime-kuma/ 
-│ 	└── nginx-proxy-manager/ 
-├── runbooks/ │ 
-├── first-boot.md 
-│ 	└── backup-restore.md 
-└── troubleshooting/ 
-	└── log.md ```
+homelab/
+├── README.md
+├── services/
+│   ├── pihole/
+│   ├── uptime-kuma/
+│   └── nginx-proxy-manager/
+├── runbooks/
+│   ├── first-boot.md
+│   └── backup-restore.md
+├── scripts/
+│   └── backup.sh
+├── hardware/
+│   └── inventory.md
+├── infrastructure/
+│   └── network/
+│       ├── dns.md
+│       └── network-overview.md
+└── troubleshooting/
+    └── log.md
+```
