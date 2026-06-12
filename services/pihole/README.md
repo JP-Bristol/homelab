@@ -4,7 +4,7 @@
 | Eigenschaft | Wert | 
 |-------------|------| 
 | Host | Raspberry Pi 5 | 
-| IP | 192.168.2.xx | 
+| IP | 192.168.2.x | 
 | Port Web UI | 8080 | 
 | Port DNS | 53 | 
 | Daten |  `~/homelab/services/pihole/data/`  | 
@@ -207,12 +207,12 @@ Erwartung: Status `Up` und `(healthy)`
 
 **DNS-Auflösung**
 ```bash
-dig @192.168.2.xx google.com
+dig @192.168.2.x google.com
 ```
 Erwartung: `status: NOERROR`
 
 **Web UI**
-http://192.168.2.xx:8080/admin
+http://192.168.2.x:8080/admin
 Erwartung: Login-Seite erreichbar
 
 **Pi-hole Status**
@@ -260,8 +260,8 @@ docker compose up -d
 ```
 **Nach dem Update prüfen:** 
 - Container läuft: `docker ps`
-- Web UI erreichbar: `http://192.168.2.xx:8080/admin` 
--  DNS funktioniert: `dig @192.168.2.xx google.com` 
+- Web UI erreichbar: `http://192.168.2.x:8080/admin` 
+-  DNS funktioniert: `dig @192.168.2.x google.com` 
 
 **Hinweis:**
 Updates dürfen nur nach erfolgreichem Health Check durchgeführt werden.

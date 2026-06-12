@@ -124,7 +124,7 @@ FTLCONF_dns_listeningMode: all
 
 **Fix:**
   1. Namen der aktiven Netzwerkverbindung über den NetworkManager ermitteln: sudo nmcli con show (Ergebnis hier: "Wired connection 1")
-  2. Den DNS-Server der Verbindung manuell auf die Pi-hole IP (z. B.     192.168.x.x) umstellen: sudo nmcli con mod "Wired connection 1" ipv4.dns     "192.168.x.x"
+  2. Den DNS-Server der Verbindung manuell auf die Pi-hole IP (z. B.     192.168.2.x) umstellen: sudo nmcli con mod "Wired connection 1" ipv4.dns     "192.168.2.x"
   3. Die Verbindung neu laden, um die Änderungen zu aktivieren: sudo nmcli con up "Wired connection 1" 
 
 
@@ -150,7 +150,7 @@ FTLCONF_dns_listeningMode: all
 
 **Ursache:** Uptime Kuma läuft in einem isolierten Docker-Container. Lokale DNS-Einträge oder Einträge in der hosts-Datei des Windows-Clients sind innerhalb des Docker-Netzwerks nicht bekannt.
 
-**Fix:** IP-Adresse und Port direkt in Uptime Kuma verwenden (z. B. http://192.168.x.x:8080/admin/login) statt Domainnamen.
+**Fix:** IP-Adresse und Port direkt in Uptime Kuma verwenden (z. B. http://192.168.2.x:8080/admin/login) statt Domainnamen.
 Langfristige Lösung: Lokale DNS-Einträge in Pihole pflegen damit Container die Domain auflösen können. (TODO)
 
 ## 2026-06-07 Fehler Erstellen von Dateien/Ordnern auf externem Datenträger

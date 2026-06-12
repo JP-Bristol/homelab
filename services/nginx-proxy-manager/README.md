@@ -4,7 +4,7 @@
 | Eigenschaft | Wert | 
 |-------------|------| 
 | Host | Raspberry Pi 5 | 
-| IP | 192.168.2.xx | 
+| IP | 192.168.2.x | 
 | Port Web UI | 81 |  
 | Daten |  `~/homelab/services/nginx-proxy-manager/data/` | 
 | Backup |  `/mnt/backup/DATUM/nginx-proxy-manager-data/` 
@@ -142,7 +142,7 @@ docker logs nginx-proxy-manager-app-1
 ```
 #### 4.6.3 **Web Ui Prüfen**
 ```Bash
-http://192.168.2.xx:81
+http://192.168.2.x:81
 ```
 ### 4.7 Zugriff
 -   Web UI:  
@@ -199,7 +199,7 @@ docker ps
 Erwartung: Status `Up` und `(healthy)`
 
 ### 6.2 **Web UI**
-http://192.168.2.xx:81
+http://192.168.2.x:81
 Erwartung: Login-Seite erreichbar
 
 
@@ -249,7 +249,7 @@ docker compose up -d
 ```
 ### 8.1  **Nach dem Update prüfen:** 
 - Container läuft: `docker ps`
-- Web UI erreichbar: `http://192.168.2.xx:81` 
+- Web UI erreichbar: `http://192.168.2.x:81` 
 -  nginx logs: `docker logs nginx-proxy-manager-app-1` 
 
 **Hinweis:**
@@ -314,7 +314,7 @@ docker restart nginx-proxy-manager-app-1
 #### 9.2.5 **Verify**
 Web UI erreichbar:
 ```bash
-http://192.168.2.xx:81
+http://192.168.2.x:81
 ```
 
 ### 9.3 Proxy Host liefert Fehler (403 / 502 / 504)

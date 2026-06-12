@@ -2,7 +2,7 @@
 
 ## 1.System-Übersicht
 -   **Host-System:** Raspberry Pi 5
--   **IP-Adresse:** 192.168.2.xx
+-   **IP-Adresse:** 192.168.2.x
 -   **Backup-Speicher:** USB-Stick
 -   **Mount-Pfad:** `/mnt/backup`
 

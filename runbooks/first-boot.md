@@ -50,7 +50,7 @@ SSH-Problem: alter Host-Key
 Falls das Gerät unter derselben IP bereits einmal bekannt war, kann es zu einer Warnung kommen.
 Alten Key entfernen in PowerShell:
 ```Bash
-ssh-keygen -R  192.168.x.x
+ssh-keygen -R  192.168.2.x
 ```
 Dadurch wird der alte gespeicherte SSH-Fingerprint aus `known_hosts` entfernt.
 
@@ -60,7 +60,7 @@ Dadurch wird der alte gespeicherte SSH-Fingerprint aus `known_hosts` entfernt.
 
 #### 1.2.1 Verbindung herstellen
 ```bash 
-ssh jp@192.168.1.x
+ssh jp@192.168.2.x
 ```
 
 #### 1.2.2 IP Herausfinden 
@@ -388,7 +388,7 @@ Die Adresse hinter `link/ether` notieren.
 #### 1.11.2 Router-Oberfläche öffnen
 Im Browser die Verwaltungsoberfläche des Routers aufrufen, z. B.:
 ```Bash
-http://192.168.x.x
+http://192.168.2.x
 ```
 #### 1.11.3 DHCP-Reservierung anlegen
 **Router**
@@ -397,17 +397,17 @@ Menüpfad (allgemein):
 
 Dort:
 1. MAC-Adresse des Raspberry Pi eintragen
-  2. Gewünschte IP-Adresse festlegen (z. B. `192.168.x.x`)
+  2. Gewünschte IP-Adresse festlegen (z. B. `192.168.2.x`)
 3. Konfiguration speichern
 
 #### 1.11.4 Funktion prüfen
 Neue IP-Adresse testen:
 ```Bash
-ping  192.168.x.x
+ping  192.168.2.x
 ```
 SSH-Verbindung prüfen:
 ```Bash
-ssh jp@192.168.x.x
+ssh jp@192.168.2.x
 ```
 **Hinweis**
 Die gewählte IP-Adresse sollte:
@@ -596,11 +596,11 @@ docker compose up -d
 **Funktion prüfen**
 Webinterface aufrufen:
 ```Bash
-http://192.168.2.xx:8080/admin
+http://192.168.2.x:8080/admin
 ```
 DNS-Auflösung testen:
 ```Bash
-dig @192.168.2.xx google.com
+dig @192.168.2.x google.com
 ```
 **Weiterführende Dokumentation**
 Details zu Betrieb, Updates, Backup und Troubleshooting befinden sich im Service-Runbook:
@@ -619,7 +619,7 @@ docker compose up -d
 **Funktion prüfen**
 Webinterface aufrufen:
 ```Bash
-http://192.168.2.xx:3001
+http://192.168.2.x:3001
 ```
 **Weiterführende Dokumentation**
 Details zu Betrieb, Updates, Backup und Troubleshooting befinden sich im Service-Runbook:
@@ -638,7 +638,7 @@ docker compose up -d
 **Funktion prüfen**
 Webinterface aufrufen:
 ```Bash
-http://192.168.2.xx:81
+http://192.168.2.x:81
 ```
 **Weiterführende Dokumentation**
 Details zu Betrieb, Updates, Backup und Troubleshooting befinden sich im Service-Runbook:

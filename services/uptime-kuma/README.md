@@ -7,7 +7,7 @@
 | Eigenschaft | Wert | 
 |-------------|------| 
 | Host | Raspberry Pi 5 | 
-| IP | 192.168.2.xx | 
+| IP | 192.168.2.x | 
 | Port Web UI | 3001 |  
 | Daten |  `~/homelab/services/uptime-kuma/data/` | 
 | Backup |  `/mnt/backup/DATUM/uptime-kuma-data/` 
@@ -116,7 +116,7 @@ docker logs uptime-kuma-uptime-kuma-1
 ```
 **Web Ui Prüfen**
 ```Bash
-http://192.168.2.xx:3001
+http://192.168.2.x:3001
 ```
 ### 4.7 Zugriff
 -   Web UI:  
@@ -173,7 +173,7 @@ docker ps
 Erwartung: Status `Up` und `(healthy)`
 
 **Web UI**
-http://192.168.2.xx:3001
+http://192.168.2.x:3001
 Erwartung: Login-Seite erreichbar
 
 
@@ -225,7 +225,7 @@ docker compose up -d
 ```
 **Nach dem Update prüfen:** 
 - Container läuft: `docker ps`
-- Web UI erreichbar: `http://192.168.2.xx:3001` 
+- Web UI erreichbar: `http://192.168.2.x:3001` 
 -  Docker logs: `docker logs uptime-kuma-uptime-kuma-1` 
 
 **Hinweis:**
@@ -290,7 +290,7 @@ docker compose restart uptime-kuma-uptime-kuma-1
 **Verify**
 Web UI erreichbar:
 ```bash
-http://192.168.2.xx:3001
+http://192.168.2.x:3001
 ```
 
 ### 9.3 Benachrichtigungen werden nicht versendet
