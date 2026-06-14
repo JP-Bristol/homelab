@@ -104,7 +104,7 @@ sudo reboot now
 Installation grundlegender Werkzeuge für Administration, Netzwerkdiagnose und Versionsverwaltung.
 **Pakete installieren**
 ```Bash
-sudo apt install -y  git  curl  vim traceroute dnsutils
+sudo apt install -y  git  curl  vim traceroute dnsutils nmap tcpdump
 ```
 **Enthaltene Werkzeuge**
 | Paket | Zweck | 
@@ -114,6 +114,8 @@ sudo apt install -y  git  curl  vim traceroute dnsutils
 | vim |Texteditor für Konfigurationsdateien | 
 | traceroute| Analyse von Netzwerkpfaden | 
 | dnsutils | DNS-Diagnosewerkzeuge wie `dig` und `nslookup` | 
+| nmap | Port- und Netzwerk-Scans |
+| tcpdump | Netzwerkverkehr analysieren |
 
 **Installation prüfen**
 ```Bash
@@ -122,6 +124,8 @@ curl  --version
 vim  --version  
 traceroute --version  
 dig -v
+nmap --version
+tcpdump --version
 
 ```
 **Beispiele**
