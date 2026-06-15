@@ -23,7 +23,8 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 |  --------  |  -------  | --------  |  -------  |
 | Pi-hole | 53 / 80 |✅ läuft | DNS & Adblocker |
 | Uptime Kuma | 3001 |✅ läuft | Monitoring & Alerts |
-| Nginx Proxy Manager | 81 |✅ läuft | Reverse Proxy
+| Nginx Proxy Manager | 81 |✅ läuft | Reverse Proxy |
+| Wiki.js | 3000 |✅ läuft | Dokumentation & Wissensmanagement |
 
 ##  Infrastruktur Stack
 -   Docker
@@ -42,9 +43,9 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Uptime Kuma (Monitoring)
 - Nginx Proxy Manager (Reverse Proxy)
 - Backup-System (USB + Cron)
+- Wiki / Dokumentation
 
 ## Geplant
--   Wiki / Dokumentation
 -   Monitoring Erweiterung
 -   Security Hardening
 
@@ -52,6 +53,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   `services/pihole/README.md`
 -   `services/uptime-kuma/README.md`
 -   `services/nginx-proxy-manager/README.md`
+-   `services/wikijs/README.md`
 -   `runbooks/first-boot.md`
 -   `runbooks/backup-restore.md`
 
@@ -63,6 +65,7 @@ homelab/
 │   ├── pihole/
 │   ├── uptime-kuma/
 │   └── nginx-proxy-manager/
+│   └── wikijs/
 ├── runbooks/
 │   ├── first-boot.md
 │   └── backup-restore.md

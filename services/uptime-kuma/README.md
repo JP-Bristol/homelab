@@ -31,15 +31,18 @@ Uptime Kuma ist ein selbstgehostetes Monitoring-System zur Überwachung von Dien
 | Nginx Proxy Manager | Reverse Proxy |  
 | Raspberry Pi | Host-Verfügbarkeit |  
 | Internet / WAN | Externe Erreichbarkeit |
+| Wiki.JS | Dokumentation |
 
 ## 2. Architektur
 **Zweck**
 Uptime Kuma überwacht die Verfügbarkeit interner und externer Dienste und stellt die Ergebnisse über ein zentrales Dashboard bereit.
 
-``` 
-┌─────────────────┐ │ Uptime Kuma │ │ Port 3001 │ └────────┬────────┘ │ ┌────┴────┬──────────┐ │ │ │ ▼ ▼ ▼ Pi-hole Nginx Internet DNS Check HTTP Check HTTP Check 
-```
+Uptime Kuma überwacht:
 
+- Pi-hole (DNS Health Check)
+- Nginx Proxy Manager (HTTP Check)
+- Wiki.JS (HTTP Check)
+- externe Dienste (Internet Reachability
 
 
 ## 3. Netzwerk & Ports
