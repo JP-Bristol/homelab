@@ -34,23 +34,29 @@ Enthält:
 -   Konfigurationsdateien
 
 ### 3.2 Service-Daten
-#### Pi-hole
+#### 3.2.1 Pi-hole
 
 -   DNS-Listen
 -   Whitelists / Blacklists
 -   DNS-Konfiguration
 
-#### Uptime Kuma
+#### 3.2.2 Uptime Kuma
 
 -   Monitore
 -   Statushistorie
 -   Benutzereinstellungen
 
-#### Nginx Proxy Manager
+#### 3.2.3 Nginx Proxy Manager
 
 -   Proxy Hosts
 -   SSL-Zertifikate
 -   Access Lists
+
+#### 3.2.4 Wiki.js
+- Wiki-Seiten und Inhalte
+- Benutzerkonten und Berechtigungen
+- Konfiguration
+(alles in `database.sqlite`)
 
 ## 4. Backup-Speicherort
 ```

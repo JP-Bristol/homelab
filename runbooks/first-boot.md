@@ -652,6 +652,40 @@ services/nginx-proxy-manager/README.md
 **Hinweis**
 Nach dem Start müssen die Proxy Hosts manuell in der Web-UI angelegt werden. Details → `services/nginx-proxy-manager/README.md`
 
+
+### 3.4 Wiki.js
+
+**Ziel**
+Wiki.js für die zentrale interne Dokumentation des Homelabs bereitstellen.
+**Deployment**
+```Bash
+cd ~/homelab/services/wikijs
+docker compose up -d
+```
+**Funktion prüfen**
+Webinterface aufrufen:
+```Bash
+http://192.168.2.x:3000
+```
+**Weiterführende Dokumentation**
+Details zu Betrieb, Updates, Backup und Troubleshooting befinden sich im Service-Runbook:
+```
+services/wikijs/README.md
+```
+**Hinweis**
+
+Bei einer Erstinstallation ohne vorhandenes Backup muss die Datenbank initialisiert werden.
+
+Siehe Abschnitt:
+```
+Erstinstallation
+```
+
+im Service-Runbook:
+```
+services/wikijs/README.md
+```
+
 ### 3.x Recovery
 Nach erfolgreichem Setup alle Services aus Backup wiederherstellen:
 → Siehe `runbooks/backup-restore.md`
