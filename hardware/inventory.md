@@ -32,12 +32,19 @@ Die feste IP wird über den Router mittels DHCP Reservation vergeben.
 
 ### 3. Storage
 
-#### 3.1 **Systemlaufwerk**
+#### 3.1 **Systemlaufwerk (Primär)**
 | Eigenschaften| Wert|
 |-|-|
+| Typ | NVMe SSD |
+| Modell | Verbatim Vi3000 |
+| Kapazität | 256 GB |
+| Zweck | Betriebssystem |
+
+##### 3.1.1 **Fallback Systemlaufwerk**
+
 | Typ | microSD |
 | Kapazität | 32 GB |
-| Zweck | Betriebssystem |
+| Zweck | Fallback Boot (SD-Karte bleibt im Pi) |
 
 #### 3.2 Backup-Laufwerk
 
@@ -65,14 +72,15 @@ Für den Betrieb erforderlich:
 -   Router mit DHCP Reservation
 -   Backup USB-Stick
 
-### 6. Kapazitätsüberischt
+### 6. Kapazitätsübersicht
 Aktuelle Nutzung regelmäßig prüfen:
 ```bash
 df -h
 ```
 Besonders relevant:
--   SD-Karte
+-   NVMe SSD
 -   USB Backup Storage
+-   SD-Karte (Fallback, nicht aktiv genutzt)
 
 ### 7. Austausch im Fehlerfall
 #### 7.1 Raspberry Pi defekt
