@@ -401,7 +401,7 @@ Menüpfad (allgemein):
 
 Dort:
 1. MAC-Adresse des Raspberry Pi eintragen
-  2. Gewünschte IP-Adresse festlegen (z. B. `192.168.2.x`)
+2. Gewünschte IP-Adresse festlegen (z. B. `192.168.2.x`)
 3. Konfiguration speichern
 
 #### 1.11.4 Funktion prüfen
@@ -426,7 +426,18 @@ Router: 192.168.1.1
 Raspberry Pi: 192.168.1.10  
 PC: 192.168.1.20
 ```
+
+### 1.12 Optional: Migration auf NVMe SSD
+
+Falls eine NVMe SSD verbaut ist, kann das System nach dem Basis-Setup auf die SSD migriert werden.
+Empfohlen vor der Einrichtung von Backups und Services.
+
+Siehe:
+```text
+runbooks/ssd-migration.md
+```
 ---
+
 
 ## 2. Storage & Backup
 **Ziel:**
