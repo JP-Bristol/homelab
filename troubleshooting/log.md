@@ -323,3 +323,107 @@ Cron-Ausführung prüfen:
 ls -l /mnt/backup/
 ```
 Erwartung: täglich neuer Ordner um 03:00 Uhr
+
+
+## 2026-06-16 - rpi-clone schlägt bei NVMe-Ziel fehl
+
+**Symptom:**
+Klonvorgang mit `rpi-clone` bricht ab.
+
+Fehlermeldung:
+```text
+...
+mount: /mnt/clone: fsconfig() failed: /dev/nvme0n12: Can't lookup blockdev. dmesg(1) may have more information after failed mount system call. Mount failure of /dev/nvme0n12 on /mnt/clone. Aborting!
+```
+
+**Ursache:**
+`rpi-clone` erzeugt bei bestimmten NVMe-Geräten fehlerhafte Partitionspfade.
+
+Statt: 
+`/dev/nvme0n1p2`
+wird fälschlicherweise:
+`/dev/nvme0n12`
+verwendet.
+
+Dadurch können die Zielpartitionen nicht gemountet werden und der Klonvorgang schlägt fehl.
+
+**Fix:**
+Für NVMe-Medien kein `rpi-clone` verwenden.
+Stattdessen das Laufwerk mit `dd` klonen:
+```Bash
+sudo dd if=/dev/mmcblk0 of=/dev/nvme0n1 bs=4M status=progress conv=fsync
+```
+Gerätebezeichnungen vor Ausführung sorgfältig prüfen.
+
+**Hinweis:**
+Das Problem tritt nur bei bestimmten NVMe-Geräten auf.
+Für SD-Karten und klassische USB-Laufwerke kann `rpi-clone` weiterhin funktionieren
+
+.Nach dem Klonen entspricht die Partitionsgröße zunächst der Größe des Quellmediums.  
+  
+Wird beispielsweise eine 32-GB-SD-Karte auf eine 500-GB-SSD geklont, bleiben große Teile des Speicherplatzes zunächst ungenutzt.  
+  
+Freien Speicher prüfen:  
+  
+```bash  
+lsblk
+```
+```bash 
+df -h
+```
+
+Falls erforderlich, Partition erweitern:
+```bash 
+sudo growpart /dev/nvme0n1 2
+```
+
+Falls erforderlich, Dateisystem auf die neue Partitionsgröße anpassen:
+```bash 
+sudo resize2fs /dev/nvme0n1p2
+```
+
+Erwartung:
+```
+resize2fs 1.47.2 (1-Jan-2025) 
+Resizing the filesystem on /dev/nvme0n1p2 to 62381648 (4k) blocks. 
+The filesystem on /dev/nvme0n1p2 is now 62381648 (4k) blocks long.
+```
+Anschließend Neustart durchführen:
+```bash 
+sudo reboot
+```
+Verifikation:
+```bash  
+df -h /
+```
+Erwartung:
+
+Die Root-Partition nutzt die vollständige Kapazität der SSD.
+Beispiel:
+``` 
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/nvme0n1p2  235G   11G  215G   5% /
+```
+**Verifikation**
+
+Partitionen prüfen:
+```bash 
+lsblk
+```
+Erwartung:
+
+-   Zielmedium enthält die gleichen Partitionen wie das Quellmedium.
+
+Optional:
+```bash 
+sudo fdisk -l /dev/nvme0n1
+```
+Nach dem Klonen Test-Boot durchführen:
+
+-   SD-Karte entfernen (falls gewünscht)
+-   Von NVMe starten
+-   SSH Login erfolgreich
+-   Docker Services starten fehlerfrei
+
+Erwartung:
+Das System bootet vollständig vom geklonten NVMe-Laufwerk und alle Services sind funktionsfähig
