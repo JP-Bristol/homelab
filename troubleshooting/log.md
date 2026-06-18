@@ -427,3 +427,82 @@ Nach dem Klonen Test-Boot durchführen:
 
 Erwartung:
 Das System bootet vollständig vom geklonten NVMe-Laufwerk und alle Services sind funktionsfähig
+
+
+## 2026-06-18 - SSH Passwort-Login nicht deaktiviert 
+
+**Symptom:** Bei der Überprüfung, mit ```Bash sudo sshd -T | grep passwordauthenticationob``` Password-Login deaktiviert ist festgestellt, dass der Passwort-Login noch aktiv ist. 
+
+```text
+passwordauthentication Yes
+```
+
+
+**Ursache:** Die SSH-Konfiguration wurde durch eine Datei im Verzeichnis `/etc/ssh/sshd_config.d/` überschrieben.
+
+In der Datei:
+```text
+/etc/ssh/sshd_config.d/50-cloud-init.conf
+```
+```text
+PasswordAuthentication yes
+```
+
+
+Obwohl in der Hauptkonfigurationsdatei:
+ `/etc/ssh/sshd_config `
+
+bereits
+```text
+PasswordAuthentication no
+```
+eingetragen war.
+
+Die Konfiguration aus sshd_config.d hatte Vorrang und aktivierte den Passwort-Login wieder.
+
+
+**Fix:** Passwort-Login in der Cloud-Init SSH-Konfiguration deaktivieren:
+```Bash
+sudo nano /etc/ssh/sshd_config.d/50-cloud-init.conf
+```
+
+Ändern:
+`PasswordAuthentication yes` → `PasswordAuthentication no`
+
+SSH-Dienst neu starten:
+```Bash
+sudo systemctl restart ssh
+```
+
+
+Hinweis:
+Vor Änderungen an der SSH-Konfiguration sicherstellen:
+
+- Aktuelle SSH-Verbindung geöffnet lassen
+- Zweite SSH-Verbindung testen
+- Nicht die bestehende Sitzung schließen, bevor der neue Login erfolgreich funktioniert
+
+Bei falscher SSH-Konfiguration kann der SSH-Zugriff verloren gehen.
+Lokaler Zugriff über Bildschirm/Tastatur oder ein Backup der Konfiguration ist dann erforderlich.
+
+**Verifikation:**
+
+SSH-Konfiguration prüfen:
+```Bash
+sudo sshd -T | grep passwordauthentication
+```
+
+Erwartung:
+`passwordauthentication no`
+
+Neue SSH-Verbindung testen:
+```powershell
+ssh USER@192.168.2.x
+```
+
+Erwartung:
+- Login funktioniert ohne Passwortabfrage
+- Public-Key-Authentifizierung wird verwendet
+
+
+
