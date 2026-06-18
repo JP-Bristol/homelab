@@ -33,9 +33,10 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   Reverse Proxy
 -   Monitoring
 
+
 ## Status
 -   Woche 1 & 2: abgeschlossen 
--   Nächste Schritte: Wiki, Security Hardening, VPN
+-   Nächste Schritte: Security Hardening,Security Hardening, VPN
 
 ## Aktuell aktiv
 
@@ -48,6 +49,10 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 ## Geplant
 -   Monitoring Erweiterung
 -   Security Hardening
+-   Vaultwarden (Passwortmanager)
+-   Dedizierter Server (Virtualisierung, Windows Server, KI-Workspace)
+-   Zweiter Pi
+-   VPN
 
 ## Dokumentation
 -   `services/pihole/README.md`
@@ -56,6 +61,9 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   `services/wikijs/README.md`
 -   `runbooks/first-boot.md`
 -   `runbooks/backup-restore.md`
+-   `runbooks/ssd-migration.md`
+-   `infrastructure/network/dns.md`
+-   `infrastructure/network/network-overview.md`
 
 ## Repo-Struktur
 ``` 
