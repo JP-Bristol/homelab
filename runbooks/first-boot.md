@@ -617,6 +617,11 @@ DNS-Auflösung testen:
 ```Bash
 dig @192.168.2.x google.com
 ```
+
+**Hinweis:** 
+Falls der Pi selbst noch den Router-DNS nutzt statt Pihole,
+siehe `services/pihole/README.md` Abschnitt Failure Scenarios.
+
 **Weiterführende Dokumentation**
 Details zu Betrieb, Updates, Backup und Troubleshooting befinden sich im Service-Runbook:
 ```

@@ -342,3 +342,75 @@ docker ps
 -   Container ist „Up“
 -   keine Restart-Loops
 
+### 10.3 DNS wird durch Router umgangen
+
+#### 10.3.1 Symptom
+Pi-hole zeigt keine oder zu wenige DNS-Anfragen an.  
+DNS-Filterung funktioniert nicht.
+
+#### 10.3.2 Check
+DNS-Server prüfen:  
+  
+```bash  
+dig google.com
+```
+
+Erwartung:
+```
+;; SERVER: 192.168.2.x#53
+```
+Die IP muss der Pi-hole Adresse entsprechen.
+
+Problem:
+```
+;; SERVER: 192.168.2.1#53
+```
+Der Router beantwortet die DNS-Anfragen anstelle von Pi-hole.
+
+#### 10.3.3 Ursache 
+Der Router verteilt über DHCP weiterhin seine eigene DNS-Adresse.
+Die verwendete EasyBox übernimmt die DNS-Verteilung trotz manueller DNS-Konfiguration weiterhin selbst und gibt ihre eigene Adresse an Clients weiter.
+
+Dadurch wird Pi-hole als DNS-Server umgangen.
+
+#### 10.3.4 Fix
+DNS-Server auf den betroffenen Geräten manuell setzen.
+
+##### 10.3.4.1 Fix für den Raspberry Pi
+```Bash
+DNS Server:  
+sudo nmcli con mod "Wired connection 1" ipv4.dns "192.168.2.x" 
+sudo nmcli con up "Wired connection 1"
+```
+Dabei `x` durch die Pi-hole IP ersetzen.
+
+##### 10.3.4.2 Fix für andere Geräte (Laptop, Smartphone)
+Hier ist notwendig den DNS manuell zu setzen.
+
+Beispiel:
+```
+DNS Server:  
+192.168.2.x
+```
+Dabei `x` durch die Pi-hole IP ersetzen.
+
+#### 10.3.5 Verifikation
+DNS Auflösung erneut prüfen:
+```bash  
+dig google.com
+```
+Erwartung:
+```
+;; SERVER: 192.168.2.x#53
+```
+
+Zusätzlich Pi-hole Dashboard prüfen:
+```
+http://192.168.2.x:8080/admin
+```
+
+Erwartung:
+
+-   DNS Queries werden angezeigt
+-   Clients erscheinen im Dashboard
+-   Blockierungen werden gezählt
