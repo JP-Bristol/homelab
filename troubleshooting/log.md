@@ -505,4 +505,104 @@ Erwartung:
 - Public-Key-Authentifizierung wird verwendet
 
 
+## 2026-06-24 - Vaultwarden Dashboard meldet "secure context required"
 
+**Symptom:** 
+Beim Aufrufen des Vaultwarden Dashboards erscheint:
+```
+You are not using a secure context which is required for the subtle crypto api.
+You need to enable https.
+```
+**Ursache:**
+Vaultwarden benötigt für bestimmte kryptographische Funktionen die Browser Web Crypto API.
+
+Diese API ist nur in einem sicheren Kontext verfügbar:
+
+-   HTTPS-Verbindung
+-   oder spezielle Ausnahmefälle wie localhost
+
+Eine lokale HTTP-Verbindung über:
+```
+http://vaultwarden.home
+```
+wird vom Browser als unsicher behandelt.
+
+Ein Let's Encrypt Zertifikat ist für eine lokale `.home` Domain nicht möglich, da keine öffentliche Domain-Verifikation durchgeführt werden kann.
+
+**Fix:**
+Ein selbstsigniertes TLS-Zertifikat erstellen und über Nginx Proxy Manager bereitstellen.
+Zertifikat erstellen:
+```Bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \ -keyout vaultwarden.key \ -out vaultwarden.crt \ -subj "/CN=vaultwarden.home"
+```
+
+Danach:
+
+1.  Zertifikat in Nginx Proxy Manager unter **SSL Certificates → Add Certificate → Custom Certificate** importieren.
+2.  Zertifikat dem Proxy Host `vaultwarden.home` zuweisen.
+3.  Zugriff über HTTPS testen: `https://vaultwarden.home`
+
+**Verifikation**
+Erwartung:
+
+-   Keine Secure-Context Fehlermeldung mehr
+-   Vaultwarden Login funktioniert
+-   Browser verwendet HTTPS
+
+**Hinweis**
+Der Proxy Host bleibt intern auf HTTP:
+- HTTPS wird nur zwischen Browser und Nginx Proxy Manager verwendet.
+
+## 2026-06-24 - NPM meldet "Internal Error" beim Anfordern eines Zertifikats
+
+**Symptom**
+
+Beim Versuch ein SSL-Zertifikat über Nginx Proxy Manager anzufordern erscheint:
+
+```
+Internal Error
+```
+
+**Ursache**
+
+Nginx Proxy Manager versucht ein Let's Encrypt Zertifikat auszustellen.
+
+Let's Encrypt benötigt eine öffentlich erreichbare Domain, die über das öffentliche DNS aufgelöst und verifiziert werden kann.
+
+Die verwendete lokale Domain:
+
+```
+vaultwarden.home
+```
+
+existiert nur im lokalen Netzwerk und kann nicht durch Let's Encrypt validiert werden.
+
+**Fix**
+
+Für lokale Services kein Let's Encrypt Zertifikat verwenden.
+
+Stattdessen ein selbstsigniertes Zertifikat erstellen und in Nginx Proxy Manager als Custom Certificate hinterlegen.
+
+Siehe:
+
+```
+2026-06-24 Vaultwarden Dashboard meldet "secure context required"
+```
+
+**Verifikation**
+
+Prüfen:
+
+-   Custom Certificate ist in Nginx Proxy Manager vorhanden
+-   Zertifikat ist dem Proxy Host `vaultwarden.home` zugewiesen
+-   Zugriff funktioniert über:
+
+```
+https://vaultwarden.home
+```
+
+Erwartung:
+
+-   HTTPS Verbindung erfolgreich
+-   Vaultwarden Dashboard erreichbar
+-   Keine Secure-Context Fehlermeldung
