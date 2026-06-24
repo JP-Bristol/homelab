@@ -58,6 +58,11 @@ Enthält:
 - Konfiguration
 (alles in `database.sqlite`)
 
+#### 3.2.5 vaultwarden
+- Hauptdatenbank (`db.sqlite3`) — Passwörter, Benutzer, Einstellungen
+- SQLite WAL-Dateien (`db.sqlite3-shm`, `db.sqlite3-wal`)
+- RSA-Schlüssel (`rsa_key.pem`) — **kritisch, ohne diesen sind Daten nicht entschlüsselbar**
+
 ## 4. Backup-Speicherort
 ```
 /mnt/backup/
@@ -85,6 +90,7 @@ Dieses Schema gilt für alle Services im Homelab
 ```
 /mnt/backup/<DATUM>/
 ```
+
 -   korrektes Backup-Verzeichnis identifizieren
 -   prüfen, ob Zeitpunkt plausibel ist
 

@@ -32,6 +32,7 @@ Uptime Kuma ist ein selbstgehostetes Monitoring-System zur Überwachung von Dien
 | Raspberry Pi | Host-Verfügbarkeit |  
 | Internet / WAN | Externe Erreichbarkeit |
 | Wiki.JS | Dokumentation |
+| vaultwarden | passwort manager |
 
 ## 2. Architektur
 **Zweck**

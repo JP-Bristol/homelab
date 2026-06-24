@@ -15,6 +15,7 @@ rsync -av --ignore-errors ~/homelab/services/pihole/data/ $BACKUP_DIR/pihole-dat
 rsync -av --ignore-errors ~/homelab/services/uptime-kuma/data/ $BACKUP_DIR/uptime-kuma-data/
 rsync -av --ignore-errors ~/homelab/services/nginx-proxy-manager/data/ $BACKUP_DIR/npm-data/
 rsync -av --ignore-errors ~/homelab/services/wikijs/data/ $BACKUP_DIR/wikijs-data/
+rsync -av --ignore-errors ~/homelab/services/vaultwarden/data/ $BACKUP_DIR/vaultwarden-data/
 
 echo "Backup fertig: $BACKUP_DIR"
 

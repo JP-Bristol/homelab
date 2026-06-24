@@ -25,6 +25,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 | Uptime Kuma | 3001 |✅ läuft | Monitoring & Alerts |
 | Nginx Proxy Manager | 81 |✅ läuft | Reverse Proxy |
 | Wiki.js | 3000 |✅ läuft | Dokumentation & Wissensmanagement |
+| Vaultwarden | 11001 | ✅ läuft | Passwortmanager |
 
 ##  Infrastruktur Stack
 -   Docker
@@ -45,11 +46,11 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Nginx Proxy Manager (Reverse Proxy)
 - Backup-System (USB + Cron)
 - Wiki / Dokumentation
+- Vaultwarden (Passwortmanager)
 
 ## Geplant
 -   Monitoring Erweiterung
 -   Security Hardening
--   Vaultwarden (Passwortmanager)
 -   Dedizierter Server (Virtualisierung, Windows Server, KI-Workspace)
 -   Zweiter Pi
 -   VPN
