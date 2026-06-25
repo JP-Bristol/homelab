@@ -36,8 +36,8 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 
 
 ## Status
--   Woche 1 & 2: abgeschlossen 
--   Nächste Schritte: Security Hardening,Security Hardening, VPN
+-   Woche 1 - 4: abgeschlossen 
+-   Nächste Schritte: Lokale DNS-Einträge, Zabbix, VPN
 
 ## Aktuell aktiv
 
@@ -47,6 +47,8 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Backup-System (USB + Cron)
 - Wiki / Dokumentation
 - Vaultwarden (Passwortmanager)
+- Security Hardening (ufw, fail2ban) 
+- NVMe SSD Migration
 
 ## Geplant
 -   Monitoring Erweiterung
@@ -54,12 +56,15 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   Dedizierter Server (Virtualisierung, Windows Server, KI-Workspace)
 -   Zweiter Pi
 -   VPN
+-   Zabbix (Monitoring)
+-   Lokale DNS-Einträge (Pihole)
 
 ## Dokumentation
 -   `services/pihole/README.md`
 -   `services/uptime-kuma/README.md`
 -   `services/nginx-proxy-manager/README.md`
 -   `services/wikijs/README.md`
+-   `services/vaultwarden/README.md`
 -   `runbooks/first-boot.md`
 -   `runbooks/backup-restore.md`
 -   `runbooks/ssd-migration.md`
@@ -75,6 +80,7 @@ homelab/
 │   ├── uptime-kuma/
 │   └── nginx-proxy-manager/
 │   └── wikijs/
+│   └── vaultwarden/
 ├── runbooks/
 │   ├── first-boot.md
 │   └── backup-restore.md
