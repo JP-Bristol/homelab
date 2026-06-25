@@ -51,13 +51,23 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - NVMe SSD Migration
 
 ## Geplant
--   Monitoring Erweiterung
--   Security Hardening
--   Dedizierter Server (Virtualisierung, Windows Server, KI-Workspace)
--   Zweiter Pi
--   VPN
--   Zabbix (Monitoring)
--   Lokale DNS-Einträge (Pihole)
+
+**Kurzfristig**
+- Lokale DNS-Einträge
+- Zabbix (Monitoring)
+- Python - Grundlagen + Homelab-Scripts
+- Security Script (ufw-setup.sh)
+- Wiki befüllen
+
+**Mittelfristig (mit Hardware)**
+- Dedizierte Server (Proxmox, Windows Server, KI-Workspace)
+- Zweiter Pi
+- VPN
+
+**Langfristig**
+- Self-hosted KI-Workspace
+- Nextcloud
+- GPU für lokale KI
 
 ## Dokumentation
 -   `services/pihole/README.md`
