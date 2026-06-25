@@ -606,3 +606,53 @@ Erwartung:
 -   HTTPS Verbindung erfolgreich
 -   Vaultwarden Dashboard erreichbar
 -   Keine Secure-Context Fehlermeldung
+
+
+## 2026-06-25 USB-Stick nicht gemountet – Backup schlägt fehl
+**Symptom:**
+
+Automatische Backups werden nicht erstellt.
+
+Fehlermeldung:
+
+cannot create directory '/mnt/backup/2026-06-25': Permission denied
+**Ursache:**
+
+Der Backup-USB-Stick ist nicht gemountet.
+
+Raspberry Pi OS Lite wird headless betrieben und mountet USB-Geräte nicht automatisch wie eine Desktop-Umgebung.
+
+Dadurch zeigt /mnt/backup lediglich auf das lokale Verzeichnis des Raspberry Pi statt auf den USB-Stick.
+
+**Fix:**
+
+Mount-Status prüfen:
+```Bash
+mount | grep backup
+```
+USB-Stick manuell mounten:
+```Bash
+sudo mount -a
+```
+oder:
+```Bash
+sudo mount /dev/sda1 /mnt/backup
+```
+Verifikation
+
+Prüfen:
+```Bash
+mount | grep backup
+```
+Erwartung:
+```
+/dev/sda1 on /mnt/backup type ext4 (rw,relatime)
+```
+Zusätzlich:
+```Bash
+ls -l /mnt/backup
+```
+Erwartung:
+
+- Vorhandene Backup-Verzeichnisse sichtbar
+- Neues Backup kann erfolgreich erstellt werden

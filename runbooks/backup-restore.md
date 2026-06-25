@@ -21,6 +21,31 @@ Die Backups werden täglich um **03:00 Uhr** via Cronjob erstellt.
 **Aufbewahrung**
 -   Retention: **7 Tage**
 -   Ältere Backups werden automatisch gelöscht
+
+### 2.1 Backup manuell ausführen
+Backup-Skript starten:
+```bash
+~/homelab/scripts/backup.sh >> ~/homelab/logs/backup.log 2>&1
+```
+
+Log prüfen:
+```bash
+tail -50 ~/homelab/logs/backup.log
+```
+
+Erwartung:
+
+Backup fertig: `/mnt/backup/YYYY-MM-DD`
+
+Zusätzlich prüfen:
+```bash
+ls -l /mnt/backup/
+```
+
+Erwartung:
+
+- Neues Backup-Verzeichnis vorhanden
+- Aktuelles Datum sichtbar
 ## 3. Backup-Inhalt
 ### 3.1 Homelab-Konfiguration
 ```
