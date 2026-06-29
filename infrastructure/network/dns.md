@@ -55,24 +55,64 @@ DNS wird über DHCP bzw. manuelle Konfiguration verteilt.
 #### 5.1 Host Records
 | Hostname| IP-Adresse|
 |-|-|
-| pihole.home | 192.168.2.x:8080 |
-| uptime.home | 192.168.2.x:3001 |
-| npm.home| 192.168.2.x:81 |
-**Hinweis:** Diese Domains sind in der hosts-Datei der Clients eingetragen und werden über Nginx Proxy Manager weitergeleitet:
+| pihole.home | 192.168.2.x |
+| uptime.home | 192.168.2.x |
+| npm.home | 192.168.2.x |
+| wiki.home | 192.168.2.x |
+| vaultwarden.home | 192.168.2.x |
+
+**Hinweis:** 
+Die Hostnamen sind als Local DNS Records in Pi-hole hinterlegt.
+
+Voraussetzung ist, dass die Clients Pi-hole als DNS-Server verwenden. Eine manuelle Konfiguration der hosts-Datei auf den Clients ist dadurch nicht erforderlich.
+
+Der Zugriff erfolgt über den jeweiligen Hostnamen. Die Weiterleitung auf den entsprechenden Service übernimmt der Nginx Proxy Manager.Domains sind als lokale DNS-Einträge direkt in Pi-hole hinterlegt.
+Erreichbar automatisch von allen Geräten im Netzwerk — keine manuelle hosts-Datei Konfiguration nötig.
+Ports werden über Nginx Proxy Manager weitergeleitet.
 
 ### 6. Verifikation
-DNS-Auflösung testen:
+
+#### 6.1 DNS-Auflösung testen
+
+```Bash
+dig vaultwarden.home 
+```
+
+Erwartung:
 
 ```
-dig @192.168.2.xx google.com
+;; SERVER: 192.168.2.x#53
 ```
 
-Lokale Einträge testen:
+```
+;; ANSWER SECTION: 
+vaultwarden.home. IN A 192.168.2.x
+```
 
-```
-nslookup pihole.home 192.168.2.x
-```
-**Hinweis:** NXDOMAIN erwartet, da pihole.home nicht in Pi-hole sondern nur in der hosts-Datei eingetragen ist.
+Der verwendete DNS-Server muss die Pi-hole-IP sein.
+
+**Hinweis:**
+
+Früher waren die Hostnamen ausschließlich in der Windows-hosts-Datei eingetragen.
+
+Jetzt werden sie über die Local DNS Records in Pi-hole aufgelöst und stehen damit allen Geräten im Netzwerk zur Verfügung, sofern diese Pi-hole als DNS-Server verwenden.
+
+#### 6.2 Ereichbarkeit pürfen
+
+Im Browser öffnen:
+
+`http://pihole.home/admin`
+`http://uptime.home`
+`http://npm.home`
+`http://wiki.home`
+`http://vaultwarden.home`
+
+Erwartung:
+
+- Alle Hostnamen werden erfolgreich aufgelöst.
+- Die jeweiligen Weboberflächen sind erreichbar.
+- Die Weiterleitung erfolgt über den Nginx Proxy Manager.
+
 
 ### 7. Failure Scenarios
 
@@ -98,4 +138,5 @@ Mögliche Ursachen:
 | Datum | Änderung |
 |-|-|
 | 2026-06 | Initiale Erstellung |
+| 2026-06-27 | Lokale DNS-Einträge in Pi-hole eingerichtet — hosts-Datei nicht mehr nötig |
 
