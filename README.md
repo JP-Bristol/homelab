@@ -15,7 +15,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 | Raspberry Pi 5 | 8 GB RAM |2026-05 |
 | Storage | SD-Karte | 2026-05 |
 | USB-Stick | 32 GB Backup-Speicher | 2026-06 |
-
+| NVMe SSD | Verbatim Vi3000 256GB | 2026-06 |
 
 ## Services
 
@@ -33,6 +33,9 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   DNS (Pi-hole)
 -   Reverse Proxy
 -   Monitoring
+-   Wiki.js
+-   Vaultwarden
+-   Security Hardening (ufw, fail2ban)
 
 
 ## Status
@@ -80,6 +83,9 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   `runbooks/ssd-migration.md`
 -   `infrastructure/network/dns.md`
 -   `infrastructure/network/network-overview.md`
+-   `infrastructure/security/hardening.md`
+-   `infrastructure/security/firewall.md`
+-   `infrastructure/planning.md`
 
 ## Repo-Struktur
 ``` 
@@ -98,10 +104,15 @@ homelab/
 │   └── backup.sh
 ├── hardware/
 │   └── inventory.md
+│   └── ssd-migration.md
 ├── infrastructure/
 │   └── network/
 │       ├── dns.md
 │       └── network-overview.md
+│   ├── security/
+│       ├── firewall.md
+│       └── hardening.md
+│   └── planning.md
 └── troubleshooting/
     └── log.md
 ```
