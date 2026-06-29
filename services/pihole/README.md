@@ -38,6 +38,20 @@ Optional:
 | 80     | HTTP       | Web Interface      |
 | 443     | HTTPS       | optional (TLS UI)     |
 
+
+### 3.1 Lokale DNS-Verwaltung
+
+Lokale Hostnamen (`pihole.home`, `uptime.home`, `npm.home`, `wiki.home`, `vaultwarden.home` etc.) werden direkt in Pi-hole als **Local DNS Records** verwaltet.
+
+Verwaltung:
+```
+Pi-hole Web UI → Local DNS → DNS Records
+```
+Die Einträge stellen sicher, dass alle Geräte im Netzwerk die internen Services über Hostnamen erreichen können. Eine manuelle Konfiguration über lokale `hosts`-Dateien ist dadurch nicht erforderlich.
+
+Weitere Details:  
+`infrastructure/network/dns.md`
+
 ## 4. Deployment (GitOps – Primary Path)
 **Ziel**
 Der Pi-hole Service wird vollständig reproduzierbar aus einem Git-Repository deployed.  
