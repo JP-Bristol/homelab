@@ -656,3 +656,46 @@ Erwartung:
 
 - Vorhandene Backup-Verzeichnisse sichtbar
 - Neues Backup kann erfolgreich erstellt werden
+
+## 2026-06-29 Pi-hole 403 über Nginx Proxy Manager – Permanente Lösung
+
+Ersetzt den bisherigen Workaround vom 06.06.2026 (Fehler beim aurufen von http://pihole.home).
+
+**Symptom:**
+
+Beim Aufrufen von `http://pihole.home` erscheint die Fehlermeldung: **403 Forbidden** oder die Weiterleitung auf 
+
+`http://pihole.home/admin `
+
+funktioniert trotz entsprechender Konfiguration im Nginx Proxy Manager nicht.
+
+**Ursache:**
+
+Pi-hole benötigt den konfigurierten Hostnamen für die korrekte Verarbeitung der Weboberfläche.
+
+Ist `webserver.domain` nicht gesetzt, kann die Weiterleitung zum Admin-Dashboard (`/admin`) über einen Reverse Proxy fehlschlagen.
+
+**Fix:**
+
+In der Pi-Hole Weboberfläche:
+
+1. Oben rechts von **Basic** auf **Expert** umschalten.
+2. **All settings** öffnen unter Settings - Menü links
+3. Webserver and API auswählen.
+4. Den Eintrag **webserver.domain** auf den gewünschten Hostnamen setzen: `pihole.home`
+5. Änderungen speichern.
+
+**Hinweis:** 
+
+Der bisherige Workaround über NPM Custom Location funktionierte nicht zuverlässig nach Updates oder Container-Neustarts. Diese Lösung ist stabiler da sie direkt in Pi-hole konfiguriert wird.
+
+
+**Verifikation:**
+
+Browser öffnen:
+`http://pihole.home`
+Erwartung:
+
+-   Automatische Weiterleitung auf `http://pihole.home/admin/`
+-   Pi-hole Dashboard wird ohne 403-Fehler angezeigt.
+
