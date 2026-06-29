@@ -11,11 +11,13 @@ Beschreibung der geplanten Homelab Architektur.
 |-|-|-|-|  
 | Raspberry Pi 5 | Arasaka | vorhanden | Core Services |  
 | Raspberry Pi 5| Trauma Team | geplant | Monitoring |  
-| Raspberry Pi 5| Militech | geplant | Dokumentation / Files |  
-| Raspberry Pi 5| TBD | geplant | Experimente |  
-| OptiPlex Mini-PC | TBD | geplant | Virtualisierung / AI |  
-| PoE Switch | TBD | geplant | Netzwerk |  
-| GeekPi Rack + Touch Display | TBD | geplant | Rack / Dashboard |
+| Raspberry Pi 5| Militech | geplant | Dokumentation & Files |  
+| Raspberry Pi 5| Netrunner | geplant | Experimente & Dev|  
+| OptiPlex Mini-PC | Mikoshi | geplant | Virtualisierung & AI |  
+| PoE Switch | Afterlife | geplant | Netzwerk |  
+| Touch Display | Delamain | geplant | Dashboard |
+| NAS (später) | Crystal Palace  | geplant | Storage |
+
 
 ## 2. Service Verteilung:
 
