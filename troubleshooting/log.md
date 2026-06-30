@@ -699,3 +699,64 @@ Erwartung:
 -   Automatische Weiterleitung auf `http://pihole.home/admin/`
 -   Pi-hole Dashboard wird ohne 403-Fehler angezeigt.
 
+## 2026-06-30 - Bitwarden iOS App kann keine Verbindung zu Vaultwarden herstellen
+
+**Symptom:**
+Die Bitwarden-App auf dem iPhone kann sich nicht mit dem selbst gehosteten Vaultwarden-Server verbinden.
+
+Nach Eingabe des Master-Passworts erscheint die Fehlermeldung:
+```
+Es ist ein Fehler aufgetreten.
+```
+Der Zugriff über den Webbrowser funktioniert hingegen.
+
+**Ursache:**
+Das verwendete selbstsignierte Zertifikat enthielt keinen **Subject Alternative Name (SAN)**.
+
+Moderne TLS-Clients – insbesondere iOS bzw. Apple App Transport Security (ATS) – akzeptieren Zertifikate ohne SAN nicht. Dadurch schlägt die TLS-Verbindung der Bitwarden-App fehl.
+
+**Fix:**
+1. Neues Zertifikat mit SAN erstellen
+```bash
+cd ~/homelab/services/vaultwarden/data
+```
+```bash
+openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+-keyout vaultwarden.key \ 
+-out vaultwarden.crt \ 
+-subj "/CN=vaultwarden.home" \ 
+-addext "subjectAltName=DNS:vaultwarden.home,IP:192.168.2.x"
+```
+
+2. Zertifikat in Nginx Proxy Manager austauschen
+	1. SSL Certificates → Custom Certificate 
+	2. Altes Zertifikat löschen.
+	3. Neues Zertifikat importieren (`.crt` und `.key`).
+	4. Unter: `Proxy Hosts` → `vaultwarden.home` → `Edit` → `SSL`
+	5. Neues Zertifikat auswählen.
+	6. `Force SSL` aktivieren.
+
+3. Zertifikat auf dem iPhone installieren
+	1. `vaultwarden.crt` per AirDrop, iCloud Drive oder E-Mail auf das iPhone übertragen.
+	2. Zertifikat öffnen und installieren.
+	3. Anschließend öffnen: `Einstellungen` →`Allgemein` → `VPN und Geräteverwaltung` → `Konfigurationsprofil` → Installation abschließen.
+	4. Danach: `Einstellungen` →`Allgemein` → `Info` → `Zertifikatsvertrauenseinstellungen` → `Volles Vertrauen für Root-Zertifikate` für das installierte Zertifikat aktivieren.
+
+**Hinweise:**
+-   Der Proxy Host im Nginx Proxy Manager bleibt weiterhin auf **HTTP** konfiguriert.
+-   HTTPS wird ausschließlich zwischen Client (Browser bzw. Bitwarden-App) und Nginx Proxy Manager verwendet.
+-   Das selbstsignierte Zertifikat muss auf jedem iOS-Gerät einmalig installiert und als vertrauenswürdig aktiviert werden.
+
+**Verifikation:**
+
+1. Server:
+-   Browser öffnet `https://vaultwarden.home`
+-   Keine Meldung bezüglich eines fehlenden Secure Contexts
+-   Vaultwarden Login funktioniert
+-   Force SSL ist aktiviert
+
+2. iPhone:
+-   Zertifikat ist installiert und als vertrauenswürdig markiert.
+-   Login über die Bitwarden-App funktioniert.
+-   Tresore werden erfolgreich synchronisiert.
+	
