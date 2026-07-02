@@ -33,6 +33,7 @@ Uptime Kuma ist ein selbstgehostetes Monitoring-System zur Überwachung von Dien
 | Internet / WAN | Externe Erreichbarkeit |
 | Wiki.JS | Dokumentation |
 | vaultwarden | passwort manager |
+| syncthing | Datei-Synchronisation |
 
 ## 2. Architektur
 **Zweck**
@@ -44,7 +45,8 @@ Uptime Kuma überwacht:
 - Nginx Proxy Manager (HTTP Check)
 - Wiki.JS (HTTP Check)
 - externe Dienste (Internet Reachability
-
+- vaultwarden (HTTP Check)
+- syncthing (HTTP Check)
 
 ## 3. Netzwerk & Ports
 

@@ -16,6 +16,7 @@ rsync -av --ignore-errors ~/homelab/services/uptime-kuma/data/ $BACKUP_DIR/uptim
 rsync -av --ignore-errors ~/homelab/services/nginx-proxy-manager/data/ $BACKUP_DIR/npm-data/
 rsync -av --ignore-errors ~/homelab/services/wikijs/data/ $BACKUP_DIR/wikijs-data/
 rsync -av --ignore-errors ~/homelab/services/vaultwarden/data/ $BACKUP_DIR/vaultwarden-data/
+rsync -av --ignore-errors ~/homelab/services/syncthing/data/ $BACKUP_DIR/syncthing-data/
 
 echo "Backup fertig: $BACKUP_DIR"
 

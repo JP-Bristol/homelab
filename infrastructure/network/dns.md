@@ -60,6 +60,7 @@ DNS wird über DHCP bzw. manuelle Konfiguration verteilt.
 | npm.home | 192.168.2.x |
 | wiki.home | 192.168.2.x |
 | vaultwarden.home | 192.168.2.x |
+| syncthing.home | 192.168.2.x |
 
 **Hinweis:** 
 Die Hostnamen sind als Local DNS Records in Pi-hole hinterlegt.
@@ -106,7 +107,7 @@ Im Browser öffnen:
 `http://npm.home`
 `http://wiki.home`
 `http://vaultwarden.home`
-
+`http://syncthing.home`
 Erwartung:
 
 - Alle Hostnamen werden erfolgreich aufgelöst.

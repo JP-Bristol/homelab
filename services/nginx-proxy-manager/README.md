@@ -29,6 +29,7 @@ Nginx Proxy Manager (NPM) ist ein Reverse Proxy mit Weboberfläche zur zentralen
 | npm.home| 192.168.2.x |   81 | 
 | wiki.home| 192.168.2.x |   3000 |
 | vaultwarden.home | 192.168.2.x | 11001 | 
+| syncthing.home | 192.168.2.x | 8384 |
 
 ## 2. Architektur
 **Zweck**

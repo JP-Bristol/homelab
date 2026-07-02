@@ -26,6 +26,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 | Nginx Proxy Manager | 81 |✅ läuft | Reverse Proxy |
 | Wiki.js | 3000 |✅ läuft | Dokumentation & Wissensmanagement |
 | Vaultwarden | 11001 | ✅ läuft | Passwortmanager |
+| Syncthing | 8384 | ✅ läuft | Datei-Synchronisation |
 
 ##  Infrastruktur Stack
 -   Docker
@@ -36,7 +37,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   Wiki.js
 -   Vaultwarden
 -   Security Hardening (ufw, fail2ban)
-
+-   Syncthing 
 
 ## Status
 -   Woche 1 - 4: abgeschlossen 
@@ -52,11 +53,11 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Vaultwarden (Passwortmanager)
 - Security Hardening (ufw, fail2ban) 
 - NVMe SSD Migration
+- Lokale DNS-Einträge
 
 ## Geplant
 
 **Kurzfristig**
-- Lokale DNS-Einträge
 - Zabbix (Monitoring)
 - Python - Grundlagen + Homelab-Scripts
 - Security Script (ufw-setup.sh)
@@ -78,6 +79,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   `services/nginx-proxy-manager/README.md`
 -   `services/wikijs/README.md`
 -   `services/vaultwarden/README.md`
+-   `services/syncthing/README.md`
 -   `runbooks/first-boot.md`
 -   `runbooks/backup-restore.md`
 -   `runbooks/ssd-migration.md`
@@ -97,6 +99,7 @@ homelab/
 │   └── nginx-proxy-manager/
 │   └── wikijs/
 │   └── vaultwarden/
+│   └── syncthing/
 ├── runbooks/
 │   ├── first-boot.md
 │   └── backup-restore.md
