@@ -40,8 +40,8 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   Syncthing 
 
 ## Status
--   Woche 1 - 4: abgeschlossen 
--   Nächste Schritte: Lokale DNS-Einträge, Zabbix, VPN
+-   Woche 1 - 6: abgeschlossen 
+-   Nächste Schritte: Python Grundlagen, Zabbix, Repo-Aufräum-Tag, VPN
 
 ## Aktuell aktiv
 
@@ -54,10 +54,15 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Security Hardening (ufw, fail2ban) 
 - NVMe SSD Migration
 - Lokale DNS-Einträge
+- Syncthing (Datei-Synchronisation)
+- Obsidian (Notizen via Syncthing) 
 
 ## Geplant
 
 **Kurzfristig**
+- Repo-Aufräum-Tag
+- Syncthing iPhone einrichten
+- Automatisierungs-Script (DNS + NPM + Uptime Kuma)
 - Zabbix (Monitoring)
 - Python - Grundlagen + Homelab-Scripts
 - Security Script (ufw-setup.sh)
@@ -69,6 +74,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - VPN
 
 **Langfristig**
+- Touch Dashboard
 - Self-hosted KI-Workspace
 - Nextcloud
 - GPU für lokale KI
