@@ -1,0 +1,13 @@
+services:
+  syncthing:
+    image: syncthing/syncthing:latest
+    container_name: syncthing
+    hostname: arasaka
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Berlin
+    volumes:
+      - ./data:/var/syncthing
+    network_mode: host
+    restart: unless-stopped
