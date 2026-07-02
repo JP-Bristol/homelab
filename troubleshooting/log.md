@@ -760,3 +760,98 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 -   Login über die Bitwarden-App funktioniert.
 -   Tresore werden erfolgreich synchronisiert.
 	
+## 2026-07-02 - Syncthing: Ordner wird nicht synchronisiert wegen Docker Volume Mapping
+
+**Symptom:**
+
+Der Obsidian-Ordner wird nicht synchronisiert.
+
+In der Syncthing Web UI wird kein Fehler angezeigt. Der Ordnerstatus steht auf:
+
+```
+Up to Date
+```
+
+Trotzdem erscheinen die erwarteten Dateien nicht auf den anderen Geräten.
+
+**Ursache:**
+
+Der Obsidian-Ordner wurde auf dem Raspberry Pi außerhalb des in den Container eingebundenen Volume-Bereichs angelegt.
+
+Dadurch konnte der Syncthing-Container den Ordner nicht sehen.
+
+Wichtig:
+
+Der **Folder Path** in Syncthing muss immer aus Sicht des Containers angegeben werden, nicht aus Sicht des Hosts.
+
+**Fix:**
+
+**Fix 1 (empfohlen) — Folder Path anpassen:**
+In der Syncthing Web UI den Folder Path direkt auf den Container-Pfad setzen:
+```
+/var/syncthing/obsidian
+```
+Grund: Kein Neustart nötig — Änderung wird sofort übernommen.
+
+**Fix 2 (alternativ) — Eigenes Volume hinzufügen:**
+
+Eigenes Volume für den Obsidian-Ordner in der `docker-compose.yml` hinzufügen:
+
+```
+volumes:
+  - ./data:/var/syncthing
+  - ~/homelab/data/obsidian:/var/syncthing/obsidian
+```
+
+Danach Container neu starten:
+
+```
+docker compose down
+docker compose up -d
+```
+
+In der Syncthing Web UI den Folder Path setzen auf:
+
+```
+/var/syncthing/obsidian
+```
+
+**Hinweis:**
+
+Bei zusätzlichen Volume-Mappings muss das Backup-Konzept angepasst werden.
+
+Der Host-Pfad:
+
+```
+~/homelab/data/obsidian/
+```
+
+muss separat gesichert werden, falls er nicht im normalen Syncthing-Backup enthalten ist.
+
+
+**Verifikation:**
+
+1.  Testdatei im synchronisierten Host-Ordner erstellen:
+
+```
+touch ~/homelab/data/obsidian/test.txt
+```
+
+2.  Syncthing Web UI beobachten.
+
+Erwartung:
+
+-   Ordnerstatus wechselt kurz auf **Syncing**
+-   Anschließend wieder auf **Up to Date**
+
+3.  Auf dem gekoppelten Gerät prüfen.
+
+Erwartung:
+
+-   `test.txt` erscheint im synchronisierten Ordner.
+
+4.  Testdatei wieder löschen.
+
+Erwartung:
+
+-   Die Löschung wird ebenfalls auf das gekoppelte Gerät synchronisiert.
