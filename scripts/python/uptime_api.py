@@ -40,7 +40,7 @@ def get_heartbeats(ip):
         return None
 
 
-def print_status(monitors_data, heartbeat_data):
+def print_status(monitors_data, heartbeat_data, count_up, count_down):
     """Gibt den Status aller Monitore formatiert aus."""
 
     # Header
@@ -57,6 +57,7 @@ def print_status(monitors_data, heartbeat_data):
             # Letzten Heartbeat nehmen
             latest = beats[-1]
             
+            
             # Status bestimmen
             status = "✅ UP" if latest['status'] == 1 else "❌ DOWN"
             name = monitors.get(int(monitor_id), f"Monitor {monitor_id}")
@@ -69,11 +70,27 @@ def print_status(monitors_data, heartbeat_data):
             print(f"  {status} {name} | Uptime: {uptime_pct}% | Letzter Check: {time}")
 
     # Footer
-
+    
     print("=" * 50)
+    print(f"  📊 Zusammenfassung: {count_up} UP | {count_down} Down")
     print(f"  ✅ Alle {len(heartbeat_data['heartbeatList'])} Services geprüft")
     print("=" * 50)
+    
 
+def count_status(heartbeat_data):
+    """Zählt UP und DOWN Services."""
+    count_up = 0
+    count_down = 0
+    for beats in heartbeat_data['heartbeatList'].values():
+        if beats:
+            # Letzer Heartbeat nehmen
+            latest = beats[-1]
+            if latest['status'] == 1:
+                count_up +=1
+            else:
+                count_down +=1
+
+    return count_up, count_down
 
 def main():
     """Hauptfunktion — koordiniert alle anderen Funktionen."""
@@ -86,8 +103,10 @@ def main():
     
     if heartbeat_data is None:
         exit(1)
-    
-    print_status(monitors_data, heartbeat_data)
+
+
+    count_up, count_down = count_status(heartbeat_data)
+    print_status(monitors_data, heartbeat_data, count_up, count_down)
 
 if __name__ == "__main__":
     main()
