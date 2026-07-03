@@ -4,3 +4,4 @@
 services/pihole/data/
 services/*/data/
 logs/
+scripts/python/.env
