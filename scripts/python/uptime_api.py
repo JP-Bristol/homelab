@@ -42,6 +42,12 @@ def get_heartbeats(ip):
 
 def print_status(monitors_data, heartbeat_data):
     """Gibt den Status aller Monitore formatiert aus."""
+
+    # Header
+    print("=" * 50)
+    print(f"  🏠 Homelab Status Check")
+    print(f"  📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    print("=" * 50)
     
     # Monitor-ID zu Name Mapping erstellen
     monitors = {m['id']: m['name'] for m in monitors_data['publicGroupList'][0]['monitorList']}
@@ -61,6 +67,12 @@ def print_status(monitors_data, heartbeat_data):
             uptime_pct = round(uptime * 100, 2)
             
             print(f"  {status} {name} | Uptime: {uptime_pct}% | Letzter Check: {time}")
+
+    # Footer
+
+    print("=" * 50)
+    print(f"  ✅ Alle {len(heartbeat_data['heartbeatList'])} Services geprüft")
+    print("=" * 50)
 
 
 def main():
