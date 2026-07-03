@@ -6,16 +6,16 @@ import requests
 load_dotenv()
 ip = os.getenv("HOMELAB_IP")
 
-# Monitore mit Namen laden
-#url_status = f"http://{ip}:3001/api/status-page/homelab"
-#monitors_data = requests.get(url_status).json()
-#monitors = {m['id']: m['name'] for m in monitors_data['publicGroupList'][0]['monitorList']}
 
 try:
     url_status = f"http://{ip}:3001/api/status-page/homelab"
     response = requests.get(url_status, timeout=5)
     response.raise_for_status()
     monitors_data = response.json()
+    
+    url_heartbeat = f"http://{ip}:3001/api/status-page/heartbeat/homelab"
+    heartbeat_data = requests.get(url_heartbeat, timeout=5).json()
+    
 except requests.exceptions.ConnectionError:
     print("❌ Uptime Kuma nicht erreichbar!")
     exit(1)
@@ -24,10 +24,6 @@ except requests.exceptions.Timeout:
     exit(1)
 
 monitors = {m['id']: m['name'] for m in monitors_data['publicGroupList'][0]['monitorList']}
-
-# Heartbeats laden
-url_heartbeat = f"http://{ip}:3001/api/status-page/heartbeat/homelab"
-heartbeat_data = requests.get(url_heartbeat).json()
 
 for monitor_id, beats in heartbeat_data['heartbeatList'].items():
     if beats:
