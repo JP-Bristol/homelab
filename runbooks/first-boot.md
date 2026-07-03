@@ -179,11 +179,86 @@ Das offizielle Installationsskript installiert:
 
 Eine separate Docker-Compose-Installation ist nicht erforderlich.
 
+### 1.6 Python & pip einrichten
 
-### 1.6. SSH-KEy einrichten (empfohlen)
+#### 1.6.1 Ziel
+
+Python als Laufzeitumgebung für Automatisierungs- und Wartungsskripte bereitstellen
+
+#### 1.6.2 Installation
+
+```
+sudo apt install -y python3 python3-pip
+```
+#### 1.6.3 Installation verifizieren
+
+```
+python3 --version
+pip3 --version
+```
+
+Erwartung:
+
+-   Python ist installiert.
+-   `pip3` ist verfügbar.
+
+#### 1.6.4 Python-Pakete installieren
+
+Für die Homelab-Skripte wird aktuell folgendes Paket benötigt:
+
+```
+pip3 install python-dotenv --break-system-packages
+```
+#### 1.6.5 Projektverzeichnis
+
+Die Python-Skripte werden automatisch mit dem Homelab-Repository bereitgestellt.
+
+Pfad:
+
+```
+~/homelab/scripts/python/
+```
+#### 1.6.6 Konfiguration
+
+In das Projektverzeichnis wechseln:
+
+```
+cd ~/homelab/scripts/python/
+```
+
+Beispielkonfiguration übernehmen:
+
+```
+cp .env.example .env
+```
+
+Konfiguration bearbeiten:
+
+```
+nano .env
+```
+
+Benötigte Werte (z. B. `HOMELAB_IP`) an die eigene Umgebung anpassen.
+
+#### 1.6.7 Python-Umgebung verifizieren
+
+Prüfen, ob das installierte Paket korrekt geladen werden kann:
+
+```
+python3 -c "from dotenv import load_dotenv; print('dotenv OK')"
+```
+
+Erwartung:
+
+```
+dotenv OK
+```
+
+
+### 1.7. SSH-Key einrichten (empfohlen)
 Ziel ist eine passwortlose und sichere Anmeldung per SSH-Key.
 
-#### 1.6.1 Key auf dem lokalen Rechner erstellen (Bsp. Windows / PowerShell)
+#### 1.7.1 Key auf dem lokalen Rechner erstellen (Bsp. Windows / PowerShell)
 In PowerShell
 ```bash
 ssh-keygen -t ed25519 -C "homelab"
@@ -192,14 +267,14 @@ ssh-keygen -t ed25519 -C "homelab"
 - Speicherort bestätigen (Standard: C:\Users\<User>\.ssh\id_ed25519)
 - Optional: Passphrase setzen (empfohlen)
 
-#### 1.6.2 Public Key anzeigen und kopieren
+#### 1.7.2 Public Key anzeigen und kopieren
 In PowerShell
 ```bash
 cat $env:USERPROFILE\.ssh\id_ed25519.pub
 ```
 Den kompletten Output kopieren (beginnt mit ssh-ed25519)
 
-#### 1.6.3 Key auf dem Raspberry Pi hinterlegen
+#### 1.7.3 Key auf dem Raspberry Pi hinterlegen
 Per SSH auf den Pi einloggen:
 ```bash
 ssh jp@<ip>
@@ -217,7 +292,7 @@ nano ~/.ssh/authorized_keys
 ```
 Den kopierten Public Key dort einfügen und speichern
 
-#### 1.6.4 Berechtigungen setzen (wichtig!)
+#### 1.7.4 Berechtigungen setzen (wichtig!)
 ```bash
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/authorized_keys
@@ -226,7 +301,7 @@ Bedeutung:
 - 700 → nur du darfst das Verzeichnis nutzen
 - 600 → nur du darfst die Datei lesen/schreiben
 
-#### 1.6.5 Verbindung testen
+#### 1.7.5 Verbindung testen
 Zurück auf dem lokalen Rechner:
 ```bash
 ssh jp@<ip>
@@ -234,15 +309,15 @@ ssh jp@<ip>
 
 ---
 
-### 1.7. Passwort-Login deaktivieren (SSH Hardening)
+### 1.8. Passwort-Login deaktivieren (SSH Hardening)
 Ziel: Nach erfolgreicher Einrichtung von SSH-Keys wird der Passwort-Login deaktiviert, um den Server gegen Brute-Force-Angriffe abzusichern.
 
-#### 1.7.1 SSH-Konfiguration öffnen
+#### 1.8.1 SSH-Konfiguration öffnen
 ```bash
 sudo nano /etc/ssh/sshd_config
 ```
 
-#### 1.7.2 Einstellung anpassen
+#### 1.8.2 Einstellung anpassen
 Im Editor folgende Parameter suchen und setzen:
 ```bash
 PasswordAuthentication no
@@ -252,13 +327,13 @@ Wichtig:
 - Falls ein # davor steht, muss es entfernt werden
 - Der Wert muss explizit auf no gesetzt werden
 
-#### 1.7.3 SSH-Dienst neu starten
+#### 1.8.3 SSH-Dienst neu starten
 Damit die Änderungen aktiv werden:
 ```bash
 sudo systemctl restart ssh
 ```
 
-#### 1.7.4 Test vor Logout (wichtig!)
+#### 1.8.4 Test vor Logout (wichtig!)
 Bevor die aktuelle Sitzung geschlossen wird:
 - Neue SSH-Verbindung in separatem Terminal testen:
 ```bash
@@ -268,10 +343,10 @@ Hinweis
 Nur wenn der Login per Key funktioniert, sollte die alte Session beendet werden.
 
 ---
-### 1.8. GitHub SSH-Key einrichten
+### 1.9. GitHub SSH-Key einrichten
 Ziel: Einrichtung eines SSH-Keys für GitHub, um Repositories sicher und ohne Passwortabfrage nutzen zu können.
 
-#### 1.8.1 SSH-Key erstellen
+#### 1.9.1 SSH-Key erstellen
 Auf dem Raspberry Pi (oder lokalem Rechner):
 ```bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
@@ -282,36 +357,36 @@ Hinweis:
 - -C = Kommentar (meist E-Mail zur Zuordnung)
 - Speicherort kann standardmäßig übernommen werden: ~/.ssh/id_ed25519
 
-#### 1.8.2 Public Key anzeigen  
+#### 1.9.2 Public Key anzeigen  
 ```bash
 cat ~/.ssh/id_ed25519.pub
 ```
 DEn kompletten Putput kopieren (beginnt mit ssh-ed25519)
 
-#### 1.8.3 Key in GitHub hinterlegen
+#### 1.9.3 Key in GitHub hinterlegen
 In Github: 
 - Settings → SSH and GPG keys → New SSH Key
 - Titel vergeben (z. B. homelab-pi)
 - Public Key einfügen und speichern
 
-#### 1.8.4 Alten Key entfernen (falls vorhanden)
+#### 1.9.4 Alten Key entfernen (falls vorhanden)
 Falls bereits ein alter Key existiert:
 - In GitHub unter SSH Keys
 - alten Key löschen
 
 ---
-### 1.9. Git-Repository einrichten
+### 1.10. Git-Repository einrichten
 **Ziel**
 Ein lokales Repository wird erstellt und mit GitHub verbunden, um Konfigurationen und Skripte versioniert zu verwalten (Grundlage für „Homelab as Code“).
 
-#### 1.9.1 Projektverzeichnis erstellen
+#### 1.10..1 Projektverzeichnis erstellen
 ```Bash
 mkdir  -p ~/homelab  
 cd ~/homelab
 ```
 Erstellt ein zentrales Verzeichnis für alle Homelab-Konfigurationen und wechselt in dieses Verzeichnis.
 
-#### 1.9.2 Git-Repository klonen
+#### 1.10..2 Git-Repository klonen
 ```Bash
 git clone git@github.com:DEIN-USERNAME/homelab.git .
 ```
@@ -322,7 +397,7 @@ Das macht automatisch:
 - Einrichten des `.git`-Verzeichnisses
 - Konfiguration des Remote (`origin`)
 
-#### 1.9.3 Verbindung prüfen
+#### 1.10..3 Verbindung prüfen
 ```Bash
 git remote -v
 ```
@@ -339,11 +414,11 @@ Dieses Repository ist die Grundlage für:
 -   spätere Automatisierung (z. B. mit Ansible oder Scripts)
 
 ---
-### 1.10. Git konfigurieren
+### 1.11. Git konfigurieren
 **Ziel**
 Git wird auf dem Raspberry Pi einmalig konfiguriert, damit Commits korrekt zugeordnet werden können.
 
-#### 1.10.1  Benutzerinformationen setzen
+#### 1.11.1  Benutzerinformationen setzen
 
 ```Bash
 git config --global user.name "Dein Name"  
@@ -358,7 +433,7 @@ git branch -M main
 git push -u origin main
 ```
 
-#### 1.10.2 Konfiguration prüfen
+#### 1.11.2 Konfiguration prüfen
 ```Bash
 git config --list
 ```
@@ -372,11 +447,11 @@ Diese Konfiguration muss nur einmal pro System durchgeführt werden.
 Sie gilt global für alle Git-Repositories auf diesem Gerät (`--global`).
 
 ---
-### 1.11. Statische IP-Adresse per DHCP-Reservierung
+### 1.12. Statische IP-Adresse per DHCP-Reservierung
 **Ziel**
 Der Raspberry Pi erhält vom Router immer dieselbe IP-Adresse. Dadurch bleiben SSH-Zugriffe, Automatisierungen und Dienste dauerhaft unter derselben Adresse erreichbar.
 
-#### 1.11.1 MAC-Adresse des Raspberry Pi ermitteln
+#### 1.12.1 MAC-Adresse des Raspberry Pi ermitteln
 Auf dem Raspberry Pi
 ```Bash
 ip addr
@@ -389,12 +464,12 @@ link/ether dc:a6:32:xx:xx:xx
 ```
 Die Adresse hinter `link/ether` notieren.
 
-#### 1.11.2 Router-Oberfläche öffnen
+#### 1.12.2 Router-Oberfläche öffnen
 Im Browser die Verwaltungsoberfläche des Routers aufrufen, z. B.:
 ```Bash
 http://192.168.2.x
 ```
-#### 1.11.3 DHCP-Reservierung anlegen
+#### 1.12.3 DHCP-Reservierung anlegen
 **Router**
 Menüpfad (allgemein):
 `Router-Oberfläche öffnen → DHCP-Einstellungen → Statische IP / DHCP-Reservierung → MAC-Adresse + IP eintragen`
@@ -404,7 +479,7 @@ Dort:
 2. Gewünschte IP-Adresse festlegen (z. B. `192.168.2.x`)
 3. Konfiguration speichern
 
-#### 1.11.4 Funktion prüfen
+#### 1.12.4 Funktion prüfen
 Neue IP-Adresse testen:
 ```Bash
 ping  192.168.2.x
@@ -427,7 +502,7 @@ Raspberry Pi: 192.168.1.10
 PC: 192.168.1.20
 ```
 
-### 1.12 Optional: Migration auf NVMe SSD
+### 1.13 Optional: Migration auf NVMe SSD
 
 Falls eine NVMe SSD verbaut ist, kann das System nach dem Basis-Setup auf die SSD migriert werden.
 Empfohlen vor der Einrichtung von Backups und Services.
