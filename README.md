@@ -78,6 +78,7 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Self-hosted KI-Workspace
 - Nextcloud
 - GPU für lokale KI
+- Runbook-Generator Agent (Wiki.js + Claude API + Chroma)
 
 ## Dokumentation
 -   `services/pihole/README.md`
