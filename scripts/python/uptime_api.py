@@ -53,18 +53,19 @@ def get_monitor_summary(monitor, uptime_stats, heartbeats):
 
 def print_status(monitors, uptime, heartbeat):
     """Status aller Monitore formatiert ausgeben."""
-    count_up = sum(1 for m in monitors if m.get('active') == True)
-    count_down = len(monitors) - count_up
+    results = [get_monitor_summary(m, uptime, heartbeat) for m in monitors]
+    count_up = sum(1 for r in results if r['status'] == "✅ UP")
+    count_down = sum(1 for r in results if r['status'] == "❌ DOWN")
     
     print("=" * 135)
     print(f"  🏠 Homelab Status Check")
     print(f"  📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 135)
     
-    for m in monitors:
-        data = get_monitor_summary(m, uptime, heartbeat)
-        print(f"Service: {data['name']:<20} Uptime_24h: {data['uptime_24h']:<20} | Status: {data['status']:<20} | Letzter Check: {data['time']:<20}")
     
+    for r in results:
+        print(f"Service: {r['name']:<20} Uptime_24h: {r['uptime_24h']:<20} | Status: {r['status']:<20} | Letzter Check: {r['time']:<20}")
+
     print("=" * 135)
     print(f"  📊 Zusammenfassung: {count_up} UP | {count_down} DOWN")
     print(f"  ✅ Alle {len(monitors)} Services geprüft")
