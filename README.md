@@ -72,6 +72,8 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Dedizierte Server (Proxmox, Windows Server, KI-Workspace)
 - Zweiter Pi
 - VPN
+- Ticket-Generator (Claude API + Few-Shot Prompting)
+- Ticket-Generator Web GUI (FastAPI + HTML)
 
 **Langfristig**
 - Touch Dashboard
