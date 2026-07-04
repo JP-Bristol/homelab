@@ -855,3 +855,67 @@ Erwartung:
 Erwartung:
 
 -   Die Löschung wird ebenfalls auf das gekoppelte Gerät synchronisiert.
+
+
+## 2026-07-04 - Python: Falsche Statusauswertung mit der Uptime Kuma API
+
+**Symptom:**
+
+Das eigene Python-Skript zeigte einen Service immer als **UP** an, obwohl dieser in Uptime Kuma als **DOWN** markiert war.
+
+Die Statusausgabe des Skripts stimmte nicht mit dem Uptime-Kuma-Dashboard überein.
+
+**Ursache:**
+Für die Statusauswertung wurde zunächst ein ungeeigneter Wert verwendet.
+
+`monitor.active` beschreibt lediglich, ob der Monitor in Uptime Kuma aktiviert ist. Dieser Wert sagt **nicht** aus, ob der überwachte Service aktuell erreichbar ist.
+
+Der tatsächliche Laufzeitstatus wird über den letzten Heartbeat bereitgestellt.
+
+Zusätzlich musste der Heartbeat-Status korrekt als boolescher Wert ausgewertet werden.
+
+**Fix:**
+
+Den Status aus dem letzten Heartbeat lesen und anschließend in einen booleschen Status umwandeln.
+
+```
+beat_status = latest_beat.get("status")
+is_up = beat_status.value == 1
+```
+
+Die Statusanzeige anschließend über `is_up` erzeugen:
+
+```
+"status": "✅ UP" if is_up else "❌ DOWN"
+```
+
+Hinweis:
+Beim Arbeiten mit APIs sollte geprüft werden, welche Bedeutung ein Feld tatsächlich besitzt.
+
+In der Uptime Kuma API gilt:
+
+-   `monitor.active` → Monitor ist aktiviert.
+-   `heartbeat.status` → Tatsächlicher Status des überwachten Services.
+
+Beide Werte dürfen nicht miteinander verwechselt werden.
+
+
+**Verifikation:**
+
+1.  Einen überwachten Service stoppen.
+2.  Warten, bis Uptime Kuma den Status aktualisiert (Standard-Polling-Intervall: 60 Sekunden).
+3.  Python-Skript erneut ausführen.
+
+**Erwartung:**
+
+-   Uptime Kuma zeigt den Service als **❌ DOWN**.
+-   Das Python-Skript zeigt den Service ebenfalls als **❌ DOWN**.
+
+4.  Den Service wieder starten.
+5.  Erneut ca. 60 Sekunden warten.
+6.  Python-Skript erneut ausführen.
+
+**Erwartung:**
+
+-   Uptime Kuma zeigt den Service wieder als **✅ UP**.
+-   Das Python-Skript zeigt den Service ebenfalls als **✅ UP**.
