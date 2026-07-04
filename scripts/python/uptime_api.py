@@ -39,11 +39,15 @@ def get_monitor_summary(monitor, uptime_stats, heartbeats):
     # Letzten Heartbeat holen, Fallback wenn leer
     monitor_beats = heartbeats.get(m_id, [])
     latest_beat = monitor_beats[-1] if monitor_beats else {}
-    
+
+    # Status aus dem Heartbeat holen — nicht aus monitor.active!
+    beat_status = latest_beat.get('status')
+    is_up = beat_status.value == 1
+
     return {
         "name": monitor.get('name', 'Unbekannt'),
         "uptime_24h": stats.get(24, 0) * 100,
-        "status": "✅ UP" if status_code else "❌ DOWN",
+        "status": "✅ UP" if is_up else "❌ DOWN",
         "time": latest_beat.get('time', 'unbekannt')
     }
 
