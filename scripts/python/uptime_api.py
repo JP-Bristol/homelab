@@ -1,114 +1,83 @@
-from dotenv import load_dotenv
+from uptime_kuma_api import UptimeKumaApi
 from datetime import datetime
+from dotenv import load_dotenv
 import os
-import requests
 
 load_dotenv()
-ip = os.getenv("HOMELAB_IP")
 
-
-def get_monitors(ip):
-    """Lädt alle Monitore von der Uptime Kuma Status Page."""
+def get_kuma_api():
+    """Verbindung zu Uptime Kuma aufbauen und einloggen."""
+    ip = os.getenv("HOMELAB_IP")
+    user_kuma = os.getenv("USER_KUMA")
+    password_kuma = os.getenv("PASSWORD_KUMA")
     try:
-        url_status = f"http://{ip}:3001/api/status-page/homelab"
-        response = requests.get(url_status, timeout=5)
-        response.raise_for_status()
-        monitors_data = response.json()
-        return monitors_data
-    except requests.exceptions.ConnectionError:
-        # Uptime Kuma nicht erreichbar
-        print("❌ Uptime Kuma nicht erreichbar!")
-        return None
-    except requests.exceptions.Timeout:
-        # Anfrage hat zu lange gedauert
-        print("❌ Timeout!")
+        api = UptimeKumaApi(f"http://{ip}:3001")
+        api.login(str(user_kuma), str(password_kuma))
+        return api
+    except Exception as e:
+        print(f"❌ Verbindung fehlgeschlagen: {e}")
         return None
 
-def get_heartbeats(ip):
-    """Lädt Heartbeat-Daten für alle Monitore."""
-    try:
-        url_heartbeat = f"http://{ip}:3001/api/status-page/heartbeat/homelab"
-        heartbeat_data = requests.get(url_heartbeat, timeout=5).json()
-        return heartbeat_data
-    except requests.exceptions.ConnectionError:
-        # Uptime Kuma nicht erreichbar
-        print("❌ Uptime Kuma nicht erreichbar!")
-        return None
-    except requests.exceptions.Timeout:
-        # Anfrage hat zu lange gedauert
-        print("❌ Timeout — Uptime Kuma antwortet nicht!")  # ← eine Einrückung weniger
-        return None
+def fetch_monitors(api):
+    """Alle konfigurierten Monitore laden."""
+    return api.get_monitors()
 
+def fetch_uptime_stats(api):
+    """Uptime-Statistiken laden."""
+    return api.uptime()
 
-def print_status(monitors_data, heartbeat_data, count_up, count_down):
-    """Gibt den Status aller Monitore formatiert aus."""
+def fetch_monitors_heartbeats(api):
+    """Letzte Heartbeats aller Monitore laden."""
+    return api.get_heartbeats()
 
-    # Header
-    print("=" * 50)
+def get_monitor_summary(monitor, uptime_stats, heartbeats):
+    """Relevante Daten eines Monitors zusammenfassen."""
+    m_id = monitor.get('id')
+    stats = uptime_stats.get(m_id, {})
+    status_code = monitor.get('active', False)
+    
+    # Letzten Heartbeat holen, Fallback wenn leer
+    monitor_beats = heartbeats.get(m_id, [])
+    latest_beat = monitor_beats[-1] if monitor_beats else {}
+    
+    return {
+        "name": monitor.get('name', 'Unbekannt'),
+        "uptime_24h": stats.get(24, 0) * 100,
+        "status": "✅ UP" if status_code else "❌ DOWN",
+        "time": latest_beat.get('time', 'unbekannt')
+    }
+
+def print_status(monitors, uptime, heartbeat):
+    """Status aller Monitore formatiert ausgeben."""
+    count_up = sum(1 for m in monitors if m.get('active') == True)
+    count_down = len(monitors) - count_up
+    
+    print("=" * 135)
     print(f"  🏠 Homelab Status Check")
     print(f"  📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    print("=" * 50)
+    print("=" * 135)
     
-    # Monitor-ID zu Name Mapping erstellen
-    monitors = {m['id']: m['name'] for m in monitors_data['publicGroupList'][0]['monitorList']}
+    for m in monitors:
+        data = get_monitor_summary(m, uptime, heartbeat)
+        print(f"Service: {data['name']:<20} Uptime_24h: {data['uptime_24h']:<20} | Status: {data['status']:<20} | Letzter Check: {data['time']:<20}")
     
-    for monitor_id, beats in heartbeat_data['heartbeatList'].items():
-        if beats:
-            # Letzten Heartbeat nehmen
-            latest = beats[-1]
-            
-            
-            # Status bestimmen
-            status = "✅ UP" if latest['status'] == 1 else "❌ DOWN"
-            name = monitors.get(int(monitor_id), f"Monitor {monitor_id}")
-            
-            # Zeitstempel und Uptime
-            time = latest.get('time', 'unbekannt')
-            uptime = heartbeat_data['uptimeList'].get(f"{monitor_id}_24", 0)
-            uptime_pct = round(uptime * 100, 2)
-            
-            print(f"  {status} {name} | Uptime: {uptime_pct}% | Letzter Check: {time}")
-
-    # Footer
-    
-    print("=" * 50)
-    print(f"  📊 Zusammenfassung: {count_up} UP | {count_down} Down")
-    print(f"  ✅ Alle {len(heartbeat_data['heartbeatList'])} Services geprüft")
-    print("=" * 50)
-    
-
-def count_status(heartbeat_data):
-    """Zählt UP und DOWN Services."""
-    count_up = 0
-    count_down = 0
-    for beats in heartbeat_data['heartbeatList'].values():
-        if beats:
-            # Letzer Heartbeat nehmen
-            latest = beats[-1]
-            if latest['status'] == 1:
-                count_up +=1
-            else:
-                count_down +=1
-
-    return count_up, count_down
+    print("=" * 135)
+    print(f"  📊 Zusammenfassung: {count_up} UP | {count_down} DOWN")
+    print(f"  ✅ Alle {len(monitors)} Services geprüft")
+    print("=" * 135)
 
 def main():
-    """Hauptfunktion — koordiniert alle anderen Funktionen."""
-    monitors_data = get_monitors(ip)
+    """Hauptfunktion."""
+    api = get_kuma_api()
+    if api is None:
+        exit()
     
-    if monitors_data is None:
-        exit(1)
+    monitors = fetch_monitors(api)
+    uptime = fetch_uptime_stats(api)
+    heartbeats = fetch_monitors_heartbeats(api)
     
-    heartbeat_data = get_heartbeats(ip)
-    
-    if heartbeat_data is None:
-        exit(1)
-
-
-    count_up, count_down = count_status(heartbeat_data)
-    print_status(monitors_data, heartbeat_data, count_up, count_down)
+    print_status(monitors, uptime, heartbeats)
+    api.disconnect()
 
 if __name__ == "__main__":
     main()
-        
-        
