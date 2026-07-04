@@ -67,13 +67,14 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Python - Grundlagen + Homelab-Scripts
 - Security Script (ufw-setup.sh)
 - Wiki befüllen
+- Automatisierungs-Script (DNS + NPM + Uptime Kuma)
 
 **Mittelfristig (mit Hardware)**
 - Dedizierte Server (Proxmox, Windows Server, KI-Workspace)
 - Zweiter Pi
 - VPN
-- Ticket-Generator (Claude API + Few-Shot Prompting)
-- Ticket-Generator Web GUI (FastAPI + HTML)
+- Troublelog-Generator (Claude API + Few-Shot Prompting)
+- Troublelog-Generator Web GUI (FastAPI + HTML)
 
 **Langfristig**
 - Touch Dashboard
