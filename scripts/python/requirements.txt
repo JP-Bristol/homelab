@@ -1,0 +1,2 @@
+python-dotenv
+uptime-kuma-api
