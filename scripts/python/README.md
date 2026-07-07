@@ -127,20 +127,81 @@ BACKUP_PFAD=
 #### 3.2.6 Hinweise
 Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat behandelt und nicht als unbekannte Fehler gewertet.
 
+### 3.2 backup_log.py
+| Feld | Wert |
+| - | - |
+| Sprache | Python |
+| Version | v0.1 |
+| Status | ✅ Aktiv|
+| Kategorie | Backup |
+
+#### 3.2.1 Zweck
+Analysiert das Backup-Log und erkennt Fehler.
+#### 3.2.2 Voraussetzungen
+- Python 3  
+- `.env`  
+- Backup-Log vorhanden 
+
+
+**Abhängigkeiten**
+- python-dotenv
+
+
+#### 3.2.3 Ausführung
+```bash  
+cd ~/homelab/scripts/python  
+python3 backup_log.py
+```
+#### 3.2.4 Benötigte Umgebungsvariablen
+
+```env 
+PFAD= 
+BACKUP_PFAD=
+```
+
+#### 3.2.5 Ausgabe
+- Datum des letzten Backups  
+- Backup erfolgreich / fehlgeschlagen  
+- Gesicherte Services  
+- Bekannte Permission-Fehler  
+- Unbekannte Permission-Fehler  
+- Anzahl Backup-Verzeichnisse
+
+
+#### 3.2.6 Hinweise
+Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat behandelt und nicht als unbekannte Fehler gewertet.
+
 ### 3.3 add_service.py
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | Geplant |  
-| Status |  Geplant |  
+| Version | v0.1.0 |  
+| Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
 #### 3.3.1 Zweck
 Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 
 #### 3.3.2 Geplante Funktionen
-- ufw Port freigeben 
--  Pihole lokalen DNS-Eintrag anlegen 
--  Nginx Proxy Manager Proxy Host erstellen 
--  Uptime Kuma Monitor hinzufügen 
--  Service-Log schreiben (für Runbook Agent)
+- Uptime Kuma Monitor hinzufügen  
+- Pi-hole DNS-Eintrag anlegen  
+- Nginx Proxy Manager Proxy Host erstellen  
+- UFW-Port freigeben  
+- Service-Log schreiben
+
+
+## 4. Changelog
+
+### 4.1 uptime_kuma.py
+### 4.2 backup_log.py
+### 4.3 add_service.py
+
+#### 4.3.1 v0.1.0  
+  
+**Datum:** 2026-07-07  
+  
+- CLI mit `argparse` erstellt  
+- Eingabevalidierung für Service-Name und Port  
+- Simulation der Einrichtungsschritte  
+- Einheitliche Konsolenausgabe  
+- Erste Version veröffentlicht
