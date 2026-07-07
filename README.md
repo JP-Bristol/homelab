@@ -39,9 +39,21 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   Security Hardening (ufw, fail2ban)
 -   Syncthing 
 
-## Status
--   Woche 1 - 6: abgeschlossen 
--   Nächste Schritte: Python Grundlagen, Zabbix, Repo-Aufräum-Tag, VPN
+
+## Projektstatus  
+  
+🟢 Aktiv  
+  
+**Aktuelle Schwerpunkte**  
+  
+- Dokumentation & Runbooks  
+- Python-Automatisierung  
+- Monitoring  
+- Repository-Optimierung  
+  
+**Nächster Meilenstein**  
+  
+- `add_service.py v0.2.0`
 
 ## Aktuell aktiv
 
