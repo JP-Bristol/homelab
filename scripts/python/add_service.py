@@ -1,6 +1,8 @@
+from datetime import datetime
 import argparse
 import sys
 import string
+
 
 
 def parse_arguments():
@@ -50,6 +52,7 @@ def print_status(args):
 
     print("=" * 50)
     print(f"  🏠 Homelab Add Service")
+    print(f"  📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print("=" * 50)
 
     print(f"-Service-Name: {args.service}")
@@ -58,11 +61,11 @@ def print_status(args):
     print(f"✓ Eingaben validiert""\n")
 
     print(f"Geplante Schritte:")
-    print(f" - Uptime Kuma Monitor würde erstellt")
-    print(f" - DNS-Eintrag würde erstellt")
-    print(f" - Proxy Host würde erstellt")
-    print(f" - UFW-Port würde freigegeben")
-    print(f" - Service-Log würde geschriebe""\n")
+    print(f" - Uptime Kuma Monitor hinzufügen")
+    print(f" - Pihole lokalen DNS-Eintrag anlegen")
+    print(f" - Nginx Proxy Manager Proxy Host erstellen")
+    print(f" - ufw Port freigeben")
+    print(f" - Service-Log schreiben""\n")
 
     print(f"v0.1: Simulation beendet.""\n")
     print("=" * 50)
