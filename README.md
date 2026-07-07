@@ -28,16 +28,46 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 | Vaultwarden | 11001 | ✅ läuft | Passwortmanager |
 | Syncthing | 8384 | ✅ läuft | Datei-Synchronisation |
 
-##  Infrastruktur Stack
+## Infrastruktur
+
+Die Infrastruktur basiert auf einer Docker-Umgebung auf einem Raspberry Pi 5 und wird kontinuierlich erweitert. Ziel ist ein möglichst praxisnaher Aufbau mit Fokus auf Betrieb, Dokumentation und Automatisierung.
+
+### Container & Virtualisierung
+
 -   Docker
 -   Docker Compose
--   DNS (Pi-hole)
--   Reverse Proxy
--   Monitoring
+
+### Netzwerk
+
+-   Pi-hole (DNS & lokales Namensmanagement)
+-   Nginx Proxy Manager (Reverse Proxy)
+
+### Monitoring
+
+-   Uptime Kuma
+-   Zukünftig: Zabbix
+
+### Dokumentation & Wissensmanagement
+
 -   Wiki.js
--   Vaultwarden
--   Security Hardening (ufw, fail2ban)
--   Syncthing 
+-   Runbooks
+-   Troubleshooting-Log
+
+### Sicherheit
+
+-   UFW (Firewall)
+-   Fail2ban
+
+### Daten & Synchronisation
+
+-   Syncthing
+-   Backup-System (Cron + USB/NVMe)
+
+### Automatisierung
+
+-   Python-Skripte
+-   Bash-Skripte
+-   Runbook Agent (in Planung)
 
 
 ## Projektstatus  
@@ -55,19 +85,6 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
   
 - `add_service.py v0.2.0`
 
-## Aktuell aktiv
-
-- Pi-hole (DNS & Adblocker)
-- Uptime Kuma (Monitoring)
-- Nginx Proxy Manager (Reverse Proxy)
-- Backup-System (USB + Cron)
-- Wiki / Dokumentation
-- Vaultwarden (Passwortmanager)
-- Security Hardening (ufw, fail2ban) 
-- NVMe SSD Migration
-- Lokale DNS-Einträge
-- Syncthing (Datei-Synchronisation)
-- Obsidian (Notizen via Syncthing) 
 
 ## 🚀 Roadmap
 
