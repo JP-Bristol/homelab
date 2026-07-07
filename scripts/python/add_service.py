@@ -4,6 +4,9 @@ import string
 
 
 def parse_arguments():
+
+    """Liest und verarbeitet die Kommandozeilenargumente."""
+
     try:
         parser = argparse.ArgumentParser(description="Automatisiert das Einrichten neuer Homelab-Services.")
         # Argument für Servicename
@@ -29,6 +32,9 @@ def parse_arguments():
         return None
 
 def is_valid_input(args):
+
+    """Prüft Service-Name und Port auf gültige Eingaben."""
+
     allowed = set(string.ascii_letters + string.digits + "_-")
     if all(char in allowed for char in args.service) == False:
         return None
@@ -39,6 +45,9 @@ def is_valid_input(args):
 
 
 def print_status(args):
+
+    """Gibt eine Zusammenfassung der geplanten Einrichtungsschritte aus."""
+
     print("=" * 50)
     print(f"  🏠 Homelab Add Service")
     print("=" * 50)
@@ -62,6 +71,9 @@ def print_status(args):
  
 
 def main():
+
+    """Steuert den Programmablauf."""
+    
     args = parse_arguments()
     
     if args is None:
