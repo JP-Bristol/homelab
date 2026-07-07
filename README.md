@@ -103,29 +103,33 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 ``` 
 homelab/
 ├── README.md
-├── services/
-│   ├── pihole/
-│   ├── uptime-kuma/
-│   └── nginx-proxy-manager/
-│   └── wikijs/
-│   └── vaultwarden/
-│   └── syncthing/
-├── runbooks/
-│   ├── first-boot.md
-│   └── backup-restore.md
-├── scripts/
-│   └── backup.sh
 ├── hardware/
 │   └── inventory.md
-│   └── ssd-migration.md
 ├── infrastructure/
-│   └── network/
-│       ├── dns.md
-│       └── network-overview.md
+│   ├── network/
 │   ├── security/
-│       ├── firewall.md
-│       └── hardening.md
+│   ├── maintenance.md
 │   └── planning.md
+├── runbooks/
+│   ├── backup-restore.md
+│   ├── first-boot.md
+│   └── ssd-migration.md
+├── scripts/
+│   ├── backup.sh
+│   └── python/
+│       ├── README.md
+│       ├── add_service.py
+│       ├── backup_log.py
+│       ├── requirements.txt
+│       └── uptime_api.py
+├── services/
+│   ├── nginx-proxy-manager/
+│   ├── pihole/
+│   ├── syncthing/
+│   ├── uptime-kuma/
+│   ├── vaultwarden/
+│   └── wikijs/
 └── troubleshooting/
     └── log.md
+
 ```
