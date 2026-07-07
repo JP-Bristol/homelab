@@ -57,31 +57,48 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 - Syncthing (Datei-Synchronisation)
 - Obsidian (Notizen via Syncthing) 
 
-## Geplant
+## 🚀 Roadmap
 
-**Kurzfristig**
-- Repo-Aufräum-Tag
-- Syncthing iPhone einrichten
-- Automatisierungs-Script (DNS + NPM + Uptime Kuma)
-- Zabbix (Monitoring)
-- Python - Grundlagen + Homelab-Scripts
-- Security Script (ufw-setup.sh)
-- Wiki befüllen
-- Automatisierungs-Script (DNS + NPM + Uptime Kuma)
+### Aktueller Fokus
 
-**Mittelfristig (mit Hardware)**
-- Dedizierte Server (Proxmox, Windows Server, KI-Workspace)
-- Zweiter Pi
-- VPN
-- Troublelog-Generator (Claude API + Few-Shot Prompting)
-- Troublelog-Generator Web GUI (FastAPI + HTML)
+-   Repository aufräumen und Dokumentation vereinheitlichen
+-   Python-Automatisierung für das Homelab weiterentwickeln
+-   `add_service.py` bis zur produktiven Version ausbauen
+-   Wiki.js als zentrale Wissensbasis erweitern
 
-**Langfristig**
-- Touch Dashboard
-- Self-hosted KI-Workspace
-- Nextcloud
-- GPU für lokale KI
-- Runbook-Generator Agent (Wiki.js + Claude API + Chroma)
+----------
+
+### Kurzfristig
+
+-   `add_service.py`
+    -   v0.2 – Uptime Kuma API (Monitor automatisch anlegen)
+    -   v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
+    -   v0.4 – Nginx Proxy Manager Proxy Host erstellen
+    -   v0.5 – UFW-Port automatisch freigeben
+    -   v1.0 – Vollständige Service-Automatisierung
+-   Zabbix in das Monitoring integrieren
+-   `ufw-setup.sh` entwickeln
+-   Syncthing auf dem iPhone einrichten
+
+----------
+
+### Mittelfristig
+
+-   VPN einrichten
+-   Zweiten Raspberry Pi integrieren
+-   Dedizierte Server (Proxmox, Windows Server, KI-Workspace)
+-   Troublelog-Generator mit Claude API entwickeln
+-   Weboberfläche für den Troublelog-Generator (FastAPI)
+
+----------
+
+### Langfristig
+
+-   Touch Dashboard für den Homelab-Betrieb
+-   Self-hosted KI-Workspace
+-   Nextcloud
+-   Lokale GPU für KI-Anwendungen
+-   Runbook Agent zur automatischen Erstellung und Pflege von Betriebsdokumentation
 
 ## Dokumentation
 -   `services/pihole/README.md`
