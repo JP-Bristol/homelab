@@ -9,25 +9,6 @@ Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, N
 -   Infrastruktur wie in Production-Systemen strukturieren
 -   Automatisierung & Backups implementieren
 
-## Hardware 
-| Gerät | Details | Seit |
-|  --------  |  -------  | --------  | 
-| Raspberry Pi 5 | 8 GB RAM |2026-05 |
-| Storage | SD-Karte | 2026-05 |
-| USB-Stick | 32 GB Backup-Speicher | 2026-06 |
-| NVMe SSD | Verbatim Vi3000 256GB | 2026-06 |
-
-## Services
-
-| Service | Port | Status | Beschreibung |
-|  --------  |  -------  | --------  |  -------  |
-| Pi-hole | 53 / 80 |✅ läuft | DNS & Adblocker |
-| Uptime Kuma | 3001 |✅ läuft | Monitoring & Alerts |
-| Nginx Proxy Manager | 81 |✅ läuft | Reverse Proxy |
-| Wiki.js | 3000 |✅ läuft | Dokumentation & Wissensmanagement |
-| Vaultwarden | 11001 | ✅ läuft | Passwortmanager |
-| Syncthing | 8384 | ✅ läuft | Datei-Synchronisation |
-
 ## Infrastruktur
 
 Die Infrastruktur basiert auf einer Docker-Umgebung auf einem Raspberry Pi 5 und wird kontinuierlich erweitert. Ziel ist ein möglichst praxisnaher Aufbau mit Fokus auf Betrieb, Dokumentation und Automatisierung.
@@ -68,6 +49,58 @@ Die Infrastruktur basiert auf einer Docker-Umgebung auf einem Raspberry Pi 5 und
 -   Python-Skripte
 -   Bash-Skripte
 -   Runbook Agent (in Planung)
+
+## Dokumentation  
+  
+Die Infrastruktur wird vollständig dokumentiert und über Runbooks, Service-Dokumentationen und Troubleshooting-Protokolle gepflegt.  
+  
+### Services  
+- Pi-hole  
+- Uptime Kuma  
+- Nginx Proxy Manager  
+- Wiki.js  
+- Vaultwarden  
+- Syncthing  
+  
+### Runbooks  
+- First Boot  
+- Backup & Restore  
+- SSD Migration  
+  
+### Infrastruktur  
+- DNS  
+- Netzwerkübersicht  
+- Firewall  
+- Security Hardening  
+- Infrastrukturplanung  
+  
+### Troubleshooting  
+- Zentrales Fehler- und Lösungsprotokoll  
+  
+### Automatisierung  
+- Python-Skripte inkl. Changelog und Dokumentation
+
+
+## Services
+
+| Service | Kategorie | Port | Status | Dokumentation |  
+|---|---|---:|---|---|  
+| Pi-hole | DNS | 53 / 80 | ✅ Aktiv | `services/pihole/` |  
+| Uptime Kuma | Monitoring | 3001 | ✅ Aktiv | `services/uptime-kuma/` |  
+| Nginx Proxy Manager | Reverse Proxy | 81 | ✅ Aktiv | `services/nginx-proxy-manager/` |  
+| Wiki.js | Dokumentation | 3000 | ✅ Aktiv | `services/wikijs/` |  
+| Vaultwarden | Security | 11001 | ✅ Aktiv | `services/vaultwarden/` |  
+| Syncthing | Sync | 8384 | ✅ Aktiv | `services/syncthing/` |
+
+Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konfiguration, Backup-Hinweisen, Troubleshooting und relevanten Runbooks.
+
+## Hardware
+| Gerät | Funktion | Details | Seit |
+| - | - | - | - |
+| Raspberry Pi 5 | Host-System | 8 GB RAM | 2026-05 |
+| microSD-Karte | Boot-Medium | Raspberry Pi OS | 2026-05 |
+| NVMe SSD | Primärer Speicher | Verbatim Vi3000 256 GB | 2026-06 |
+| USB-Stick | Backup-Ziel | 32 GB | 2026-06 |
 
 
 ## Projektstatus  
@@ -128,22 +161,6 @@ Die Infrastruktur basiert auf einer Docker-Umgebung auf einem Raspberry Pi 5 und
 -   Nextcloud
 -   Lokale GPU für KI-Anwendungen
 -   Runbook Agent zur automatischen Erstellung und Pflege von Betriebsdokumentation
-
-## Dokumentation
--   `services/pihole/README.md`
--   `services/uptime-kuma/README.md`
--   `services/nginx-proxy-manager/README.md`
--   `services/wikijs/README.md`
--   `services/vaultwarden/README.md`
--   `services/syncthing/README.md`
--   `runbooks/first-boot.md`
--   `runbooks/backup-restore.md`
--   `runbooks/ssd-migration.md`
--   `infrastructure/network/dns.md`
--   `infrastructure/network/network-overview.md`
--   `infrastructure/security/hardening.md`
--   `infrastructure/security/firewall.md`
--   `infrastructure/planning.md`
 
 ## Repo-Struktur
 ``` 
