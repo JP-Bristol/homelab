@@ -1,13 +1,34 @@
-## Homelab
-Mein Homelab – Lernprojekt gestartet im Mai 2026.
+# Homelab
 
-Ziel: Aufbau einer selbstverwalteten Home-Infrastructure mit Fokus auf Docker, Networking und DevOps-Grundlagen.
+Dieses Repository dokumentiert meinen praktischen Einstieg in die IT — aufgebaut auf einem Raspberry Pi 5, gewachsen durch echte Probleme und deren Lösungen.
 
-## Ziel des Projekts
--   Docker & Container-Management lernen
--   Netzwerkverständnis aufbauen (DNS, Reverse Proxy)
--   Infrastruktur wie in Production-Systemen strukturieren
--   Automatisierung & Backups implementieren
+## Projektbeschreibung
+
+Das Homelab dient als persönliche Lern- und Entwicklungsumgebung mit Fokus auf Linux, Docker, Netzwerktechnik, Automatisierung und technischer Dokumentation.
+
+Es ist ein langfristiges Projekt, mit dem ich praktische Erfahrungen beim Aufbau, Betrieb und der Automatisierung einer Self-Hosted-Infrastruktur sammle. Neben dem aktuellen Stand der Infrastruktur dokumentiert dieses Repository auch technische Entscheidungen, Änderungen und die kontinuierliche Weiterentwicklung der Umgebung.
+
+## Kernziele & Kompetenzentwicklung
+
+###  Infrastruktur & Systemarchitektur
+
+-   **Linux & Docker:** Planung, Aufbau und Betrieb einer selbst verwalteten Docker-Umgebung mit Fokus auf Stabilität und Wartbarkeit.
+    
+-   **DevOps-Grundlagen:** Schrittweiser Aufbau von Kenntnissen in den Bereichen Monitoring, Backup-Strategien, Security-Hardening und Infrastruktur-Automatisierung.
+    
+
+### Automatisierung & Tool-Entwicklung
+
+-   **Skripting:** Entwicklung von Python- und Shell-Skripten, um wiederkehrende administrative Aufgaben zu automatisieren.
+    
+-   **Eigene Werkzeuge:** Entwicklung eigener Tools – beispielsweise des Runbook Agents – zur Unterstützung von Betrieb und technischer Dokumentation.
+    
+
+### Dokumentation & Wissensmanagement
+
+-   **Struktur:** Aufbau einer zentralen Wissensbasis mit Service-Dokumentationen, Runbooks und Troubleshooting-Guides.
+    
+-   **Nachvollziehbarkeit:** Technische Entscheidungen und Probleme (inkl. Lösungen) so zu dokumentieren, dass Konfigurationen, Entscheidungen und Arbeitsabläufe auch nach längerer Zeit nachvollzogen und reproduziert werden können.
 
 ## Infrastruktur
 
@@ -20,7 +41,7 @@ Die Infrastruktur basiert auf einer Docker-Umgebung auf einem Raspberry Pi 5 und
 
 ### Netzwerk
 
--   Pi-hole (DNS & lokales Namensmanagement)
+-   Pi-hole  (DNS, Adblocking & lokale Namensauflösung)
 -   Nginx Proxy Manager (Reverse Proxy)
 
 ### Monitoring
@@ -53,15 +74,7 @@ Die Infrastruktur basiert auf einer Docker-Umgebung auf einem Raspberry Pi 5 und
 ## Dokumentation  
   
 Die Infrastruktur wird vollständig dokumentiert und über Runbooks, Service-Dokumentationen und Troubleshooting-Protokolle gepflegt.  
-  
-### Services  
-- Pi-hole  
-- Uptime Kuma  
-- Nginx Proxy Manager  
-- Wiki.js  
-- Vaultwarden  
-- Syncthing  
-  
+
 ### Runbooks  
 - First Boot  
 - Backup & Restore  
