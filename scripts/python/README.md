@@ -175,7 +175,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.1.0 |  
+| Version | v0.2.0 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
