@@ -919,3 +919,75 @@ Beide Werte dürfen nicht miteinander verwechselt werden.
 
 -   Uptime Kuma zeigt den Service wieder als **✅ UP**.
 -   Das Python-Skript zeigt den Service ebenfalls als **✅ UP**.
+
+## 2026-07-08 - Python: `add_service.py` kann keinen Uptime-Kuma-Monitor erstellen
+
+**Symptom:**
+
+Beim Erstellen eines Monitors über `add_service.py` trat folgender Fehler auf:
+
+```text
+SQLITE_CONSTRAINT: NOT NULL constraint failed: monitor.conditions
+```
+
+Der Monitor wurde nicht in Uptime Kuma angelegt.
+
+----------
+
+**Ursache:**
+
+Die verwendete Python-Bibliothek `uptime-kuma-api` ist nicht vollständig mit Uptime Kuma **2.4.0** kompatibel.
+
+Beim Erstellen eines Monitors wird das in Uptime Kuma 2.x erforderliche Feld `monitor.conditions` nicht gesetzt. Dadurch schlägt das Anlegen des Monitors aufgrund einer Datenbank-Constraint fehl.
+
+----------
+
+
+**Fix:**
+
+Die nicht kompatible Bibliothek `uptime-kuma-api` deinstallieren:
+
+```bash
+pip3 uninstall uptime-kuma-api
+```
+
+Anschließend die kompatible Bibliothek `uptime-kuma-api-v2` installieren:
+
+```bash
+pip3 install uptime-kuma-api-v2
+```
+
+**Hinweis:**
+
+Der Import im Python-Code bleibt unverändert:
+
+```python
+from uptime_kuma_api import UptimeKumaApi, MonitorType
+```
+
+Es sind keine weiteren Codeänderungen am Import erforderlich.
+
+Anschließend das Skript erneut ausführen.
+
+----------
+
+**Hinweis:**
+
+Vor der Verwendung einer Python-Bibliothek sollte geprüft werden, ob sie mit der eingesetzten Version der Zielanwendung kompatibel ist.
+
+In diesem Fall unterstützt `uptime-kuma-api-v2` die Änderungen von Uptime Kuma 2.x.
+
+----------
+
+**Verifikation:**
+
+1.  Neue Bibliothek installieren.
+    
+2.  `add_service.py` erneut ausführen.
+    
+
+**Erwartung:**
+-   Der Monitor wird ohne Fehlermeldung erstellt.
+-   Es tritt kein `SQLITE_CONSTRAINT`-Fehler mehr auf.
+-   Der neue Monitor erscheint im Uptime-Kuma-Dashboard.
+-   Die Statusüberwachung startet erfolgreich.

@@ -1,9 +1,46 @@
+from uptime_kuma_api import UptimeKumaApi, MonitorType
+from dotenv import load_dotenv
 from datetime import datetime
 import argparse
 import sys
 import string
+import os
 
 
+load_dotenv()
+
+
+def connect_to_uptime_kuma(url, username, password):
+    try:
+        api = UptimeKumaApi(str(url))
+        api.login(str(username), str(password))
+        print("Verbindung erfolgreich")
+        return api
+    except Exception as e:
+        print(f" Verbindung fehlgeschlagen: {e}")
+        return None
+
+def add_uptime_monitor(api, args, ip):
+    try:
+        api.add_monitor(
+            type=MonitorType.HTTP,
+            name=f"{args.service}",
+            url=f"{ip}:{args.port}",
+        )
+        return True
+
+    except Exception as e:
+        print(f"Monitor konnte nicht erstellt werden: {e}")
+        return False
+
+def disconnect_uptime_kuma(api):
+    try:
+        api.disconnect()
+        print("Verbindung zu Uptime Kuma getrennt")
+        return True
+    except Exception as e:
+        print(f"Verbindung konnte nicht getrennt werden: {e}")
+        return False
 
 def parse_arguments():
 
@@ -90,6 +127,27 @@ def main():
         exit()
 
     print_status(args)
+
+    url_kuma = os.getenv("KUMA_URL")
+    target_ip = os.getenv("TARGET_IP")
+    username_kuma = os.getenv("KUMA_USERNAME")
+    password_kuma = os.getenv("KUMA_PASSWORD")
+
+    api = connect_to_uptime_kuma(url_kuma, username_kuma, password_kuma)
+
+    if api is None:
+        print("Fehler: Verbindung zu Uptime Kuma fehlgeschlagen")
+        exit()
+
+    success = add_uptime_monitor(api, args, target_ip)
+
+    if not success:
+        disconnect_uptime_kuma(api)
+        return
+
+    print("Monitor erfolgreich erstellt")
+
+    disconnect_uptime_kuma(api)
 
 
 if __name__ == "__main__":

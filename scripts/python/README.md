@@ -205,3 +205,18 @@ Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 - Simulation der Einrichtungsschritte  
 - Einheitliche Konsolenausgabe  
 - Erste Version veröffentlicht
+
+
+#### 4.3.2  v0.2.0 
+**Datum:** 2026-07-08 
+
+**Neu** 
+- Uptime-Kuma-API-Anbindung ergänzt
+- Verbindung und Login zu Uptime Kuma umgesetzt 
+- Monitor-Erstellung über `uptime-kuma-api-v2` integriert 
+
+**Geändert**
+- API-Bibliothek aufgrund eines Kompatibilitätsproblems mit Uptime Kuma 2.4.0 von `uptime-kuma-api` auf `uptime-kuma-api-v2` umgestellt.
+
+**Details:** 
+`troubleshooting/log.md` → `2026-07-08 Python: add_service.py kann keinen Uptime-Kuma-Monitor erstellen`
