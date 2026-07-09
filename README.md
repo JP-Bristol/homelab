@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.2.0`
+- `add_service.py v0.3.0`
 
 
 ## 🚀 Roadmap

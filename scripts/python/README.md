@@ -175,7 +175,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.2.0 |  
+| Version | v0.2.1 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -220,3 +220,22 @@ Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 
 **Details:** 
 `troubleshooting/log.md` → `2026-07-08 Python: add_service.py kann keinen Uptime-Kuma-Monitor erstellen`
+
+#### 4.3.3 v0.2.1
+**Datum:** 2026-07-09
+
+**Neu**
+- Funktion zum Erstellen der Monitor-URL ergänzt.
+- Abrufen vorhandener Uptime-Kuma-Monitore integriert.
+- Prüfung auf bereits vorhandene Monitor-Namen und Monitor-URLs ergänzt.
+- Validierung der benötigten Umgebungsvariablen (`.env`) ergänzt.
+
+**Geändert**
+- Monitor-Erstellung auf getrennte Parameter (`monitor_name`, `monitor_url`) umgestellt.
+- Funktionen durch Docstrings ergänzt.
+- Programmablauf für bessere Wartbarkeit überarbeitet.
+
+**Verbessert**
+- Doppelte Monitor-Erstellung wird verhindert.
+- Service-Namen werden bei der Prüfung unabhängig von Groß- und Kleinschreibung verglichen.
+- Fehlerbehandlung und Ablaufsteuerung weiter vereinheitlicht.
