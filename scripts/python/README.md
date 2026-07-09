@@ -182,13 +182,41 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 #### 3.3.1 Zweck
 Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 
-#### 3.3.2 Geplante Funktionen
-- Uptime Kuma Monitor hinzufügen  
+#### 3.2.2 Voraussetzungen
+
+- Python 3
+- `.env` mit den benötigten Variablen
+- Uptime Kuma API erreichbar
+
+**Abhängigkeiten:**
+- uptime-kuma-api-v2
+- python-dotenv
+
+**Hinweis:** Es wird der Fork [`uptime-kuma-api-v2`](https://github.com/exaland/uptime-kuma-api-v2) verwendet — das Original-Paket `uptime-kuma-api` ist nicht vollständig kompatibel mit Uptime Kuma 2.x (siehe `troubleshooting/log.md`, 2026-07-08). Der Python-Import bleibt unverändert: `from uptime_kuma_api import UptimeKumaApi, MonitorType`.
+
+#### 3.3.3 Ausführung
+```bash
+cd ~/homelab/scripts/python/add_service
+python3 main.py --service <name> --port <port> [--dry-run]
+```
+
+#### 3.3.4 Benötigte Umgebungsvariablen
+```env
+KUMA_URL=
+TARGET_IP=
+KUMA_USERNAME=
+KUMA_PASSWORD=
+```
+#### 3.3.5 Aktuell umgesetzt
+- Uptime Kuma Monitor hinzufügen
+- Duplikat-Prüfung (Name & URL)
+- `--dry-run`-Modus
+
+#### 3.3.6 Geplante Funktionen
 - Pi-hole DNS-Eintrag anlegen  
 - Nginx Proxy Manager Proxy Host erstellen  
 - UFW-Port freigeben  
 - Service-Log schreiben
-
 
 ## 4. Changelog
 
