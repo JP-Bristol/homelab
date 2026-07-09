@@ -239,3 +239,14 @@ Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 - Doppelte Monitor-Erstellung wird verhindert.
 - Service-Namen werden bei der Prüfung unabhängig von Groß- und Kleinschreibung verglichen.
 - Fehlerbehandlung und Ablaufsteuerung weiter vereinheitlicht.
+
+
+#### 4.3.4 v0.2.3
+**Datum:** 2026-07-09
+
+**Refactoring**
+- Umstrukturierung von `add_service.py` in das Modul-Verzeichnis `add_service/`.
+- Aufgeteilt in `main.py`, `parser.py`, `validation.py`, `output.py` und `uptime_kuma.py`.
+- `validate_uptime_monitor` nach `validation.py` verschoben (reine Prüflogik ohne API-Kommunikation).
+- Veralteten Hinweis „Simulation beendet“ aus `print_status()` entfernt.
+- Funktionalität unverändert – erfolgreicher Testlauf einschließlich Duplikat-Erkennung durchgeführt.
