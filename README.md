@@ -146,7 +146,9 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 ### Kurzfristig
 
 -   `add_service.py`
-    -   v0.2 – Uptime Kuma API (Monitor automatisch anlegen)
+    -   (abgeschlossen) v0.2 – Uptime Kuma API (Monitor automatisch anlegen)
+    -   (abgeschlossen) v0.2.2 – Refactoring: Modul-Struktur (`add_service/`)
+    -   (abgeschlossen) v0.2.3 – `--dry-run`-Modus
     -   v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
     -   v0.4 – Nginx Proxy Manager Proxy Host erstellen
     -   v0.5 – UFW-Port automatisch freigeben
@@ -170,6 +172,9 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 ### Langfristig
 
 -   Touch Dashboard für den Homelab-Betrieb
+    -   `uptime_api.py` → eigenes Modul (Umbenennung + Modul-Ordner, sobald Dashboard-Anbindung startet)
+    -   `backup_log.py` → eigenes Modul (analog)
+    -   Architektur: getrennte Module pro Datenquelle, Dashboard nutzt die Module nur, ohne eigene API-/Datenlogik
 -   Self-hosted KI-Workspace
 -   Nextcloud
 -   Lokale GPU für KI-Anwendungen
