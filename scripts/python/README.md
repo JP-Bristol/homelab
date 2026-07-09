@@ -175,7 +175,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.2.1 |  
+| Version | v0.2.2 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -241,7 +241,7 @@ Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 - Fehlerbehandlung und Ablaufsteuerung weiter vereinheitlicht.
 
 
-#### 4.3.4 v0.2.3
+#### 4.3.4 v0.2.2
 **Datum:** 2026-07-09
 
 **Refactoring**
