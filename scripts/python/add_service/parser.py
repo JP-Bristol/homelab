@@ -7,7 +7,7 @@ def parse_arguments():
 
     try:
         parser = argparse.ArgumentParser(description="Automatisiert das Einrichten neuer Homelab-Services.")
-        # Argument für Servicename
+
         parser.add_argument(
             '--service', 
             type=str, 
@@ -15,12 +15,17 @@ def parse_arguments():
             help='Service-Name'
         )
     
-        # Argument für Port
         parser.add_argument(
             '--port', 
             type=int, 
             required=True, 
             help='Service-Port'
+        )
+
+        parser.add_argument(
+            '--dry-run',
+            action='store_true',
+            help='Zeigt geplante Schritte an, ohne Änderungen vorzunehmen'
         )
         return parser.parse_args()
 

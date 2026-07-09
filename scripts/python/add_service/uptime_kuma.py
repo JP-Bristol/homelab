@@ -11,7 +11,7 @@ def connect_to_uptime_kuma(url, username, password):
         print(f" Verbindung fehlgeschlagen: {e}")
         return None
 
-def get_uptime_monitor(api):
+def get_uptime_monitors(api):
     """Gibt alle aktuell vorhandenen Uptime Kuma Monitore zurück."""
     return api.get_monitors()
 

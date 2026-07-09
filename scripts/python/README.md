@@ -175,7 +175,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.2.2 |  
+| Version | v0.2.3 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -250,3 +250,22 @@ Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 - `validate_uptime_monitor` nach `validation.py` verschoben (reine Prüflogik ohne API-Kommunikation).
 - Veralteten Hinweis „Simulation beendet“ aus `print_status()` entfernt.
 - Funktionalität unverändert – erfolgreicher Testlauf einschließlich Duplikat-Erkennung durchgeführt.
+
+
+#### 4.3.4 v0.2.3
+**Datum:** 2026-07-09
+
+**Neu**
+- `--dry-run`-Modus ergänzt.
+- Simuliert die Monitor-Erstellung, ohne Änderungen an Uptime Kuma vorzunehmen.
+- Verbindung zu Uptime Kuma sowie Duplikat-Prüfung werden auch im Dry-Run vollständig ausgeführt.
+
+**Geändert**
+- `main.py` um den Dry-Run-Ablauf erweitert.
+- Monitor-Erstellung wird nur außerhalb des Dry-Run-Modus ausgeführt.
+- `print_status()` zeigt den aktiven Dry-Run-Modus an.
+- Veraltete Liste der geplanten Schritte aus `print_status()` entfernt.
+- `get_uptime_monitor` zu `get_uptime_monitors` umbenannt (Plural, da alle Monitore zurückgegeben werden).
+
+**Behoben**
+- Erfolgsmeldung „Monitor erfolgreich erstellt“ wurde im Dry-Run-Modus fälschlicherweise ausgegeben.

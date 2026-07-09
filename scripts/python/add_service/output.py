@@ -11,13 +11,8 @@ def print_status(args):
     print(f"-Service-Name: {args.service}")
     print(f"-Service-Port: {args.port}\n")
 
+    if args.dry_run:
+        print("Modus: Dry-Run (keine Änderungen werden vorgenommen)\n")
+
     print("✓ Eingaben validiert\n")
-
-    print("Geplante Schritte:")
-    print(" - Uptime Kuma Monitor hinzufügen")
-    print(" - Pihole lokalen DNS-Eintrag anlegen")
-    print(" - Nginx Proxy Manager Proxy Host erstellen")
-    print(" - ufw Port freigeben")
-    print(" - Service-Log schreiben\n")
-
     print("=" * 50)
