@@ -199,7 +199,13 @@ homelab/
 │   ├── backup.sh
 │   └── python/
 │       ├── README.md
-│       ├── add_service.py
+│       ├── add_service/
+│       │   ├── main.py
+│       │   ├── parser.py
+│       │   ├── output.py
+│       │   ├── requirements.txt
+│       │   ├── uptime_kuma.py
+│       │   └── validation.py
 │       ├── backup_log.py
 │       ├── requirements.txt
 │       └── uptime_api.py
@@ -212,5 +218,4 @@ homelab/
 │   └── wikijs/
 └── troubleshooting/
     └── log.md
-
 ```
