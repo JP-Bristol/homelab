@@ -176,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.3.0 |  
+| Version | v0.3.1 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -329,3 +329,37 @@ PIHOLE_PASSWORD=
 - `disconnect_from_pihole()` konnte mit `AttributeError` abbrechen, wenn `session` `None` war (z. B. nach fehlgeschlagenem Verbindungsaufbau); Prüfung auf `None` am Funktionsanfang ergänzt.
 - Fehlende `disconnect`-Aufrufe an mehreren `return`-Stellen in `main.py` ergänzt, damit bei Verbindungsfehlern bereits aufgebaute Verbindungen zu Uptime Kuma und Pi-hole sauber beendet werden.
 - Logout auf den korrekten HTTP-Status `204 No Content` angepasst; erfolgreiche Sitzungsbeendigung wurde zuvor fälschlich als Fehler erkannt.
+
+### v0.3.1
+**Datum:** 2026-07-10
+
+**Neu**
+- `fetch_dns_records()` implementiert:
+  - Local-DNS-Einträge über die Pi-hole REST-API abrufen.
+  - HTTP-Status prüfen und DNS-Einträge zurückgeben.
+- `parse_dns_record()` implementiert:
+  - Pi-hole-DNS-Einträge in eine interne Datenstruktur (`dict`) umwandeln.
+- `build_dns_records()` implementiert:
+  - Aus allen Pi-hole-DNS-Einträgen eine strukturierte Liste (`list[dict]`) erstellen.
+- Interne Datenstruktur für DNS-Einträge eingeführt:
+  ```python
+  {
+      "ip": "192.168.2.90",
+      "hostname": "pihole.home"
+  }
+  ```
+
+**Geändert**
+- `main.py` erweitert:
+  - DNS-Einträge von Pi-hole abrufen.
+  - API-Daten in das interne Datenmodell überführen.
+- Pi-hole API-URL vereinfacht:
+  - `.env` enthält jetzt die Basis-URL (`/api`).
+  - API-Endpunkte werden direkt in den Funktionen ergänzt.
+
+**Behoben**
+- Reihenfolge der Pi-hole-Verarbeitung korrigiert:
+  - DNS-Einträge werden nun vor dem Logout der Session abgerufen.
+- API-Endpunkte vereinheitlicht und an die neue Basis-URL angepasst.
+- Rückgabewert von `disconnect_uptime_kuma()` wird jetzt geprüft (war zuvor 
+  inkonsistent zu `disconnect_from_pihole()`, wo dies bereits der Fall war).

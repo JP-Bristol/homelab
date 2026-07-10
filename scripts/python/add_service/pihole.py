@@ -9,7 +9,8 @@ def connect_to_pihole(pihole_api_url, pihole_password):
 
     try:
         password_json = {"password": pihole_password}
-        response = session.post(pihole_api_url, json=password_json)
+        response = session.post(f"{pihole_api_url}/auth", json=password_json)
+
         
 
         if response.status_code != 200:
@@ -36,11 +37,14 @@ def connect_to_pihole(pihole_api_url, pihole_password):
         return None
 
 
-def disconnect_from_pihole(url, session):
+def disconnect_from_pihole(pihole_api_url, session):
+    
+    """ Beendet die Pi-hole-Session über die API und schließt die lokale HTTP-Session. """
+
     if session is None:
         return False
     try:
-        response = session.delete(url)
+        response = session.delete(f"{pihole_api_url}/auth")
 
         
 
@@ -48,7 +52,7 @@ def disconnect_from_pihole(url, session):
             print(f"Fehler: Status {response.status_code}")
             return False
 
-        print("Verbindung getrennt")
+        print("Verbindung zu Pihole getrennt")
         return True
 
     except Exception as e:
@@ -57,3 +61,35 @@ def disconnect_from_pihole(url, session):
 
     finally:
         session.close()
+
+def fetch_dns_records(pihole_api_url,session):
+
+    """ Ruft alle Local-DNS-Einträge von der Pi-hole-API ab und gibt sie als Liste zurück. """
+
+    try:   
+        response = session.get(f"{pihole_api_url}/config/dns/hosts")
+        if response.status_code != 200:
+            print(f"Fehler: Status {response.status_code}")
+            return None
+        return response.json()['config']['dns']['hosts']
+
+    except Exception as e:
+        print(f"Fehler Fetch DNS: {e}")
+        return None
+
+def parse_dns_record(record):
+
+    """ Wandelt einen Pi-hole-DNS-Eintrag in ein Dictionary mit IP-Adresse und Hostname um. """
+
+    parts = record.split()
+    return {
+        "ip": parts[0],
+        "hostname": parts[1]
+    }
+
+def build_dns_records(records):
+
+    """ Erstellt aus allen Pi-hole-DNS-Einträgen eine strukturierte Liste von Dictionaries. """
+
+    dns_records = [parse_dns_record(record) for record in records ]
+    return dns_records

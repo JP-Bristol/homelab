@@ -12,7 +12,13 @@ from uptime_kuma import (
     disconnect_uptime_kuma
 )
 
-from pihole import connect_to_pihole, disconnect_from_pihole
+from pihole import (
+    connect_to_pihole,
+    disconnect_from_pihole,
+    fetch_dns_records,
+    parse_dns_record,
+    build_dns_records
+)
 
 
 load_dotenv()
@@ -51,34 +57,49 @@ def main():
     pihole_api_url = os.getenv("PIHOLE_API_URL")
     pihole_password = os.getenv("PIHOLE_PASSWORD")
 
+
     # TODO (v0.4.0):
     # Ressourcenverwaltung auf try/finally umstellen, damit alle API-Verbindungen
     # zentral und unabhängig vom Programmablauf sauber beendet werden.
 
+    # 1. Connect apis 
+
     api = connect_to_uptime_kuma(url_kuma, username_kuma, password_kuma)
     session = connect_to_pihole(pihole_api_url, pihole_password)
 
-
-
+    # 2. Check 
     if api is None:
         print("Fehler: Verbindung zu Uptime Kuma fehlgeschlagen")
         disconnect_from_pihole(pihole_api_url, session)
         return
 
-    monitor_url = build_monitor_url(target_ip, args.port)
-    monitors = get_uptime_monitors(api)
-
     if session is None:
         disconnect_uptime_kuma(api)
         print("Fehler: Verbindung zu Pi-Hole Fehlgeschlagen")
         return
+    
+    # 3. Daten holen
+    monitor_url = build_monitor_url(target_ip, args.port)
+    monitors = get_uptime_monitors(api)
+    raw_dns_records = fetch_dns_records(pihole_api_url,session)
+    
+    if raw_dns_records is None:
+        print("Fehler DNS Records")
+        disconnect_uptime_kuma(api)
+        disconnect_from_pihole(pihole_api_url, session)
+        return
 
+    parsed_records = build_dns_records(raw_dns_records)
+    print(f"[DEBUG] {len(parsed_records)} DNS-Einträge geladen")
+
+    # 4. Duplikate prüfen
     if not validate_uptime_monitor(monitors, monitor_url, args.service):
         print("Fehler: Monitor oder URL bereits vorhanden")
         disconnect_uptime_kuma(api)
         disconnect_from_pihole(pihole_api_url, session)
         return
 
+    
     if args.dry_run:
         print(f"[DRY-RUN] Würde Monitor '{args.service}' auf {monitor_url} erstellen")
     else:
@@ -90,11 +111,14 @@ def main():
             return
 
         print("Monitor erfolgreich erstellt")
-    disconnect_uptime_kuma(api)
 
-    success = disconnect_from_pihole(pihole_api_url, session)
+    # 6. Trennen
+    success_kuma = disconnect_uptime_kuma(api)
+    if not success_kuma:
+        print("Warnung: Uptime Kuma Session nicht beendet")
 
-    if not success:
+    success_pihole = disconnect_from_pihole(pihole_api_url, session)
+    if not success_pihole:
         print("Warnung: Pi-hole Session nicht beendet")
 
     
