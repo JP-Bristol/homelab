@@ -305,7 +305,6 @@ PIHOLE_PASSWORD=
 
 
 #### 4.3.5 v0.3.0
-### v0.3.0
 **Datum:** 2026-07-10
 
 **Neu**
@@ -330,7 +329,7 @@ PIHOLE_PASSWORD=
 - Fehlende `disconnect`-Aufrufe an mehreren `return`-Stellen in `main.py` ergänzt, damit bei Verbindungsfehlern bereits aufgebaute Verbindungen zu Uptime Kuma und Pi-hole sauber beendet werden.
 - Logout auf den korrekten HTTP-Status `204 No Content` angepasst; erfolgreiche Sitzungsbeendigung wurde zuvor fälschlich als Fehler erkannt.
 
-### v0.3.1
+#### 4.3.6 v0.3.1
 **Datum:** 2026-07-10
 
 **Neu**
@@ -344,7 +343,7 @@ PIHOLE_PASSWORD=
 - Interne Datenstruktur für DNS-Einträge eingeführt:
   ```python
   {
-      "ip": "192.168.2.90",
+      "ip": "192.168.2.x",
       "hostname": "pihole.home"
   }
   ```
