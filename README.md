@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.3.0`
+- `add_service.py v0.3.1`
 
 
 ## 🚀 Roadmap
@@ -147,11 +147,11 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 
 -   `add_service.py`
     -   (abgeschlossen) v0.2 – Uptime Kuma API (Monitor automatisch anlegen)
-    -   (abgeschlossen) v0.2.2 – Refactoring: Modul-Struktur (`add_service/`)
-    -   (abgeschlossen) v0.2.3 – `--dry-run`-Modus
-    -   v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
-    -   v0.4 – Nginx Proxy Manager Proxy Host erstellen
-    -   v0.5 – UFW-Port automatisch freigeben
+    -   (abgeschlossen) v0.3.0 – Pi-hole Verbindung (Login/Logout)
+    -   v0.3.x – Pi-hole DNS-Eintrag automatisch erstellen
+    -   v0.4.0 – Fehlerbehandlung & Cleanup (try/finally, zentrales Ressourcen-Management)
+    -   v0.5.x – Nginx Proxy Manager Proxy Host erstellen
+    -   v0.6.x – UFW-Port automatisch freigeben
     -   v1.0 – Vollständige Service-Automatisierung
 -   Zabbix in das Monitoring integrieren
 -   `ufw-setup.sh` entwickeln

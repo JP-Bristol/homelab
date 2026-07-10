@@ -35,6 +35,7 @@ Aktuell verwendete Pakete:
 - `python-dotenv`  
 - `uptime-kuma-api`
 
+
 ### 2.3 Ausführung
 Skripte werden aktuell manuell über das Terminal ausgeführt
 
@@ -175,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.2.3 |  
+| Version | v0.3.0 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -191,6 +192,7 @@ Unterstützt beim automatisierten Einrichten neuer Homelab-Services.
 **Abhängigkeiten:**
 - uptime-kuma-api-v2
 - python-dotenv
+- requests
 
 **Hinweis:** Es wird der Fork [`uptime-kuma-api-v2`](https://github.com/exaland/uptime-kuma-api-v2) verwendet — das Original-Paket `uptime-kuma-api` ist nicht vollständig kompatibel mit Uptime Kuma 2.x (siehe `troubleshooting/log.md`, 2026-07-08). Der Python-Import bleibt unverändert: `from uptime_kuma_api import UptimeKumaApi, MonitorType`.
 
@@ -206,6 +208,9 @@ KUMA_URL=
 TARGET_IP=
 KUMA_USERNAME=
 KUMA_PASSWORD=
+
+PIHOLE_API_URL= 
+PIHOLE_PASSWORD= 
 ```
 #### 3.3.5 Aktuell umgesetzt
 - Uptime Kuma Monitor hinzufügen
@@ -297,3 +302,30 @@ KUMA_PASSWORD=
 
 **Behoben**
 - Erfolgsmeldung „Monitor erfolgreich erstellt“ wurde im Dry-Run-Modus fälschlicherweise ausgegeben.
+
+
+#### 4.3.5 v0.3.0
+### v0.3.0
+**Datum:** 2026-07-10
+
+**Neu**
+- Pi-hole REST-API in `add_service` integriert.
+- `connect_to_pihole()` implementiert:
+  - HTTP-Session (`requests.Session`) erstellt.
+  - Authentifizierung über Pi-hole API.
+  - HTTP-Status und Session-ID (SID) werden geprüft.
+  - Authentifizierte Session wird für weitere API-Aufrufe bereitgestellt.
+- `disconnect_from_pihole()` implementiert:
+  - Pi-hole-Session wird serverseitig beendet.
+  - HTTP-Status des Logout-Endpunkts wird geprüft.
+  - Lokale HTTP-Session wird zuverlässig geschlossen.
+
+**Geändert**
+- `main.py` um Pi-hole-Verbindungsaufbau und Session-Management erweitert.
+- `.env`-Validierung um Pi-hole-Konfigurationsvariablen ergänzt.
+- Ressourcenverwaltung erweitert, sodass Uptime Kuma- und Pi-hole-Verbindungen beim Programmende oder Fehlerfall sauber beendet werden.
+
+**Behoben**
+- `disconnect_from_pihole()` konnte mit `AttributeError` abbrechen, wenn `session` `None` war (z. B. nach fehlgeschlagenem Verbindungsaufbau); Prüfung auf `None` am Funktionsanfang ergänzt.
+- Fehlende `disconnect`-Aufrufe an mehreren `return`-Stellen in `main.py` ergänzt, damit bei Verbindungsfehlern bereits aufgebaute Verbindungen zu Uptime Kuma und Pi-hole sauber beendet werden.
+- Logout auf den korrekten HTTP-Status `204 No Content` angepasst; erfolgreiche Sitzungsbeendigung wurde zuvor fälschlich als Fehler erkannt.
