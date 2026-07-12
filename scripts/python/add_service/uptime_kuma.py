@@ -18,7 +18,7 @@ def get_uptime_monitors(api):
 
 def build_monitor_url(target_ip, port):
     """Baut aus Ziel-IP und Port die vollständige Monitor-URL."""
-    monitor_url = f"{target_ip}:{port}"
+    monitor_url = f"http://{target_ip}:{port}"
     return monitor_url
 
 

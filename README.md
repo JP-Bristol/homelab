@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.3.3` – DNS-Eintrag erstellen (inkl. Dry-Run)
+- `add_service.py v0.4.0` – Fehlerbehandlung & Cleanup (try/finally, zentrales Ressourcen-Management)
 
 
 ## 🚀 Roadmap
@@ -147,8 +147,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 
 -   `add_service.py`
     -   (abgeschlossen) v0.2 – Uptime Kuma API (Monitor automatisch anlegen)
-    -   (abgeschlossen) v0.3.0 – Pi-hole Verbindung (Login/Logout)
-    -   v0.3.x – Pi-hole DNS-Eintrag automatisch erstellen
+    -   (abgeschlossen) v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
     -   v0.4.0 – Fehlerbehandlung & Cleanup (try/finally, zentrales Ressourcen-Management)
     -   v0.5.x – Nginx Proxy Manager Proxy Host erstellen
     -   v0.6.x – UFW-Port automatisch freigeben

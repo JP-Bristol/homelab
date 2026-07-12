@@ -95,5 +95,22 @@ def build_dns_records(records):
     return dns_records
 
 def build_dns_hostname(service_name):
+
+    """ Erstellt aus dem Servicenamen den vollständigen Hostnamen. """
     
     return f"{service_name}.home"
+
+def add_local_dns_record(session, pihole_api_url, ip, hostname):
+
+    """ Erstellt einen Local-DNS-Eintrag über die Pi-hole REST-API."""
+
+    try:
+        response = session.put(f"{pihole_api_url}/config/dns/hosts/{ip}%20{hostname}")
+        if response.status_code != 201:
+            print(f"Fehler: add dns record status {response.status_code}")
+            return False
+        return True
+
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return False

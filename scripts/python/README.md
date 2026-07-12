@@ -5,7 +5,7 @@ Kurze Übersicht aller eigenen Automatisierungs- und Monitoring-Skripte im Homel
 |---|---|---|---|  
 | `uptime_kuma.py` | Service-Status aus Uptime Kuma anzeigen | `python3 uptime_kuma.py` | ✅ v0.1 |  
 | `backup_log.py` | Backup-Log auswerten | `python3 backup_log.py` | ✅ v0.1 |  
-| `add_service.py` | Neuen Service vorbereiten | `python3 add_service.py` | ✅ v0.3.2 |
+| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.3.3 |
 
 ### 1.1 Ablageort
 ```bash  
@@ -176,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.3.2 |  
+| Version | v0.3.3 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -382,3 +382,27 @@ PIHOLE_PASSWORD=
 - Einheitliche Erstellung von DNS-Hostnamen über `build_dns_hostname()`.
 - Dry-Run berücksichtigt nun die erfolgreiche DNS-Validierung.
 - Dry-Run-Meldung präzisiert: zeigt jetzt explizit „Uptime-Kuma Monitor" an.
+
+
+#### 3.3.8 v0.3.3
+**Datum:** 2026-07-12
+
+**Neu**
+- `add_local_dns_record()` implementiert:
+  - Erstellt Local-DNS-Einträge über die Pi-hole REST-API.
+  - Verwendet den HTTP-Endpunkt `PUT /config/dns/hosts/{record}`.
+  - Prüft den erwarteten Status `201 Created`.
+- Pi-hole-DNS-Erstellung in den Programmablauf integriert.
+- Dry-Run um die geplante Erstellung des Pi-hole-DNS-Eintrags erweitert.
+
+**Geändert**
+- `TARGET_IP` enthält nur noch die reine IP-Adresse.
+- `build_monitor_url()` ergänzt das URL-Schema für Uptime-Kuma-Monitore.
+- Erfolgs- und Dry-Run-Ausgaben für Uptime Kuma und Pi-hole getrennt dargestellt.
+- Erstellung läuft sequenziell (erst Uptime Kuma, dann Pi-hole), um bei Fehlern 
+  inkonsistente Zwischenzustände zu vermeiden.
+
+**Verifikation**
+- Uptime-Kuma-Monitor erfolgreich erstellt.
+- Pi-hole-Local-DNS-Eintrag erfolgreich angelegt.
+- Beide API-Verbindungen anschließend sauber beendet.

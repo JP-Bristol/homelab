@@ -18,7 +18,8 @@ from pihole import (
     fetch_dns_records,
     parse_dns_record,
     build_dns_records,
-    build_dns_hostname
+    build_dns_hostname,
+    add_local_dns_record
 )
 
 
@@ -27,9 +28,9 @@ load_dotenv()
 def main():
 
     """
-    Steuert den Programmablauf: validiert Eingaben und .env,
-    verbindet sich mit Uptime Kuma, prüft auf Duplikate
-    und erstellt den Monitor.
+    Steuert den Programmablauf: validiert Eingaben und Umgebungsvariablen,
+    stellt die benötigten API-Verbindungen her, prüft bestehende Ressourcen
+    und erstellt neue Einträge in Uptime Kuma und Pi-hole.
     """
     args = parse_arguments()
 
@@ -114,15 +115,24 @@ def main():
     # 5. Erstellen
     if args.dry_run:
         print(f"[DRY-RUN] Würde Uptime-Kuma Monitor '{args.service}' auf {monitor_url} erstellen")
+        print(f"[DRY-RUN] Würde local dns record in pi-hole '{pihole_hostname}' auf {target_ip} erstellen")
     else:
-        success = add_uptime_monitor(api, args.service, monitor_url)
-
-        if not success:
+        success_add_uptime_monitor = add_uptime_monitor(api, args.service, monitor_url)
+        
+        if not success_add_uptime_monitor:
+            disconnect_uptime_kuma(api)
+            disconnect_from_pihole(pihole_api_url, session)
+            return
+        
+        success_add_pihole_local_dns = add_local_dns_record(session,pihole_api_url,target_ip,pihole_hostname)
+        
+        if not success_add_pihole_local_dns:
             disconnect_uptime_kuma(api)
             disconnect_from_pihole(pihole_api_url, session)
             return
 
-        print("Monitor erfolgreich erstellt")
+        print("Uptime Kuma Monitor erfolgreich erstellt")
+        print("Pi-hole local dns record erfolgreich angelegt")
 
     # 6. Trennen
     success_kuma = disconnect_uptime_kuma(api)
