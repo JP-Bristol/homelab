@@ -148,9 +148,10 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 -   `add_service.py`
     -   (abgeschlossen) v0.2 – Uptime Kuma API (Monitor automatisch anlegen)
     -   (abgeschlossen) v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
-    -   v0.4.0 – Fehlerbehandlung & Cleanup (try/finally, zentrales Ressourcen-Management)
-    -   v0.5.x – Nginx Proxy Manager Proxy Host erstellen
-    -   v0.6.x – UFW-Port automatisch freigeben
+    -   v0.4.x – Ressourcenverwaltung, Konfiguration & einheitliche Ausgabe
+    -   v0.5.x – Service-Log implementieren
+    -   v0.6.x – Nginx Proxy Manager Proxy Host erstellen
+    -   v0.7.x – UFW-Port automatisch freigeben
     -   v1.0 – Vollständige Service-Automatisierung
 -   Zabbix in das Monitoring integrieren
 -   `ufw-setup.sh` entwickeln
@@ -173,11 +174,13 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 -   Touch Dashboard für den Homelab-Betrieb
     -   `uptime_api.py` → eigenes Modul (Umbenennung + Modul-Ordner, sobald Dashboard-Anbindung startet)
     -   `backup_log.py` → eigenes Modul (analog)
-    -   Architektur: getrennte Module pro Datenquelle, Dashboard nutzt die Module nur, ohne eigene API-/Datenlogik
+    -   Architektur: getrennte Module pro Datenquelle, Dashboard bündelt nur die Daten, keine eigene API-Anbindung
+-   Runbook Agent (eigenes Projekt-Repo, RAG mit Qdrant)
+    -   Start: nach `add_service.py` v1.0
+    -   Nutzt `service_log.txt` aus `add_service.py` als zusätzliche strukturierte Datenquelle
 -   Self-hosted KI-Workspace
 -   Nextcloud
 -   Lokale GPU für KI-Anwendungen
--   Runbook Agent zur automatischen Erstellung und Pflege von Betriebsdokumentation
 
 ## Repo-Struktur
 ``` 
