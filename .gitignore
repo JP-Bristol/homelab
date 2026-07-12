@@ -10,3 +10,5 @@ scripts/python/sandbox/
 
 __pycache__/
 *.pyc
+
+.vscode/
