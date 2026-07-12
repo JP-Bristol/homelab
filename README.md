@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.3.2` – DNS-Duplikatprüfung (Hostname/IP-Kollisionen erkennen)
+- `add_service.py v0.3.3` – DNS-Eintrag erstellen (inkl. Dry-Run)
 
 
 ## 🚀 Roadmap

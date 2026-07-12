@@ -17,7 +17,7 @@ def is_valid_input(args):
 def validate_env():
     """Prüft, ob alle benötigten Umgebungsvariablen gesetzt sind."""
     if not os.getenv("KUMA_URL"):
-        print("Fehler: KUMA_URL ist nich gesetzt")
+        print("Fehler: KUMA_URL ist nicht gesetzt")
         return False
 
     if not os.getenv("TARGET_IP"):
@@ -32,6 +32,14 @@ def validate_env():
         print("Fehler: KUMA_PASSWORD ist nicht gesetzt")
         return False
     
+    if not os.getenv("PIHOLE_API_URL"):
+        print("Fehler: PIHOLE_API_URL ist nicht gesetzt")
+        return False
+
+    if not os.getenv("PIHOLE_PASSWORD"):
+        print("Fehler: PIHOLE_PASSWORD ist nicht gesetzt")
+        return False
+    
     return True
 
 def validate_uptime_monitor(monitors, monitor_url, monitor_name):
@@ -42,4 +50,11 @@ def validate_uptime_monitor(monitors, monitor_url, monitor_name):
     if any(monitor_name.lower() == m['name'].lower() for m in monitors):
         return False
     
+    return True
+
+
+def validate_pihole_dns_records(records,service_name):
+
+    if any(service_name.lower() == r['hostname'].lower() for r in records):
+        return False
     return True

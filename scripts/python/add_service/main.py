@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 from parser import parse_arguments
 from output import print_status
-from validation import is_valid_input, validate_env, validate_uptime_monitor
+from validation import is_valid_input, validate_env, validate_uptime_monitor, validate_pihole_dns_records
 from uptime_kuma import (
     connect_to_uptime_kuma,
     get_uptime_monitors,
@@ -17,7 +17,8 @@ from pihole import (
     disconnect_from_pihole,
     fetch_dns_records,
     parse_dns_record,
-    build_dns_records
+    build_dns_records,
+    build_dns_hostname
 )
 
 
@@ -81,7 +82,10 @@ def main():
     # 3. Daten holen
     monitor_url = build_monitor_url(target_ip, args.port)
     monitors = get_uptime_monitors(api)
+
+    pihole_hostname = build_dns_hostname(args.service)
     raw_dns_records = fetch_dns_records(pihole_api_url,session)
+
     
     if raw_dns_records is None:
         print("Fehler DNS Records")
@@ -99,9 +103,17 @@ def main():
         disconnect_from_pihole(pihole_api_url, session)
         return
 
+
+    if not validate_pihole_dns_records(parsed_records, pihole_hostname):
+        print("Fehler: DNS-Eintrag in Pihole bereits vorhanden")
+        disconnect_uptime_kuma(api)
+        disconnect_from_pihole(pihole_api_url, session)
+        return
     
+
+    # 5. Erstellen
     if args.dry_run:
-        print(f"[DRY-RUN] Würde Monitor '{args.service}' auf {monitor_url} erstellen")
+        print(f"[DRY-RUN] Würde Uptime-Kuma Monitor '{args.service}' auf {monitor_url} erstellen")
     else:
         success = add_uptime_monitor(api, args.service, monitor_url)
 

@@ -5,7 +5,7 @@ Kurze Übersicht aller eigenen Automatisierungs- und Monitoring-Skripte im Homel
 |---|---|---|---|  
 | `uptime_kuma.py` | Service-Status aus Uptime Kuma anzeigen | `python3 uptime_kuma.py` | ✅ v0.1 |  
 | `backup_log.py` | Backup-Log auswerten | `python3 backup_log.py` | ✅ v0.1 |  
-| `add_service.py` | Neuen Service vorbereiten | `python3 add_service.py` | 🔲 geplant |
+| `add_service.py` | Neuen Service vorbereiten | `python3 add_service.py` | ✅ v0.3.2 |
 
 ### 1.1 Ablageort
 ```bash  
@@ -176,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.3.1 |  
+| Version | v0.3.2 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -362,3 +362,23 @@ PIHOLE_PASSWORD=
 - API-Endpunkte vereinheitlicht und an die neue Basis-URL angepasst.
 - Rückgabewert von `disconnect_uptime_kuma()` wird jetzt geprüft (war zuvor 
   inkonsistent zu `disconnect_from_pihole()`, wo dies bereits der Fall war).
+
+#### 3.3.7 v0.3.2
+**Datum:** 2026-07-12
+
+**Neu**
+- `validate_pihole_dns_records()` implementiert:
+  - Prüft, ob ein Hostname bereits als Local-DNS-Eintrag in Pi-hole vorhanden ist.
+  - Vergleich erfolgt unabhängig von Groß- und Kleinschreibung.
+  - Verhindert das Anlegen doppelter Local-DNS-Einträge.
+- `build_dns_hostname()` implementiert:
+  - Erstellt aus einem Servicenamen den vollständigen DNS-Hostnamen.
+- DNS-Validierung in den Programmablauf (`main.py`) integriert.
+
+**Geändert**
+- `validate_env()` um die Pi-hole-Konfigurationsvariablen erweitert:
+  - `PIHOLE_API_URL`
+  - `PIHOLE_PASSWORD`
+- Einheitliche Erstellung von DNS-Hostnamen über `build_dns_hostname()`.
+- Dry-Run berücksichtigt nun die erfolgreiche DNS-Validierung.
+- Dry-Run-Meldung präzisiert: zeigt jetzt explizit „Uptime-Kuma Monitor" an.

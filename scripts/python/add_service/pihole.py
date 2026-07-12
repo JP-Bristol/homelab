@@ -93,3 +93,7 @@ def build_dns_records(records):
 
     dns_records = [parse_dns_record(record) for record in records ]
     return dns_records
+
+def build_dns_hostname(service_name):
+    
+    return f"{service_name}.home"
