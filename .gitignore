@@ -6,6 +6,7 @@ services/*/data/
 logs/
 scripts/python/.env
 scripts/python/playground/
+scripts/python/sandbox/
 
 __pycache__/
 *.pyc

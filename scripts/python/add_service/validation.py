@@ -55,6 +55,8 @@ def validate_uptime_monitor(monitors, monitor_url, monitor_name):
 
 def validate_pihole_dns_records(records,service_name):
 
+    """Prüft, ob der Hostname bereits in den Pi-hole DNS-Einträgen vorhanden ist."""
+
     if any(service_name.lower() == r['hostname'].lower() for r in records):
         return False
     return True
