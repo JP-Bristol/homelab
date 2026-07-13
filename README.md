@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.4.0` – Fehlerbehandlung & Cleanup (try/finally, zentrales Ressourcen-Management)
+- `add_service.py v0.4.1` – Konfiguration (load_env_config, os.getenv() aus main.py auslagern)
 
 
 ## 🚀 Roadmap

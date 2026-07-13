@@ -5,7 +5,7 @@ Kurze Übersicht aller eigenen Automatisierungs- und Monitoring-Skripte im Homel
 |---|---|---|---|  
 | `uptime_kuma.py` | Service-Status aus Uptime Kuma anzeigen | `python3 uptime_kuma.py` | ✅ v0.1 |  
 | `backup_log.py` | Backup-Log auswerten | `python3 backup_log.py` | ✅ v0.1 |  
-| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.3.3 |
+| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.4.0 |
 
 ### 1.1 Ablageort
 ```bash  
@@ -176,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.3.3 |  
+| Version | v0.4.0 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -363,7 +363,7 @@ PIHOLE_PASSWORD=
 - Rückgabewert von `disconnect_uptime_kuma()` wird jetzt geprüft (war zuvor 
   inkonsistent zu `disconnect_from_pihole()`, wo dies bereits der Fall war).
 
-#### 3.3.7 v0.3.2
+#### 4.3.7 v0.3.2
 **Datum:** 2026-07-12
 
 **Neu**
@@ -384,7 +384,7 @@ PIHOLE_PASSWORD=
 - Dry-Run-Meldung präzisiert: zeigt jetzt explizit „Uptime-Kuma Monitor" an.
 
 
-#### 3.3.8 v0.3.3
+#### 4.3.8 v0.3.3
 **Datum:** 2026-07-12
 
 **Neu**
@@ -406,3 +406,20 @@ PIHOLE_PASSWORD=
 - Uptime-Kuma-Monitor erfolgreich erstellt.
 - Pi-hole-Local-DNS-Eintrag erfolgreich angelegt.
 - Beide API-Verbindungen anschließend sauber beendet.
+
+
+#### 4.3.9 v0.4.0
+**Datum:** 2026-07-13
+
+**Neu**
+- `try/finally` für zentrales Ressourcenmanagement in `main.py` eingeführt.
+  - Verbindungsaufbau, Prüfung und der gesamte Programmablauf laufen jetzt innerhalb eines `try`-Blocks.
+  - Beide Verbindungen (Uptime Kuma, Pi-hole) werden im `finally`-Block garantiert getrennt – unabhängig davon, an welcher Stelle das Programm beendet wird.
+
+**Geändert**
+- Wiederholte `disconnect_uptime_kuma()`- und `disconnect_from_pihole()`-Aufrufe an den einzelnen `return`-Stellen entfernt; das Cleanup erfolgt jetzt zentral im `finally`.
+- `disconnect_uptime_kuma()` um eine `None`-Prüfung ergänzt (analog zu `disconnect_from_pihole()`), damit die Funktion auch dann sicher ausgeführt werden kann, wenn die Verbindung nie erfolgreich aufgebaut wurde.
+
+**Verifikation**
+- Erfolgreichen Programmablauf mit beiden API-Verbindungen getestet.
+- Kritischen Fehlerfall getestet: Uptime-Kuma-Verbindung schlägt fehl (falsches Passwort), Pi-hole-Verbindung wurde bereits erfolgreich aufgebaut → beide Ressourcen werden trotzdem sauber freigegeben, kein Absturz.

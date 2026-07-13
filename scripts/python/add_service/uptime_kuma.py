@@ -38,6 +38,8 @@ def add_uptime_monitor(api, monitor_name, monitor_url):
 
 def disconnect_uptime_kuma(api):
     """Trennt die Verbindung zur Uptime Kuma API."""
+    if api is None:
+        return False
     try:
         api.disconnect()
         print("Verbindung zu Uptime Kuma getrennt")
