@@ -188,6 +188,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 ``` 
 homelab/
 ├── README.md
+├── CONTRIBUTING.md
 ├── hardware/
 │   └── inventory.md
 ├── infrastructure/
@@ -204,12 +205,15 @@ homelab/
 │   └── python/
 │       ├── README.md
 │       ├── add_service/
+│       │   ├── CHANGELOG.md
 │       │   ├── main.py
 │       │   ├── parser.py
 │       │   ├── output.py
-│       │   ├── requirements.txt
+│       │   ├── config.py
 │       │   ├── uptime_kuma.py
+│       │   ├── pihole.py
 │       │   └── validation.py
+│       ├── sandbox/
 │       ├── backup_log.py
 │       ├── requirements.txt
 │       └── uptime_api.py
