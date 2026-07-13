@@ -1,5 +1,13 @@
 from parser import parse_arguments
-from output import print_status
+from output import (
+    print_status,
+    print_ok,
+    print_info,
+    print_warning,
+    print_error,
+    print_debug
+)
+
 from validation import is_valid_input, validate_env, validate_uptime_monitor, validate_pihole_dns_records
 from uptime_kuma import (
     connect_to_uptime_kuma,
@@ -33,11 +41,11 @@ def main():
     args = parse_arguments()
 
     if args is None:
-        print("Keine Eingabe")
+        print_error("Keine Eingabe")
         return 
 
     if is_valid_input(args) is None:
-        print("Fehler: Keine Gültige Eingabe")
+        print_error("Keine Gültige Eingabe")
         return
     
     config = load_env_config()
@@ -65,11 +73,11 @@ def main():
         # 2. Prüfen 
 
         if api is None:
-            print("Fehler: Verbindung zu Uptime Kuma fehlgeschlagen")
+            print_error("Verbindung zu Uptime Kuma fehlgeschlagen")
             return
         
         if session is None:
-            print("Fehler: Verbindung zu Pi-Hole Fehlgeschlagen")
+            print_error("Verbindung zu Pi-Hole Fehlgeschlagen")
             return
 
         
@@ -81,7 +89,7 @@ def main():
         raw_monitors = get_uptime_monitors(api)
 
         if raw_monitors is None:
-            print("Fehler Uptime Kuma Monitors")
+            print_error("Uptime Kuma Monitors")
             return
 
         monitors = build_monitor_records(raw_monitors)
@@ -92,27 +100,27 @@ def main():
                                             session)
 
         if raw_dns_records is None:
-            print("Fehler DNS Records")
+            print_error("DNS Records")
             return        
     
         parsed_records = build_dns_records(raw_dns_records)
-        print(f"[DEBUG] {len(parsed_records)} DNS-Einträge geladen")
+        print_debug(f"{len(parsed_records)} DNS-Einträge geladen")
 
         # 4. Duplikate prüfen
         if not validate_uptime_monitor(monitors, monitor_url, args.service):
-            print("Fehler: Monitor oder URL bereits vorhanden")
+            print_error("Monitor oder URL bereits vorhanden")
             return
         
         if not validate_pihole_dns_records(parsed_records, pihole_hostname):
-             print("Fehler: DNS-Eintrag in Pihole bereits vorhanden")
+             print_error("DNS-Eintrag in Pihole bereits vorhanden")
              return
         
         # 5. Erstellen
         target_ip = config["network"]["target_ip"]
 
         if args.dry_run:
-            print(f"[DRY-RUN] Würde Uptime-Kuma Monitor '{args.service}' auf {monitor_url} erstellen")
-            print(f"[DRY-RUN] Würde local dns record in pi-hole '{pihole_hostname}' auf {target_ip} erstellen")
+            print_info(f"Würde Uptime-Kuma Monitor '{args.service}' auf {monitor_url} erstellen")
+            print_info(f"Würde local dns record in pi-hole '{pihole_hostname}' auf {target_ip} erstellen")
 
         else:
             success_add_uptime_monitor = add_uptime_monitor(api, args.service, monitor_url)
@@ -127,8 +135,8 @@ def main():
             if not success_add_pihole_local_dns:
                 return
             
-            print("Uptime Kuma Monitor erfolgreich erstellt")
-            print("Pi-hole local dns record erfolgreich angelegt")
+            print_ok("Uptime Kuma Monitor erfolgreich erstellt")
+            print_ok("Pi-hole local dns record erfolgreich angelegt")
 
 
     
@@ -136,10 +144,16 @@ def main():
 
         #6 Verbindungen trennen
 
-        disconnect_uptime_kuma(api)
-        disconnect_from_pihole(config["pihole"]["api_url"],
-                               session)
+        if api is not None:
+            success_kuma = disconnect_uptime_kuma(api)
+            if not success_kuma:
+                print_warning("Uptime Kuma Session nicht beendet")
 
+
+        if session is not None:
+            success_pihole = disconnect_from_pihole(config["pihole"]["api_url"], session)
+            if not success_pihole:
+                print_warning("Pi-hole Session nicht beendet")
 
 if __name__ == "__main__":
     main()

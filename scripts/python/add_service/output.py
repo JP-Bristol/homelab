@@ -16,3 +16,19 @@ def print_status(args):
 
     print("✓ Eingaben validiert\n")
     print("=" * 50)
+
+
+def print_ok(message):
+    print(f"[OK] {message}")
+
+def print_info(message):
+    print(f"[INFO] {message}")
+
+def print_warning(message):
+    print(f"[WARNING] {message}")
+
+def print_error(message):
+    print(f"[ERROR] {message}")
+
+def print_debug(message):
+    print(f"[DEBUG] {message}")

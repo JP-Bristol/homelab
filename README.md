@@ -129,7 +129,8 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.4.3` – Ausgabe-Helper (print_success/error/warning/info) + Business-Logik von print() befreien
+- `add_service.py v0.4.4` – Differenzierte Fehlerbehandlung (Timeout, HTTPError, UptimeKumaException, etc.) in API-Funktionen
+
 
 
 ## 🚀 Roadmap

@@ -4,6 +4,42 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.4.3
+**Datum:** 2026-07-13
+
+#### Neu
+- Ausgabe-Helper in `output.py` eingeführt:
+  - `print_ok()`
+  - `print_info()`
+  - `print_warning()`
+  - `print_error()`
+  - `print_debug()`
+- Einheitliches Ausgabeformat für die Konsole eingeführt:
+  - `[OK]`
+  - `[INFO]`
+  - `[WARNING]`
+  - `[ERROR]`
+  - `[DEBUG]`
+
+#### Geändert
+- `main.py` verwendet jetzt ausschließlich die neuen Ausgabe-Helper anstelle direkter `print()`-Aufrufe.
+- Debug-Ausgaben auf `print_debug()` umgestellt.
+- Erfolgs-, Informations-, Warn- und Fehlermeldungen im Hauptprogramm vereinheitlicht.
+- Redundante Präfixe im Meldungstext entfernt (z. B. `"Fehler: ..."`, `[DEBUG]`, `[DRY-RUN]`), da die neuen Ausgabe-Helper das Präfix automatisch ergänzen.
+
+#### Behoben
+- Warnmeldungen bei nicht sauber getrennten Verbindungen (`disconnect_uptime_kuma()` / `disconnect_from_pihole()`) waren seit dem `try/finally`-Umbau in v0.4.0 verloren gegangen (Rückgabewerte wurden nicht mehr geprüft); jetzt wiederhergestellt und über `print_warning()` ausgegeben.
+- `finally`-Block um `None`-Prüfungen ergänzt (`if api is not None:` / `if session is not None:`), sodass Disconnect-Funktionen nur bei tatsächlich aufgebauten Verbindungen aufgerufen werden.
+
+#### Verifikation
+- Erfolgreichen Programmablauf mit den neuen Ausgabe-Helpern getestet.
+- Dry-Run mit der vereinheitlichten Konsolenausgabe getestet.
+- Fehler- und Warnmeldungen im Hauptprogramm erfolgreich über die neuen Ausgabe-Helper ausgegeben.
+- Kritischer Fehlerfall (Uptime-Kuma-Verbindung schlägt fehl) erneut mit neuen Ausgabe-Helpern bestätigt.
+
+#### Bekannt / Offen
+- Business-Logik in `pihole.py`, `uptime_kuma.py` und `validation.py` nutzt weiterhin eigene `print()`-Aufrufe statt der neuen Ausgabe-Helper — vollständige Trennung von Ausgabe und Logik folgt in einem späteren Schritt.
+
 ## v0.4.2
 **Datum:** 2026-07-13
 
