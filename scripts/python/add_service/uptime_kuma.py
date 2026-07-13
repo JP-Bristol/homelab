@@ -20,8 +20,8 @@ def connect_to_uptime_kuma(url, username, password):
         return None
     
     except UptimeKumaException as err:
-         print_error(f"Verbindung zu Uptime Kuma fehlgeschlagen: {err}")
-         return None
+        print_error(f"Verbindung zu Uptime Kuma fehlgeschlagen: {err}")
+        return None
 
     except Exception as err:
         print_error(f"Unbekannter Fehler ({type(err).__name__}): {err}")
@@ -37,8 +37,8 @@ def get_uptime_monitors(api):
         return None
     
     except UptimeKumaException as err:
-         print_error(f"Monitore konnten nicht abgerufen werden: {err}")
-         return None
+        print_error(f"Monitore konnten nicht abgerufen werden: {err}")
+        return None
 
     except Exception as err:
         print_error(f"Unbekannter Fehler: {err}")
@@ -66,8 +66,8 @@ def add_uptime_monitor(api, monitor_name, monitor_url):
         return False
     
     except UptimeKumaException as err:
-         print_error(f"Monitor konnte nicht erstellt werden: {err}")
-         return False
+        print_error(f"Monitor konnte nicht erstellt werden: {err}")
+        return False
 
     except Exception as err:
         print_error(f"Unbekannter Fehler: {err}")
