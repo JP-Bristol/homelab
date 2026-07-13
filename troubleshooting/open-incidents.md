@@ -54,9 +54,9 @@ Authentifizierungsfehler (z. B. falsches Passwort) verdecken.
 ### Nächste Analyse
 Beim nächsten Auftreten kurz notieren (aus der bestehenden Konsolen-Ausgabe, kein Zusatzaufwand):
 
-- [ ] Exception-Typ (wird bereits seit v0.4.4 angezeigt)
-- [ ] Fehlermeldung
-- [ ] Ungefähre Uhrzeit
+- [x] Exception-Typ: `TimeoutError` (Pythons eingebaute Klasse, NICHT `uptime_kuma_api.Timeout`)
+- [x] Fehlermeldung: (leer/keine Nachricht)
+- [x] Uhrzeit: 2026-07-13, 19:57
 
 ### Abschlusskriterien
 Der Eintrag wird ins reguläre `log.md` übernommen, sobald:
