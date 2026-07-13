@@ -13,7 +13,11 @@ def connect_to_uptime_kuma(url, username, password):
 
 def get_uptime_monitors(api):
     """Gibt alle aktuell vorhandenen Uptime Kuma Monitore zurück."""
-    return api.get_monitors()
+    try:
+        return api.get_monitors()
+    except Exception as e:
+        print(f"Fehler: {e}")
+        return None
 
 
 def build_monitor_url(target_ip, port):
@@ -47,3 +51,13 @@ def disconnect_uptime_kuma(api):
     except Exception as e:
         print(f"Verbindung konnte nicht getrennt werden: {e}")
         return False
+    
+def parse_monitor_record(monitors):
+    return {
+        "id": monitors["id"],
+        "name": monitors["name"],
+        "url": monitors["url"]
+    }
+
+def build_monitor_records(monitors):
+    return [parse_monitor_record(m) for m in monitors if m["type"] == "http"]

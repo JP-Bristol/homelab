@@ -5,7 +5,7 @@ Kurze Übersicht aller eigenen Automatisierungs- und Monitoring-Skripte im Homel
 |---|---|---|---|  
 | `uptime_kuma.py` | Service-Status aus Uptime Kuma anzeigen | `python3 uptime_kuma.py` | ✅ v0.1 |  
 | `backup_log.py` | Backup-Log auswerten | `python3 backup_log.py` | ✅ v0.1 |  
-| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.4.0 |
+| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.4.2 |
 
 ### 1.1 Ablageort
 ```bash  
@@ -176,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.4.0 |  
+| Version | v0.4.2 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -447,3 +447,42 @@ PIHOLE_PASSWORD=
 - Erfolgreichen Programmablauf mit der neuen Konfigurationsstruktur getestet.
 - Dry-Run erfolgreich ausgeführt.
 - Erstellung von Uptime-Kuma-Monitor und Pi-hole Local-DNS-Eintrag mit zentral geladener Konfiguration erfolgreich getestet.
+
+
+
+#### 4.3.11 v0.4.2
+**Datum:** 2026-07-13
+
+**Neu**
+- `parse_monitor_record()` implementiert:
+  - Wandelt einen von der Uptime-Kuma-API zurückgegebenen Monitor in eine schlanke interne Datenstruktur um.
+- `build_monitor_records()` implementiert:
+  - Erstellt aus allen unterstützten Uptime-Kuma-Monitoren eine strukturierte Liste.
+  - Filtert ausschließlich HTTP(s)-Monitore (`type == "http"`); andere Monitortypen (z. B. Ping) werden ausgeschlossen.
+- Einheitliche interne Datenstruktur für Uptime-Kuma-Monitore eingeführt:
+
+```python
+[
+    {
+        "id": 1,
+        "name": "Pihole",
+        "url": "http://192.168.2.x:8080/admin/login"
+    }
+]
+```
+
+**Geändert*+
+- `main.py`: Das Ergebnis von `get_uptime_monitors()` wird jetzt über `build_monitor_records()` in die interne Datenstruktur überführt, bevor es an `validate_uptime_monitor()` übergeben wird.
+- `validate_uptime_monitor()` selbst bleibt unverändert und arbeitet dank identischer Feldnamen (`name`, `url`) transparent mit der neuen Datenstruktur.
+- Die Datenverarbeitung für Uptime Kuma folgt jetzt derselben Architektur wie Pi-hole:
+  - `fetch → build → validate → add`
+
+**Behoben**
+- `get_uptime_monitors()` verfügt jetzt über eine eigene Fehlerbehandlung (`try/except`) und gibt bei API-Fehlern konsistent `None` zurück.
+- `main.py` prüft analog zu Pi-hole (`raw_dns_records`), ob `get_uptime_monitors()` `None` liefert, bevor `build_monitor_records()` aufgerufen wird.
+
+**Verifikation**
+- Erfolgreichen Erstell-Durchlauf (Uptime-Kuma-Monitor + Pi-hole Local-DNS-Eintrag) mit der neuen Datenstruktur getestet.
+- Duplikat-Erkennung für Monitorname und Monitor-URL mit der neuen Datenstruktur erfolgreich bestätigt.
+- Erfolgreichen Dry-Run mit der neuen Monitor-Datenstruktur getestet.
+- Fehlerfall beim Abrufen der Uptime-Kuma-Monitore erfolgreich getestet.

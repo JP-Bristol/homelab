@@ -6,7 +6,8 @@ from uptime_kuma import (
     get_uptime_monitors,
     build_monitor_url,
     add_uptime_monitor,
-    disconnect_uptime_kuma
+    disconnect_uptime_kuma,
+    build_monitor_records
 )
 
 from pihole import (
@@ -76,13 +77,19 @@ def main():
         monitor_url = build_monitor_url(
             config["network"]["target_ip"],
             args.port)
-        
-        
-        monitors = get_uptime_monitors(api)
+         
+        raw_monitors = get_uptime_monitors(api)
+
+        if raw_monitors is None:
+            print("Fehler Uptime Kuma Monitors")
+            return
+
+        monitors = build_monitor_records(raw_monitors)
+
 
         pihole_hostname = build_dns_hostname(args.service)
-        raw_dns_records = fetch_dns_records(config["pihole"]["api_url"]
-                                            ,session)
+        raw_dns_records = fetch_dns_records(config["pihole"]["api_url"],
+                                            session)
 
         if raw_dns_records is None:
             print("Fehler DNS Records")
@@ -127,7 +134,7 @@ def main():
     
     finally:
 
-        #6 Verbindung trennen
+        #6 Verbindungen trennen
 
         disconnect_uptime_kuma(api)
         disconnect_from_pihole(config["pihole"]["api_url"],
