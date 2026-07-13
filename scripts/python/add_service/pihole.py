@@ -1,4 +1,6 @@
 import requests
+from error import get_http_error_message
+from output import print_error, print_ok
 
 def connect_to_pihole(pihole_api_url, pihole_password):
 
@@ -11,29 +13,39 @@ def connect_to_pihole(pihole_api_url, pihole_password):
         password_json = {"password": pihole_password}
         response = session.post(f"{pihole_api_url}/auth", json=password_json)
 
-        
-
-        if response.status_code != 200:
-            session.close() 
-            print(f"Fehler: Status {response.status_code}")
-            return None
+        response.raise_for_status()
 
         data = response.json()
         sid = data.get('session', {}).get('sid')
 
         if sid is None:
             session.close() 
-            print("Fehler: SID")
+            print_error("Fehler: SID")
             return None
 
         session.headers.update({"X-FTL-SID": sid})  
 
         return session
-
     
-    except Exception as e:
+    except requests.exceptions.HTTPError as err:
         session.close() 
-        print(f"Verbindungfehler: {e}")
+        message = get_http_error_message(err.response.status_code)
+        print_error(f"Pi-hole: {message} (HTTP {err.response.status_code})")
+        return None
+
+    except requests.exceptions.ConnectionError as err:
+        session.close() 
+        print_error(f"Verbindung zu Pi-hole fehlgeschlagen: {err}")
+        return None  
+    
+    except requests.exceptions.Timeout as err:
+        session.close() 
+        print_error(f"Zeitüberschreitung bei der Verbindung zu Pi-hole: {err}")
+        return None      
+
+    except Exception as err:
+        session.close()
+        print_error(f"Unbekannter Fehler: {err}")
         return None
 
 
@@ -45,18 +57,27 @@ def disconnect_from_pihole(pihole_api_url, session):
         return False
     try:
         response = session.delete(f"{pihole_api_url}/auth")
+        response.raise_for_status()
 
-        
 
-        if response.status_code != 204:
-            print(f"Fehler: Status {response.status_code}")
-            return False
-
-        print("Verbindung zu Pihole getrennt")
+        print_ok("Verbindung zu Pihole getrennt")
         return True
 
-    except Exception as e:
-        print(f"Fehler: {e}")
+    except requests.exceptions.HTTPError as err:
+        message = get_http_error_message(err.response.status_code)
+        print_error(f"Pi-hole: {message} (HTTP {err.response.status_code})")
+        return False
+
+    except requests.exceptions.ConnectionError as err:
+        print_error(f"Verbindung vom Pi-hole konnte nicht getrennt werden: {err}")
+        return False
+        
+    except requests.exceptions.Timeout as err:
+        print_error(f"Zeitüberschreitung bei der Trennung vom Pi-hole: {err}")
+        return False     
+
+    except Exception as err:
+        print_error(f"Unbekannter Fehler: {err}")
         return False
 
     finally:
@@ -68,13 +89,29 @@ def fetch_dns_records(pihole_api_url,session):
 
     try:   
         response = session.get(f"{pihole_api_url}/config/dns/hosts")
-        if response.status_code != 200:
-            print(f"Fehler: Status {response.status_code}")
-            return None
+        response.raise_for_status()
+
         return response.json()['config']['dns']['hosts']
 
-    except Exception as e:
-        print(f"Fehler Fetch DNS: {e}")
+    except requests.exceptions.HTTPError as err:
+        message = get_http_error_message(err.response.status_code)
+        print_error(f"Pi-hole: {message} (HTTP {err.response.status_code})")
+        return None
+
+    except requests.exceptions.ConnectionError as err:
+        print_error(f"Verbindung zu Pi-hole fehlgeschlagen: {err}")
+        return None
+
+    except requests.exceptions.Timeout as err:
+        print_error(f"Zeitüberschreitung beim Abrufen der DNS-Einträge: {err}")
+        return None
+
+    except KeyError as err:
+        print_error(f"Unerwartetes Antwortformat von Pi-hole: {err}")
+        return None
+
+    except Exception as err:
+        print_error(f"Unbekannter Fehler: {err}")
         return None
 
 def parse_dns_record(record):
@@ -106,11 +143,22 @@ def add_local_dns_record(session, pihole_api_url, ip, hostname):
 
     try:
         response = session.put(f"{pihole_api_url}/config/dns/hosts/{ip}%20{hostname}")
-        if response.status_code != 201:
-            print(f"Fehler: add dns record status {response.status_code}")
-            return False
+        response.raise_for_status()
         return True
 
-    except Exception as e:
-        print(f"Fehler: {e}")
+    except requests.exceptions.HTTPError as err:
+        message = get_http_error_message(err.response.status_code)
+        print_error(f"Pi-hole: {message} (HTTP {err.response.status_code})")
+        return False
+
+    except requests.exceptions.ConnectionError as err:
+        print_error(f"Datenübertragung zu Pi-hole fehlgeschlagen: {err}")
+        return False
+
+    except requests.exceptions.Timeout as err:
+        print_error(f"Zeitüberschreitung beim Übertragen der DNS-Einträge: {err}")
+        return False
+
+    except Exception as err:
+        print_error(f"Unbekannter Fehler: {err}")
         return False

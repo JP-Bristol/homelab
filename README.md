@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.4.4` – Differenzierte Fehlerbehandlung (Timeout, HTTPError, UptimeKumaException, etc.) in API-Funktionen
+- `add_service.py v0.4.5` – Namenskonventionen vereinheitlichen (Schreibweisen "Pi-hole"/"Uptime Kuma", Variablen- & Funktionsnamen-Konsistenz)
 
 
 

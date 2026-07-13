@@ -5,7 +5,7 @@ Kurze Übersicht aller eigenen Automatisierungs- und Monitoring-Skripte im Homel
 |---|---|---|---|  
 | `uptime_kuma.py` | Service-Status aus Uptime Kuma anzeigen | `python3 uptime_kuma.py` | ✅ v0.1 |  
 | `backup_log.py` | Backup-Log auswerten | `python3 backup_log.py` | ✅ v0.1 |  
-| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.4.3 |
+| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.4.4 |
 
 ### 1.1 Ablageort
 ```bash  
@@ -176,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.4.3 |  
+| Version | v0.4.4 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 
@@ -221,10 +221,10 @@ PIHOLE_PASSWORD=
 - Zentrales Ressourcen-Management (`try/finally`)
 - Strukturierte Konfiguration (`config.py`)
 - Einheitliche Datenstrukturen für Kuma-Monitore und Pi-hole-DNS-Einträge
-
-#### 3.3.6 Geplante Funktionen
 - Ausgabe-Helper & Business-Logik entkoppeln (v0.4.3)
 - Fehlerbehandlung verfeinern (v0.4.4)
+
+#### 3.3.6 Geplante Funktionen
 - Namenskonventionen vereinheitlichen (v0.4.5)
 - Service-Log implementieren (v0.5.0)
 - Nginx Proxy Manager Proxy Host erstellen (v0.6.x)

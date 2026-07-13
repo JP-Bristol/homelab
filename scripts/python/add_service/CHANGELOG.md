@@ -4,6 +4,42 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.4.4
+**Datum:** 2026-07-13
+
+#### Neu
+- `errors.py` eingeführt:
+  - `HTTP_STATUS_MESSAGES` — Lookup-Tabelle für verständliche HTTP-Status-Meldungen (400, 401, 403, 404, 500).
+  - `get_http_error_message()` — übersetzt einen HTTP-Status-Code in eine lesbare Meldung, mit Fallback für unbekannte Codes.
+- Differenzierte Fehlerbehandlung in allen API-Funktionen eingeführt, statt eines generischen `except Exception`:
+  - **Pi-hole** (`connect_to_pihole()`, `disconnect_from_pihole()`, `fetch_dns_records()`, `add_local_dns_record()`):
+    - `requests.exceptions.HTTPError` (mit `get_http_error_message()`)
+    - `requests.exceptions.ConnectionError`
+    - `requests.exceptions.Timeout`
+    - `KeyError` (nur bei `fetch_dns_records()`, für unerwartetes Antwortformat)
+    - generischer `Exception`-Fallback
+  - **Uptime Kuma** (`connect_to_uptime_kuma()`, `get_uptime_monitors()`, `add_uptime_monitor()`, `disconnect_uptime_kuma()`):
+    - `Timeout` (Unterklasse von `UptimeKumaException`)
+    - `UptimeKumaException`
+    - generischer `Exception`-Fallback
+- `response.raise_for_status()` ersetzt die bisherige manuelle Status-Code-Prüfung (`if response.status_code != 200`) in allen Pi-hole-Funktionen.
+
+#### Geändert
+- Alle acht API-Funktionen (vier Pi-hole, vier Kuma) geben jetzt konsistent `None` (bei datenliefernden Funktionen) bzw. `False` (bei aktionsausführenden Funktionen) zurück.
+- Fehlermeldungen sind jetzt kontextspezifisch pro Funktion formuliert (z. B. „Monitor konnte nicht erstellt werden“ statt einer generischen Meldung für alle Kuma-Funktionen).
+- Verbleibende rohe `print()`-Aufrufe in `pihole.py` und `uptime_kuma.py` auf die Ausgabe-Helper aus v0.4.3 umgestellt.
+
+#### Verifikation
+- Vollständiger Ablauf (Dry-Run) mit allen acht überarbeiteten Funktionen erfolgreich getestet.
+- `HTTPError`-Fall (falsches Pi-hole-Passwort, 401) erfolgreich mit verständlicher Meldung bestätigt.
+- `KeyError`-Fall (künstlich fehlerhafte JSON-Struktur) erfolgreich getestet.
+- `UptimeKumaException`-Fall (falsches Kuma-Passwort) erfolgreich mit Bibliotheks-Fehlermeldung bestätigt.
+
+#### Bekannt / Offen
+- Vereinzelt (nicht reproduzierbar) tritt beim ersten Skriptstart des Tages ein Verbindungsfehler zu Uptime Kuma auf, der aktuell nur vom generischen `Exception`-Block aufgefangen wird. `connect_to_uptime_kuma()` protokolliert versuchsweise den Exception-Typnamen (`type(err).__name__`), um die genaue Ursache beim nächsten Auftreten zu identifizieren.
+- Retry-Mechanismus für `connect_to_uptime_kuma()` als möglicher Fix vorgemerkt (noch nicht umgesetzt).
+
+
 ### v0.4.3
 **Datum:** 2026-07-13
 
