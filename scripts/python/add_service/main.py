@@ -1,6 +1,3 @@
-import os
-from dotenv import load_dotenv
-
 from parser import parse_arguments
 from output import print_status
 from validation import is_valid_input, validate_env, validate_uptime_monitor, validate_pihole_dns_records
@@ -21,8 +18,9 @@ from pihole import (
     add_local_dns_record
 )
 
+from config import load_env_config
 
-load_dotenv()
+
 
 def main():
 
@@ -40,37 +38,28 @@ def main():
     if is_valid_input(args) is None:
         print("Fehler: Keine Gültige Eingabe")
         return
+    
+    config = load_env_config()
 
-    if not validate_env():
+    if not validate_env(config):
         return   
 
     print_status(args)
-
-
-    # TODO: os.getenv() Aufrufe in load_env_config() auslagern,
-    # um Duplikation mit validate_env() zu vermeiden (Single Responsibility)
-
-    url_kuma = os.getenv("KUMA_URL")
-    target_ip = os.getenv("TARGET_IP")
-    username_kuma = os.getenv("KUMA_USERNAME")
-    password_kuma = os.getenv("KUMA_PASSWORD")
-
-    pihole_api_url = os.getenv("PIHOLE_API_URL")
-    pihole_password = os.getenv("PIHOLE_PASSWORD")
-
-
-    # TODO (v0.4.0):
-    # Ressourcenverwaltung auf try/finally umstellen, damit alle API-Verbindungen
-    # zentral und unabhängig vom Programmablauf sauber beendet werden.
-
 
     api = None
     session = None
     
     try:
         # 1. Verbindung
-        api = connect_to_uptime_kuma(url_kuma, username_kuma, password_kuma)
-        session = connect_to_pihole(pihole_api_url, pihole_password)
+        api = connect_to_uptime_kuma(
+            config["kuma"]["url"],
+            config["kuma"]["username"],
+            config["kuma"]["password"]
+           )
+        session = connect_to_pihole(
+            config["pihole"]["api_url"],
+            config["pihole"]["password"]
+            )
 
         # 2. Prüfen 
 
@@ -84,11 +73,16 @@ def main():
 
         
         # 3. Daten holen 
-        monitor_url = build_monitor_url(target_ip, args.port)
+        monitor_url = build_monitor_url(
+            config["network"]["target_ip"],
+            args.port)
+        
+        
         monitors = get_uptime_monitors(api)
 
         pihole_hostname = build_dns_hostname(args.service)
-        raw_dns_records = fetch_dns_records(pihole_api_url,session)
+        raw_dns_records = fetch_dns_records(config["pihole"]["api_url"]
+                                            ,session)
 
         if raw_dns_records is None:
             print("Fehler DNS Records")
@@ -107,6 +101,7 @@ def main():
              return
         
         # 5. Erstellen
+        target_ip = config["network"]["target_ip"]
 
         if args.dry_run:
             print(f"[DRY-RUN] Würde Uptime-Kuma Monitor '{args.service}' auf {monitor_url} erstellen")
@@ -118,7 +113,10 @@ def main():
             if not success_add_uptime_monitor:
                 return
             
-            success_add_pihole_local_dns = add_local_dns_record(session,pihole_api_url,target_ip,pihole_hostname)
+            success_add_pihole_local_dns = add_local_dns_record(session,
+                                                                config["pihole"]["api_url"],
+                                                                config["network"]["target_ip"],
+                                                                pihole_hostname)
             if not success_add_pihole_local_dns:
                 return
             
@@ -132,7 +130,8 @@ def main():
         #6 Verbindung trennen
 
         disconnect_uptime_kuma(api)
-        disconnect_from_pihole(pihole_api_url, session)
+        disconnect_from_pihole(config["pihole"]["api_url"],
+                               session)
 
 
 if __name__ == "__main__":

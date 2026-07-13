@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.4.1` – Konfiguration (load_env_config, os.getenv() aus main.py auslagern)
+- `add_service.py v0.4.2` – Uptime-Kuma-Datenstruktur vereinheitlichen
 
 
 ## 🚀 Roadmap
@@ -148,8 +148,10 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 -   `add_service.py`
     -   (abgeschlossen) v0.2 – Uptime Kuma API (Monitor automatisch anlegen)
     -   (abgeschlossen) v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
-    -   v0.4.x – Ressourcenverwaltung, Konfiguration & einheitliche Ausgabe
-    -   v0.5.x – Service-Log implementieren
+    -   (abgeschlossen) v0.4.0 – Ressourcenverwaltung (try/finally)
+    -   (abgeschlossen) v0.4.1 – Konfiguration (load_env_config)
+    -   v0.4.x – Datenstruktur, Ausgabe & Fehlerbehandlung vereinheitlichen
+    -   v0.5.0 – Service-Log (Pipe-Format, Konsole + Log parallel, Basis für späteren Runbook-Agent-Parser)
     -   v0.6.x – Nginx Proxy Manager Proxy Host erstellen
     -   v0.7.x – UFW-Port automatisch freigeben
     -   v1.0 – Vollständige Service-Automatisierung

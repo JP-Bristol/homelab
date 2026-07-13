@@ -423,3 +423,27 @@ PIHOLE_PASSWORD=
 **Verifikation**
 - Erfolgreichen Programmablauf mit beiden API-Verbindungen getestet.
 - Kritischen Fehlerfall getestet: Uptime-Kuma-Verbindung schlägt fehl (falsches Passwort), Pi-hole-Verbindung wurde bereits erfolgreich aufgebaut → beide Ressourcen werden trotzdem sauber freigegeben, kein Absturz.
+
+
+#### 4.3.10 v0.4.1
+**Datum:** 2026-07-13
+
+**Neu**
+- Neues Modul `config.py` eingeführt.
+- `load_env_config()` implementiert:
+  - Lädt alle benötigten Umgebungsvariablen.
+  - Erstellt eine strukturierte Konfiguration für:
+    - Uptime Kuma
+    - Pi-hole
+    - Netzwerk
+
+**Geändert**
+- `main.py` verwendet jetzt ausschließlich die zentrale Konfiguration aus `config.py`.
+- Alle direkten `os.getenv()`-Aufrufe aus `main.py` entfernt.
+- `validate_env()` auf die neue Konfigurationsstruktur umgestellt.
+- `load_dotenv()` nach `config.py` verschoben, sodass das Laden der Konfiguration vollständig gekapselt ist.
+
+**Verifikation**
+- Erfolgreichen Programmablauf mit der neuen Konfigurationsstruktur getestet.
+- Dry-Run erfolgreich ausgeführt.
+- Erstellung von Uptime-Kuma-Monitor und Pi-hole Local-DNS-Eintrag mit zentral geladener Konfiguration erfolgreich getestet.
