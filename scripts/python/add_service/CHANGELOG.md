@@ -4,6 +4,37 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.4.5
+**Datum:** 2026-07-14
+
+#### Geändert
+- Kommentar-Struktur in `main.py` vereinheitlicht:
+  - `# 1. Verbindungen herstellen`, `# 2. Verbindungen prüfen`, `# 3. Daten abrufen`,
+    `# 4. Duplikate prüfen`, `# 5. Ressourcen erstellen`, `# 6. Verbindungen trennen`
+- Variablennamen vereinheitlicht:
+  - `api` → `session_uptime_kuma`
+  - `session` → `session_pihole`
+  - `parsed_records` → `dns_records` (nach `build_*()` entstehen fertige Datenobjekte, keine "geparsten" Daten mehr)
+- Funktionsparameter korrigiert:
+  - `parse_monitor_record(monitors)` → `parse_monitor_record(monitor)` (Parser erhält immer ein einzelnes Objekt, nicht die Liste)
+- Schreibweisen projektweit vereinheitlicht:
+  - **Pi-hole** (durchgehend mit Bindestrich, statt „Pihole“/„Pi-Hole“)
+  - **Uptime Kuma** (mit Leerzeichen als Basisform)
+  - **Uptime-Kuma-Monitor(e)**, **Uptime-Kuma-Session**, **Uptime-Kuma-Verbindung** (durchgekoppelt als zusammengesetzte Begriffe)
+  - **Pi-hole DNS-Eintrag/-Einträge**
+- Alle verbliebenen rohen `print()`-Aufrufe (in `validation.py`, `output.py`) auf die Ausgabe-Helper aus v0.4.3 umgestellt.
+- Meldungstexte durchgängig überarbeitet: vollständige, kontextbezogene Aussagen statt Textfragmenten (z. B. „Uptime Kuma Monitors“ → „Uptime-Kuma-Monitore konnten nicht abgerufen werden“).
+- Doppelte Präfixe entfernt (z. B. „Fehler: “ im Text, wo `print_error()` das Präfix bereits automatisch ergänzt).
+
+#### Verifikation
+- Vollständiger Programmablauf (normale Ausführung, kein Dry-Run) nach allen Umbenennungen erfolgreich getestet.
+- Alle Konsolen-Meldungen auf durchgängige `[OK]`/`[INFO]`/`[ERROR]`-Formatierung und einheitliche Schreibweisen geprüft.
+
+#### Bekannt / Offen
+- Parameter-Namen `session`/`api` in `pihole.py`/`uptime_kuma.py` selbst (nicht nur in `main.py`) noch nicht angepasst.
+- `validate_env()` nutzt weiterhin sechs einzelne `if`-Blöcke statt einer Schleife.
+- Modulnamen-Konsistenz-Check.
+
 ### v0.4.4
 **Datum:** 2026-07-13
 

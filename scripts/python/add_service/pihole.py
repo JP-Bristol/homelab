@@ -20,10 +20,11 @@ def connect_to_pihole(pihole_api_url, pihole_password):
 
         if sid is None:
             session.close() 
-            print_error("Fehler: SID")
+            print_error("Pi-hole: Keine gültige Session-ID erhalten")
             return None
 
-        session.headers.update({"X-FTL-SID": sid})  
+        session.headers.update({"X-FTL-SID": sid}) 
+        print_ok("Verbindung zu Pi-hole erfolgreich") 
 
         return session
     
@@ -60,7 +61,7 @@ def disconnect_from_pihole(pihole_api_url, session):
         response.raise_for_status()
 
 
-        print_ok("Verbindung zu Pihole getrennt")
+        print_ok("Verbindung zu Pi-hole getrennt")
         return True
 
     except requests.exceptions.HTTPError as err:

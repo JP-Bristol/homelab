@@ -1,5 +1,6 @@
 import string
-import os
+
+from output import print_error
 
 def is_valid_input(args):
 
@@ -17,27 +18,27 @@ def is_valid_input(args):
 def validate_env(config):
     """Prüft, ob alle benötigten Umgebungsvariablen gesetzt sind."""
     if not config["kuma"]["url"]:
-        print("Fehler: KUMA_URL ist nicht gesetzt")
+        print_error("KUMA_URL ist nicht gesetzt")
         return False
 
     if not config["network"]["target_ip"]:
-        print("Fehler: TARGET_IP ist nicht gesetzt")
+        print_error("TARGET_IP ist nicht gesetzt")
         return False
 
     if not config["kuma"]["username"]:
-        print("Fehler: KUMA_USERNAME ist nicht gesetzt")
+        print_error("KUMA_USERNAME ist nicht gesetzt")
         return False
 
     if not config["kuma"]["password"]:
-        print("Fehler: KUMA_PASSWORD ist nicht gesetzt")
+        print_error("KUMA_PASSWORD ist nicht gesetzt")
         return False
     
     if not config["pihole"]["api_url"]:
-        print("Fehler: PIHOLE_API_URL ist nicht gesetzt")
+        print_error("PIHOLE_API_URL ist nicht gesetzt")
         return False
 
     if not config["pihole"]["password"]:
-        print("Fehler: PIHOLE_PASSWORD ist nicht gesetzt")
+        print_error("PIHOLE_PASSWORD ist nicht gesetzt")
         return False
     
     return True

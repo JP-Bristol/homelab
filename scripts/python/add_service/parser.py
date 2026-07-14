@@ -1,6 +1,8 @@
 import argparse
 import sys
 
+from output import print_error
+
 def parse_arguments():
 
     """Liest und verarbeitet die Kommandozeilenargumente."""
@@ -31,5 +33,5 @@ def parse_arguments():
 
     except SystemExit:
         if "--help" not in sys.argv and "-h" not in sys.argv:
-            print("Fehler: Das Argument --service und --port wird benötigt")
+            print_error("Das Argument --service und --port wird benötigt")
         return None
