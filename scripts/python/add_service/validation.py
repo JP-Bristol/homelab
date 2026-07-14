@@ -1,6 +1,10 @@
 import string
+import logging
 
 from output import print_error
+
+logger = logging.getLogger(__name__)
+
 
 def is_valid_input(args):
 

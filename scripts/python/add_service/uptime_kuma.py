@@ -1,3 +1,5 @@
+import logging 
+
 from uptime_kuma_api import (
     UptimeKumaApi, 
     MonitorType, 
@@ -5,6 +7,9 @@ from uptime_kuma_api import (
     UptimeKumaException
 )
 from output import print_ok,print_error
+
+logger = logging.getLogger(__name__)
+
 
 
 def connect_to_uptime_kuma(url, username, password):

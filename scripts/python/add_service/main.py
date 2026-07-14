@@ -1,3 +1,5 @@
+import logging 
+
 from parser import parse_arguments
 from output import (
     print_status,
@@ -28,6 +30,12 @@ from pihole import (
 )
 
 from config import load_env_config
+from logging_config import setup_logging
+
+setup_logging()
+logger = logging.getLogger(__name__)
+logger.info("Test")
+
 
 
 
@@ -35,7 +43,7 @@ def main():
 
     """
     Steuert den Programmablauf: validiert Eingaben und Umgebungsvariablen,
-    stellt die benötigten session_uptime_kuma-Verbindungen her, prüft bestehende Ressourcen
+    stellt die benötigten session Verbindungen her, prüft bestehende Ressourcen
     und erstellt neue Einträge in Uptime Kuma und Pi-hole.
     """
     args = parse_arguments()

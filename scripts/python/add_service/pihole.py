@@ -1,6 +1,13 @@
 import requests
+import logging
+
 from error import get_http_error_message
 from output import print_error, print_ok
+
+
+
+logger = logging.getLogger(__name__)
+
 
 def connect_to_pihole(pihole_api_url, pihole_password):
 
@@ -157,7 +164,7 @@ def add_local_dns_record(session, pihole_api_url, ip, hostname):
         return False
 
     except requests.exceptions.Timeout as err:
-        print_error(f"Zeitüberschreitung beim Übertragen der DNS-Einträge: {err}")
+        print_error(f"Zeitüberschreitung beim Übertragen des Pi-hole DNS-Eintrags: {err}")
         return False
 
     except Exception as err:

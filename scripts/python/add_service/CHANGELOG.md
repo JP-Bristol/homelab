@@ -4,6 +4,32 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.5.0
+**Datum:** 2026-07-14
+
+#### Neu
+- `logging_config.py` eingeführt:
+  - `setup_logging()` konfiguriert den Python-Root-Logger zentral mit zwei Handlern:
+    - `StreamHandler` (Konsole), Level `DEBUG`
+    - `FileHandler` (`logs/service.log`), Level `INFO`
+  - Formatter für die Log-Datei: `%(asctime)s | %(levelname)s | %(name)s | %(message)s`
+  - Absicherung gegen doppelte Handler bei mehrfachem Aufruf (`if logger.handlers: return logger`)
+  - Log-Level von Drittanbieter-Bibliotheken (`requests`, `urllib3`) auf `WARNING` gedämpft, um deren interne HTTP-Debug-Ausgaben aus Konsole und Datei fernzuhalten.
+- Jedes Modul (`main.py`, `pihole.py`, `uptime_kuma.py`) holt sich über `logging.getLogger(__name__)` einen eigenen, automatisch benannten Logger.
+  - Durch die Root-Logger-Konfiguration erben alle Modul-Logger automatisch dieselben Handler, ohne eigene Konfiguration.
+- `datefmt="%Y-%m-%d %H:%M:%S"` ergänzt, um Millisekunden aus dem Zeitstempel zu entfernen.
+
+#### Geändert
+- `setup_logging()` wird einmalig zentral in `main.py` aufgerufen (nicht in den einzelnen Modulen).
+
+#### Verifikation
+- Grundfunktion isoliert in der Sandbox getestet (Logger-Vererbung über Root-Logger, Level-Filterung DEBUG nur Konsole).
+- Vollständiger Programmablauf (Dry-Run) in der echten Struktur getestet: Konsolen-Ausgabe unverändert zu vorher, `logs/service.log` erhält strukturierte Einträge mit Zeitstempel und korrektem Modulnamen.
+- Drittanbieter-Log-Rauschen (`requests`/`urllib3` HTTP-Debug-Meldungen) erfolgreich unterdrückt.
+
+#### Bekannt / Offen
+- `output.py`s Ausgabe-Helper (`print_ok()`, `print_error()`, etc.) nutzen noch `print()`, nicht die neuen Logger — Anbindung folgt in v0.5.1.
+
 ### v0.4.5
 **Datum:** 2026-07-14
 

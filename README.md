@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.5.0` – Service-Log (Pipe-Format, Konsole + Log parallel, Basis für späteren Runbook-Agent-Parser)
+- `add_service.py v0.5.1` – Ausgabe-Helper an Logging anbinden
 
 
 
