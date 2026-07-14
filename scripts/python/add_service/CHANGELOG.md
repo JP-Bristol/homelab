@@ -32,7 +32,7 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 #### Bekannt / Offen
 - Parameter-Namen `session`/`api` in `pihole.py`/`uptime_kuma.py` bewusst NICHT umbenannt: 
-  Dateikontext macht die Zugehörigkeit bereits eindeutig, explizite Suffixe wären redundant.
+  Dateikontext macht die Zugehörigkeit bereits eindeutig.
 - `validate_env()` nutzt weiterhin sechs einzelne `if`-Blöcke statt einer Schleife.
 
 ### v0.4.4
