@@ -1,6 +1,9 @@
 import logging
 
 def setup_logging():
+
+    """Konfiguriert den Root-Logger mit Handlern für Konsole und Log-Datei."""
+
     logger = logging.getLogger()
 
     if logger.handlers:
@@ -19,7 +22,7 @@ def setup_logging():
     file_handler = logging.FileHandler("logs/service.log")
     file_handler.setLevel(logging.INFO)
     file_handler.setFormatter(logging.Formatter(
-        "%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+        "%(asctime)s | %(levelname)-7s | %(name)-12s | %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S"
     ))
     logger.addHandler(file_handler)

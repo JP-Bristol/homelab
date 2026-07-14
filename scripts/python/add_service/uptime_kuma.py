@@ -17,19 +17,19 @@ def connect_to_uptime_kuma(url, username, password):
     try:
         api = UptimeKumaApi(str(url))
         api.login(str(username), str(password))
-        print_ok("Verbindung zu Uptime Kuma erfolgreich")
+        print_ok(logger,"Verbindung zu Uptime Kuma erfolgreich")
         return api
     
     except Timeout as err:
-        print_error(f"Zeitüberschreitung bei der Verbindung zu Uptime Kuma: {err}")
+        print_error(logger,f"Zeitüberschreitung bei der Verbindung zu Uptime Kuma: {err}")
         return None
     
     except UptimeKumaException as err:
-        print_error(f"Verbindung zu Uptime Kuma fehlgeschlagen: {err}")
+        print_error(logger,f"Verbindung zu Uptime Kuma fehlgeschlagen: {err}")
         return None
 
     except Exception as err:
-        print_error(f"Unbekannter Fehler ({type(err).__name__}): {err}")
+        print_error(logger,f"Unbekannter Fehler ({type(err).__name__}): {err}")
         return None
 
 def get_uptime_monitors(api):
@@ -38,15 +38,15 @@ def get_uptime_monitors(api):
         return api.get_monitors()
     
     except Timeout as err:
-        print_error(f"Zeitüberschreitung beim Abrufen der Uptime-Kuma-Monitor-Einträge: {err}")
+        print_error(logger,f"Zeitüberschreitung beim Abrufen der Uptime-Kuma-Monitor-Einträge: {err}")
         return None
     
     except UptimeKumaException as err:
-        print_error(f"Uptime-Kuma-Monitore konnten nicht abgerufen werden: {err}")
+        print_error(logger,f"Uptime-Kuma-Monitore konnten nicht abgerufen werden: {err}")
         return None
 
     except Exception as err:
-        print_error(f"Unbekannter Fehler: {err}")
+        print_error(logger,f"Unbekannter Fehler: {err}")
         return None
 
 
@@ -67,15 +67,15 @@ def add_uptime_monitor(api, monitor_name, monitor_url):
         return True
     
     except Timeout as err:
-        print_error(f"Zeitüberschreitung beim Übertragen der Uptime-Kuma-Monitor-Einträge: {err}")
+        print_error(logger,f"Zeitüberschreitung beim Übertragen der Uptime-Kuma-Monitor-Einträge: {err}")
         return False
     
     except UptimeKumaException as err:
-        print_error(f"Uptime-Kuma-Monitor konnte nicht erstellt werden: {err}")
+        print_error(logger,f"Uptime-Kuma-Monitor konnte nicht erstellt werden: {err}")
         return False
 
     except Exception as err:
-        print_error(f"Unbekannter Fehler: {err}")
+        print_error(logger,f"Unbekannter Fehler: {err}")
         return False
 
 def disconnect_uptime_kuma(api):
@@ -84,19 +84,19 @@ def disconnect_uptime_kuma(api):
         return False
     try:
         api.disconnect()
-        print_ok("Verbindung zu Uptime Kuma getrennt")
+        print_ok(logger,"Verbindung zu Uptime Kuma getrennt")
         return True
     
     except Timeout as err:
-        print_error(f"Zeitüberschreitung bei der Trennung von Uptime Kuma: {err}")
+        print_error(logger,f"Zeitüberschreitung bei der Trennung von Uptime Kuma: {err}")
         return False
     
     except UptimeKumaException as err:
-        print_error(f"Uptime-Kuma-Verbindung konnte nicht getrennt werden: {err}")
+        print_error(logger,f"Uptime-Kuma-Verbindung konnte nicht getrennt werden: {err}")
         return False
 
     except Exception as err:
-        print_error(f"Unbekannter Fehler: {err}")
+        print_error(logger,f"Unbekannter Fehler: {err}")
         return False
 
     

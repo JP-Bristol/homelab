@@ -33,5 +33,5 @@ def parse_arguments():
 
     except SystemExit:
         if "--help" not in sys.argv and "-h" not in sys.argv:
-            print_error("Das Argument --service und --port wird benötigt")
+            print("[ERROR] Das Argument --service und --port wird benötigt")
         return None

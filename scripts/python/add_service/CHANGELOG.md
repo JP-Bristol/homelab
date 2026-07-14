@@ -4,6 +4,26 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.5.1
+**Datum:** 2026-07-14
+
+#### Geändert
+- `output.py`: Die Ausgabe-Helper (`print_ok()`, `print_error()`, `print_warning()`, `print_info()`, `print_debug()`) erwarten jetzt einen `logger` als ersten Parameter und nutzen intern das Python-`logging`-Modul anstelle von `print()`.
+- `print_status()` bleibt bewusst unverändert und verwendet weiterhin `print()`, da die Funktion ausschließlich der visuellen Konsolenausgabe (Header, Rahmen) dient und nicht Bestandteil des strukturierten Loggings ist.
+- Alle Aufrufer (`main.py`, `pihole.py`, `uptime_kuma.py`) übergeben jetzt ihren modulspezifischen Logger (`logging.getLogger(__name__)`) an die Ausgabe-Helper.
+- Log-Formatierung um feste Spaltenbreiten ergänzt (`%(levelname)-7s`, `%(name)-12s`) für bessere Lesbarkeit beim Überfliegen der Log-Datei.
+
+#### Architektur
+- Trennung zwischen visueller Konsolenausgabe und strukturiertem Logging weiter ausgebaut:
+  - Status-Header bleiben reine CLI-Ausgabe.
+  - Fachliche Informationen, Warnungen, Fehler und Debug-Ausgaben werden über das Logging-System verarbeitet.
+- Durch die Verwendung von `logging.getLogger(__name__)` enthält jede Log-Nachricht automatisch den Namen des erzeugenden Moduls.
+
+#### Verifikation
+- Vollständigen Programmablauf (Dry-Run und Duplikat-Fall) mit angebundenem Logging erfolgreich getestet.
+- `logs/service.log` enthält strukturierte Einträge mit Zeitstempel, Log-Level und passendem Modulnamen (`pihole`, `uptime_kuma`, `__main__`).
+- `DEBUG`-Nachrichten erscheinen wie vorgesehen ausschließlich auf der Konsole und werden nicht in die Logdatei geschrieben.
+
 ### v0.5.0
 **Datum:** 2026-07-14
 

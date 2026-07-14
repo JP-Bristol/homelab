@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.5.1` – Ausgabe-Helper an Logging anbinden
+- `add_service.py v0.5.2` – Service-Log für den Runbook Agent (strukturiertes key=value-Format)
 
 
 
