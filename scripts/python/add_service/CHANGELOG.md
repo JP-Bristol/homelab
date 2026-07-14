@@ -31,9 +31,9 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 - Alle Konsolen-Meldungen auf durchgängige `[OK]`/`[INFO]`/`[ERROR]`-Formatierung und einheitliche Schreibweisen geprüft.
 
 #### Bekannt / Offen
-- Parameter-Namen `session`/`api` in `pihole.py`/`uptime_kuma.py` selbst (nicht nur in `main.py`) noch nicht angepasst.
+- Parameter-Namen `session`/`api` in `pihole.py`/`uptime_kuma.py` bewusst NICHT umbenannt: 
+  Dateikontext macht die Zugehörigkeit bereits eindeutig, explizite Suffixe wären redundant.
 - `validate_env()` nutzt weiterhin sechs einzelne `if`-Blöcke statt einer Schleife.
-- Modulnamen-Konsistenz-Check.
 
 ### v0.4.4
 **Datum:** 2026-07-13
