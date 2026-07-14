@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.5.2` – Service-Log für den Runbook Agent (strukturiertes key=value-Format)
+- `add_service.py v0.6.x` – Nginx Proxy Manager Proxy Host erstellen
 
 
 
@@ -150,7 +150,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
     -   (abgeschlossen) v0.2 – Uptime Kuma API
     -   (abgeschlossen) v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
     -   (abgeschlossen) v0.4.x – Ressourcenverwaltung, Konfiguration, Ausgabe & Fehlerbehandlung vereinheitlicht
-    -   v0.5.0 – Service-Log
+    -   (abgeschlossen) v0.5.x – Logging-System & Service-Events für den Runbook Agent
     -   v0.6.x – Nginx Proxy Manager Proxy Host erstellen
     -   v0.7.x – UFW-Port automatisch freigeben
     -   v1.0 – Vollständige Service-Automatisierung

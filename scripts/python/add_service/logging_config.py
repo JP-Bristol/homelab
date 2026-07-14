@@ -26,4 +26,17 @@ def setup_logging():
         datefmt="%Y-%m-%d %H:%M:%S"
     ))
     logger.addHandler(file_handler)
+
+
+    runbook_logger = logging.getLogger("runbook_data")
+    runbook_logger.setLevel(logging.INFO)
+    runbook_handler = logging.FileHandler("logs/service_events.log")
+    runbook_logger.propagate = False
+    runbook_handler.setFormatter(logging.Formatter(
+        "%(asctime)s %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S"
+    ))
+    runbook_logger.addHandler(runbook_handler)
+
+
     return logger

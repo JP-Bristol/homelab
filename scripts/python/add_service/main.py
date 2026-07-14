@@ -33,7 +33,10 @@ from config import load_env_config
 from logging_config import setup_logging
 
 setup_logging()
+
 logger = logging.getLogger(__name__)
+runbook_logger = logging.getLogger("runbook_data")
+
 
 
 
@@ -43,7 +46,7 @@ def main():
 
     """
     Steuert den Programmablauf: validiert Eingaben und Umgebungsvariablen,
-    stellt die benötigten api Verbindungen her, prüft bestehende Ressourcen
+    stellt die benötigten API-Verbindungen her, prüft bestehende Ressourcen
     und erstellt neue Einträge in Uptime Kuma und Pi-hole.
     """
     args = parse_arguments()
@@ -146,6 +149,13 @@ def main():
                                                                 pihole_hostname)
             if not success_add_pihole_local_dns:
                 return
+            
+            runbook_message = (
+                f"service={args.service} "
+                f"monitor_url={monitor_url} port={args.port} "
+                f"dns_hostname={pihole_hostname} ip={target_ip}"
+                )
+            runbook_logger.info(runbook_message )
             
             print_ok(logger,"Uptime-Kuma-Monitor erfolgreich erstellt")
             print_ok(logger,"Pi-hole DNS-Eintrag erfolgreich erstellt")

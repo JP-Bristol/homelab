@@ -4,6 +4,33 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+
+### v0.5.2
+**Datum:** 2026-07-14
+
+#### Neu
+- Separater `runbook_logger` (`logging.getLogger("runbook_data")`) eingeführt:
+  - Eigener `FileHandler` für `logs/service_events.log`.
+  - `propagate = False`, damit Einträge ausschließlich in dieser Datei landen, nicht zusätzlich in `logs/service.log` oder der Konsole.
+- Strukturiertes `key=value`-Format (logfmt-Stil) für erfolgreich angelegte Services:
+
+```
+service=zabbix | monitor_url=http://192.168.2.90:123 port=123 | dns_hostname=zabbix.home ip=192.168.2.90
+```
+
+  - Dient als maschinenlesbare Datenquelle für den späteren Runbook Agent.
+  - Flaches Format (ohne Gruppierung) gewählt, um das Parsen zu vereinfachen — ein Parser muss nur nach `key=value`-Mustern suchen, ohne verschachtelte Struktur zu berücksichtigen.
+- Log-Eintrag wird ausschließlich bei tatsächlicher, erfolgreicher Erstellung geschrieben (nicht im Dry-Run-Modus).
+
+#### Architektur
+- Technisches Logging (`service.log`) und fachliche Ereignisprotokollierung (`service_events.log`) vollständig voneinander getrennt.
+- Das Runbook-Log enthält ausschließlich strukturierte Informationen über erfolgreich angelegte Services und dient als Grundlage für die spätere Runbook-Generierung.
+
+#### Verifikation
+- Vollständiger Programmablauf (normale Ausführung) getestet: `service.log` enthält alle Schritte, `service_events.log` enthält ausschließlich den strukturierten Event-Eintrag.
+- Bestätigt: `service_events.log` bleibt bei Dry-Run-Läufen leer.
+- Trennung zwischen beiden Log-Dateien (kein Vermischen) erfolgreich bestätigt.
+
 ### v0.5.1
 **Datum:** 2026-07-14
 
