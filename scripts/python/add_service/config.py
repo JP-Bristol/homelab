@@ -15,6 +15,11 @@ def load_env_config():
             "api_url": os.getenv("PIHOLE_API_URL"),
             "password": os.getenv("PIHOLE_PASSWORD")
         },
+        "npm":{
+            "identity": os.getenv("NPM_IDENTITY"),
+            "secret": os.getenv("NPM_SECRET"),
+            "api_url": os.getenv("NPM_API_URL")
+        },
         "network": {
             "target_ip": os.getenv("TARGET_IP")
         }

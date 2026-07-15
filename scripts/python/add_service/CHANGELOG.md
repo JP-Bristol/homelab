@@ -4,6 +4,35 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.6.0
+**Datum:** 2026-07-15
+
+#### Neu
+- Neues Modul `npm.py` für die Anbindung an Nginx Proxy Manager eingeführt.
+- `connect_to_npm()` implementiert:
+  - Authentifizierung über `POST /api/tokens` mit `identity`/`secret` (JWT-basiert, im Gegensatz zu Pi-holes Session-ID).
+  - Token wird aus der Response extrahiert und als `Authorization: Bearer <token>`-Header für alle weiteren Requests gesetzt.
+  - Vollständige, differenzierte Fehlerbehandlung (`HTTPError` mit `get_http_error_message()`, `ConnectionError`, `Timeout`, generischer Fallback), analog zu Pi-hole.
+- `disconnect_from_npm()` implementiert:
+  - Beendet die Session über `DELETE`-Request (im Network-Tab verifiziert, Status 200 bestätigt).
+- `config.py` um NPM-Konfiguration erweitert (`api_url`, `identity`, `secret`).
+- `main.py` um NPM-Verbindungsaufbau, -Prüfung und -Trennung erweitert (Phase 1, 2, 6).
+
+#### Geändert
+- `validate_env()` refaktoriert:
+  - Prüfung der Umgebungsvariablen erfolgt jetzt über eine verschachtelte Schleife statt über einzelne `if`-Blöcke.
+  - Neue Services können durch Erweiterung der Konfiguration eingebunden werden, ohne die Validierungslogik anzupassen.
+
+#### Hinweis
+- Für Nginx Proxy Manager existiert keine offizielle API-Dokumentation.
+- Die verwendeten Endpunkte wurden anhand einer Community-Postman-Dokumentation sowie über die Browser-Entwicklertools (Network-Tab) beim manuellen Login und Logout analysiert und verifiziert.
+
+#### Verifikation
+- Vollständiger Programmablauf (Dry-Run) mit allen drei Verbindungen (Kuma, Pi-hole, NPM) erfolgreich getestet.
+- Erfolgreicher Login-Test mit echtem JWT-Token bestätigt.
+- Erfolgreicher Logout-Test (Status 200) bestätigt.
+- `validate_env()`-Schleife mit fehlender Umgebungsvariable getestet, korrekte Fehlermeldung (`service.feld ist nicht gesetzt`) bestätigt.
+
 
 ### v0.5.2
 **Datum:** 2026-07-14

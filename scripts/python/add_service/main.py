@@ -29,6 +29,11 @@ from pihole import (
     add_local_dns_record
 )
 
+from npm import(
+    connect_to_npm,
+    disconnect_from_npm
+)
+
 from config import load_env_config
 from logging_config import setup_logging
 
@@ -45,10 +50,11 @@ runbook_logger = logging.getLogger("runbook_data")
 def main():
 
     """
-    Steuert den Programmablauf: validiert Eingaben und Umgebungsvariablen,
-    stellt die benötigten API-Verbindungen her, prüft bestehende Ressourcen
-    und erstellt neue Einträge in Uptime Kuma und Pi-hole.
+    Steuert den Programmablauf: validiert Eingaben und Konfiguration,
+    verwaltet die benötigten API-Verbindungen, prüft bestehende Ressourcen
+    und erstellt neue Homelab-Service-Einträge.
     """
+    
     args = parse_arguments()
 
     if args is None:
@@ -68,6 +74,7 @@ def main():
 
     session_uptime_kuma = None
     session_pihole = None
+    session_npm = None
     
     try:
         # 1. Verbindungen herstellen
@@ -81,6 +88,10 @@ def main():
             config["pihole"]["api_url"],
             config["pihole"]["password"]
             )
+        
+        session_npm = connect_to_npm(config["npm"]["api_url"], 
+                                     config["npm"]["identity"],
+                                     config["npm"]["secret"])
 
         # 2. Verbindungen prüfen 
 
@@ -90,6 +101,10 @@ def main():
         
         if session_pihole is None:
             print_error(logger,"Verbindung zu Pi-Hole konnte nicht hergestellt werden")
+            return
+        
+        if session_npm is None:
+            print_error(logger, "Verbindung zu NPM konnte nicht hergestellt werden")
             return
 
         
@@ -176,6 +191,11 @@ def main():
             success_pihole = disconnect_from_pihole(config["pihole"]["api_url"], session_pihole)
             if not success_pihole:
                 print_warning(logger,"Pi-hole Session nicht beendet")
+
+        if session_npm is not None:
+            success_npm = disconnect_from_npm(config["npm"]["api_url"],session_npm)
+            if not success_npm:
+                print_warning(logger,"NPM Session nicht beendet")
 
 if __name__ == "__main__":
     main()

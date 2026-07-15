@@ -20,35 +20,20 @@ def is_valid_input(args):
 
 
 def validate_env(config):
+
     """Prüft, ob alle benötigten Umgebungsvariablen gesetzt sind."""
-    if not config["kuma"]["url"]:
-        print_error("KUMA_URL ist nicht gesetzt")
-        return False
-
-    if not config["network"]["target_ip"]:
-        print_error("TARGET_IP ist nicht gesetzt")
-        return False
-
-    if not config["kuma"]["username"]:
-        print_error("KUMA_USERNAME ist nicht gesetzt")
-        return False
-
-    if not config["kuma"]["password"]:
-        print_error("KUMA_PASSWORD ist nicht gesetzt")
-        return False
     
-    if not config["pihole"]["api_url"]:
-        print_error("PIHOLE_API_URL ist nicht gesetzt")
-        return False
-
-    if not config["pihole"]["password"]:
-        print_error("PIHOLE_PASSWORD ist nicht gesetzt")
-        return False
-    
+    for service, fields in config.items():
+        for field_name in fields:
+            if not fields[field_name]:
+                print_error(logger, f"{service}.{field_name} ist nicht gesetzt")
+                return False
     return True
 
 def validate_uptime_monitor(monitors, monitor_url, monitor_name):
+
     """Prüft, ob URL oder Name bereits als Monitor existieren."""
+
     if any(monitor_url == m['url'] for m in monitors):
         return False
 
