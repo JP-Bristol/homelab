@@ -31,7 +31,9 @@ from pihole import (
 
 from npm import(
     connect_to_npm,
-    disconnect_from_npm
+    disconnect_from_npm,
+    fetch_proxy_hosts,
+    build_proxy_host_records
 )
 
 from config import load_env_config
@@ -41,10 +43,6 @@ setup_logging()
 
 logger = logging.getLogger(__name__)
 runbook_logger = logging.getLogger("runbook_data")
-
-
-
-
 
 
 def main():
@@ -132,7 +130,19 @@ def main():
             return        
     
         dns_records = build_dns_records(raw_dns_records)
+
+
+        raw_proxy_host_records = fetch_proxy_hosts(config["npm"]["api_url"],
+                                                          session_npm)
+
+        if raw_proxy_host_records is None:
+            print_error(logger,"NPM-Proxy-Host-Einträge konnten nicht abgerufen werden")
+            return
+        
+        proxy_host_records = build_proxy_host_records(raw_proxy_host_records)
+
         print_debug(logger,f"{len(dns_records)} Pi-hole DNS-Einträge geladen")
+        print_debug(logger,f"{len(proxy_host_records)} NPM-Proxy-Host-Einträge geladen")
 
         # 4. Duplikate prüfen
 

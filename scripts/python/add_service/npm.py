@@ -1,12 +1,14 @@
 import requests
 import logging 
 
-from output import print_ok, print_error
+from output import print_ok, print_error, print_debug
 from error import get_http_error_message
 
 logger = logging.getLogger(__name__)
 
 def connect_to_npm(npm_api_url,npm_identity, npm_secret):
+
+    """Stellt eine Verbindung zur NPM-API her, authentifiziert den Benutzer und gibt eine vorbereitete HTTP-Session zurück"""
 
     session = requests.Session()
     session.headers.update({"Accept": "application/json"})
@@ -86,3 +88,50 @@ def disconnect_from_npm(npm_api_url,session):
 
     finally:
         session.close()
+
+def fetch_proxy_hosts(npm_api_url, session):
+
+    """ Ruft alle Proxy-Hosts-Einträge von der NPM-API ab und gibt sie als Liste zurück. """
+
+    try:
+        response = session.get(f"{npm_api_url}/nginx/proxy-hosts")
+        response.raise_for_status()
+        
+        return response.json()
+
+    except requests.exceptions.HTTPError as err:
+        message = get_http_error_message(err.response.status_code)
+        print_error(logger,f"NPM: {message} (HTTP {err.response.status_code})")
+        return None
+
+    except requests.exceptions.ConnectionError as err:
+        print_error(logger,f"Verbindung zu NPM fehlgeschlagen: {err}")
+        return None
+
+    except requests.exceptions.Timeout as err:
+        print_error(logger,f"Zeitüberschreitung beim Abrufen der Proxy-Host-Einträge: {err}")
+        return None
+
+    except Exception as err:
+        print_error(logger,f"Unbekannter Fehler: {err}")
+        return None
+
+
+def parse_proxy_host_record(proxy_host):
+
+    """ Wandelt einen NPM-Proxy-Host-Eintrag in ein Dictionary mit id, domain_name, forward_host und forward_port um. """
+
+    return {
+        "id": proxy_host["id"],
+        "domain_name": proxy_host["domain_names"][0],
+        "forward_host": proxy_host["forward_host"],
+        "forward_port": proxy_host["forward_port"]
+    }
+
+def build_proxy_host_records(records):
+
+    """ Erstellt aus allen NPM-Proxy-Host-Einträgen eine strukturierte Liste von Dictionaries. """
+
+    proxy_host_records = [parse_proxy_host_record(record) for record in records]
+    return proxy_host_records
+

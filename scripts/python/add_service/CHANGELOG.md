@@ -4,6 +4,41 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+
+### v0.6.1
+**Datum:** 2026-07-15
+
+#### Neu
+- `fetch_proxy_hosts()` implementiert:
+  - Ruft alle Proxy-Host-Einträge über `GET /api/nginx/proxy-hosts` ab.
+  - Gibt die Response direkt als Liste zurück (im Gegensatz zu Pi-hole keine verschachtelte Struktur, kein zusätzliches Auslesen von Unter-Keys nötig).
+- `parse_proxy_host_record()` implementiert:
+  - Wandelt einen rohen NPM-Proxy-Host in eine schlanke interne Struktur um (`id`, `domain_name`, `forward_host`, `forward_port`).
+  - Nimmt nur die erste Domain aus `domain_names` (Liste), da pro Service aktuell nur eine Domain vorgesehen ist.
+- `build_proxy_host_records()` implementiert:
+  - Erstellt aus allen Proxy-Host-Einträgen eine strukturierte Liste, analog zu `build_dns_records()` und `build_monitor_records()`.
+- `main.py` um Abruf und Aufbereitung der NPM-Proxy-Hosts erweitert (Phase 3: Daten abrufen).
+
+#### Geändert
+- Interne Datenstruktur für NPM-Proxy-Hosts eingeführt:
+  ```python
+  {
+      "id": 1,
+      "domain_name": "zabbix.home",
+      "forward_host": "192.168.2.x",
+      "forward_port": 8080
+  }
+  ```
+- NPM folgt jetzt derselben Datenpipeline wie Uptime Kuma und Pi-hole:
+  ```
+  fetch → parse → build
+  ```
+
+#### Verifikation
+- Vollständiger Programmablauf (Dry-Run) mit allen drei Datenquellen (Uptime-Kuma-Monitore, Pi-hole-DNS-Einträge, NPM-Proxy-Hosts) erfolgreich getestet.
+- `[DEBUG]`-Ausgabe bestätigt die korrekte Anzahl geladener Proxy-Host-Einträge.
+- Interne Proxy-Host-Datenstruktur mit mehreren vorhandenen Proxy-Hosts erfolgreich verifiziert.
+
 ### v0.6.0
 **Datum:** 2026-07-15
 
