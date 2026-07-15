@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.6.3` – Proxy-Payload erstellen
+- `add_service.py v0.6.4` – Proxy Host erstellen + Dry-Run
 
 
 

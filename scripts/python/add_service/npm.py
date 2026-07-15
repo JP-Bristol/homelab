@@ -135,3 +135,14 @@ def build_proxy_host_records(records):
     proxy_host_records = [parse_proxy_host_record(record) for record in records]
     return proxy_host_records
 
+def build_proxy_host_payload(domain_name, forward_host, forward_port):
+    
+    """Baut den Request-Body für das Erstellen eines NPM-Proxy-Hosts."""
+
+    return {
+        "domain_names": [domain_name],
+        "forward_scheme": "http",
+        "forward_host": str(forward_host),
+        "forward_port": forward_port 
+    }
+

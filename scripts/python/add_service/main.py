@@ -32,7 +32,8 @@ from npm import(
     connect_to_npm,
     disconnect_from_npm,
     fetch_proxy_hosts,
-    build_proxy_host_records
+    build_proxy_host_records,
+    build_proxy_host_payload
 )
 
 from config import load_env_config,build_hostname
@@ -140,6 +141,8 @@ def main():
             return
         
         proxy_host_records = build_proxy_host_records(raw_proxy_host_records)
+        proxy_host_payload =  build_proxy_host_payload(hostname,config["network"]["target_ip"],args.port)
+        
 
         print_debug(logger,f"{len(dns_records)} Pi-hole DNS-Einträge geladen")
         print_debug(logger,f"{len(proxy_host_records)} NPM-Proxy-Host-Einträge geladen")

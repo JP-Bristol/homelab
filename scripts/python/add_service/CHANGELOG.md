@@ -4,6 +4,34 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.6.3
+**Datum:** 2026-07-15
+
+#### Neu
+- `build_proxy_host_payload()` implementiert:
+  - Baut den vollständigen Request-Body für das Erstellen eines NPM-Proxy-Hosts.
+  - Nimmt nur die drei variablen Werte (`domain_name`, `forward_host`, `forward_port`) als Parameter entgegen.
+  - Restliche Payload-Felder (`forward_scheme`) als sinnvoller Default im Funktionskörper.
+  - `domain_name` wird korrekt in eine Liste (`domain_names`) verpackt, `forward_port` bleibt als Ganzzahl (`int`), entsprechend der von NPM erwarteten Struktur.
+
+#### Architektur
+- Trennung zwischen variablen und statischen Payload-Daten eingeführt:
+  - Variablen werden über Funktionsparameter übergeben.
+  - Statische Standardwerte werden zentral innerhalb der Funktion definiert.
+- Neue Payload-Optionen können künftig ergänzt werden, ohne bestehende Aufrufer (`main.py`) anzupassen.
+
+#### Hinweis
+- Payload-Struktur wurde über den Browser-Network-Tab beim manuellen Anlegen eines Proxy Hosts in der NPM-UI ermittelt.
+- Bewusst nur die minimal notwendigen Felder übernommen, statt aller 17 Felder aus der UI-Payload (YAGNI-Prinzip). Weitere Optionen werden erst ergänzt, wenn sie im Homelab tatsächlich benötigt werden.
+
+#### Verifikation
+- Erster eigener Unit-Test (`pytest`) für `build_proxy_host_payload()` geschrieben und erfolgreich ausgeführt:
+  - Prüft korrekten Feldnamen (`domain_names` statt `domain_name`).
+  - Prüft korrekten Wert für `forward_host`.
+  - Prüft korrekten Wert für `forward_port`.
+  - Prüft explizit den Datentyp von `forward_port` (`int` statt `str`).
+- Test lebt aktuell noch im Verzeichnis `sandbox/` und wird beim Aufbau der Test-Infrastruktur (nach v1.0) in einen eigenen `tests/`-Ordner überführt.
+
 ### v0.6.2
 **Datum:** 2026-07-15
 
