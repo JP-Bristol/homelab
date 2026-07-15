@@ -10,7 +10,7 @@ from output import (
     print_debug
 )
 
-from validation import is_valid_input, validate_env, validate_uptime_monitor, validate_pihole_dns_records
+from validation import is_valid_input, validate_env, validate_uptime_monitor, validate_pihole_dns_records, validate_npm_proxy_hosts
 from uptime_kuma import (
     connect_to_uptime_kuma,
     get_uptime_monitors,
@@ -25,7 +25,6 @@ from pihole import (
     disconnect_from_pihole,
     fetch_dns_records,
     build_dns_records,
-    build_dns_hostname,
     add_local_dns_record
 )
 
@@ -36,7 +35,7 @@ from npm import(
     build_proxy_host_records
 )
 
-from config import load_env_config
+from config import load_env_config,build_hostname
 from logging_config import setup_logging
 
 setup_logging()
@@ -111,6 +110,7 @@ def main():
         monitor_url = build_monitor_url(
             config["network"]["target_ip"],
             args.port)
+        
          
         raw_monitors = get_uptime_monitors(session_uptime_kuma)
 
@@ -121,7 +121,7 @@ def main():
         monitors = build_monitor_records(raw_monitors)
 
 
-        pihole_hostname = build_dns_hostname(args.service)
+        hostname = build_hostname(args.service)
         raw_dns_records = fetch_dns_records(config["pihole"]["api_url"],
                                             session_pihole)
 
@@ -150,9 +150,13 @@ def main():
             print_error(logger,"Uptime-Kuma-Monitor oder URL bereits vorhanden")
             return
         
-        if not validate_pihole_dns_records(dns_records, pihole_hostname):
+        if not validate_pihole_dns_records(dns_records, hostname):
              print_error(logger,"Pi-hole DNS-Eintrag bereits vorhanden")
              return
+        
+        if not validate_npm_proxy_hosts(proxy_host_records, hostname):
+            print_error(logger,"NPM-Proxy-Host-Eintrag bereits vorhanden")
+            return
         
         # 5. Ressourcen erstellen
 
@@ -160,7 +164,7 @@ def main():
 
         if args.dry_run:
             print_info(logger,f"Würde Uptime-Kuma-Monitor '{args.service}' auf {monitor_url} erstellen")
-            print_info(logger,f"Würde Pi-hole DNS-Eintrag '{pihole_hostname}' auf {target_ip} erstellen")
+            print_info(logger,f"Würde Pi-hole DNS-Eintrag '{hostname}' auf {target_ip} erstellen")
 
         else:
             success_add_uptime_monitor = add_uptime_monitor(session_uptime_kuma, args.service, monitor_url)
@@ -171,14 +175,14 @@ def main():
             success_add_pihole_local_dns = add_local_dns_record(session_pihole,
                                                                 config["pihole"]["api_url"],
                                                                 config["network"]["target_ip"],
-                                                                pihole_hostname)
+                                                                hostname)
             if not success_add_pihole_local_dns:
                 return
             
             runbook_message = (
                 f"service={args.service} "
                 f"monitor_url={monitor_url} port={args.port} "
-                f"dns_hostname={pihole_hostname} ip={target_ip}"
+                f"dns_hostname={hostname} ip={target_ip}"
                 )
             runbook_logger.info(runbook_message )
             

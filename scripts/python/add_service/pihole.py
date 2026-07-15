@@ -139,12 +139,6 @@ def build_dns_records(records):
     dns_records = [parse_dns_record(record) for record in records ]
     return dns_records
 
-def build_dns_hostname(service_name):
-
-    """ Erstellt aus dem Servicenamen den vollständigen Hostnamen. """
-    
-    return f"{service_name}.home"
-
 def add_local_dns_record(session, pihole_api_url, ip, hostname):
 
     """ Erstellt einen Local-DNS-Eintrag über die Pi-hole REST-API."""

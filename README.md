@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.6.2` – Duplikatprüfung für NPM-Proxy-Hosts
+- `add_service.py v0.6.3` – Proxy-Payload erstellen
 
 
 

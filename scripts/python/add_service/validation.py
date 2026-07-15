@@ -50,3 +50,11 @@ def validate_pihole_dns_records(records,service_name):
     if any(service_name.lower() == r['hostname'].lower() for r in records):
         return False
     return True
+
+
+def validate_npm_proxy_hosts(proxy_host_records, domain_name):
+
+    """Prüft, ob eine Domain bereits als NPM-Proxy-Host existiert."""
+    if any(domain_name.lower() == record["domain_name"].lower() for record in proxy_host_records):
+        return False
+    return True

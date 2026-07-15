@@ -25,4 +25,9 @@ def load_env_config():
         }
     }
 
+def build_hostname(service_name):
+
+    """ Erstellt aus dem Servicenamen den vollständigen Hostnamen. """
+
+    return f"{service_name}.home"
 

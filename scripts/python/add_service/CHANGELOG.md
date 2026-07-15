@@ -4,6 +4,39 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.6.2
+**Datum:** 2026-07-15
+
+#### Neu
+- `validate_npm_proxy_hosts()` implementiert:
+  - Prüft, ob eine Domain bereits als NPM-Proxy-Host vorhanden ist.
+  - Der Vergleich erfolgt unabhängig von Groß- und Kleinschreibung.
+  - Die NPM-Duplikatprüfung wurde in den Programmablauf (`main.py`, Phase 4: Duplikate prüfen) integriert.
+
+#### Geändert
+- `build_dns_hostname()` aus `pihole.py` entfernt und durch die gemeinsame Funktion `build_hostname()` in `config.py` ersetzt.
+  - Wird jetzt sowohl für Pi-hole-Hostnamen als auch für NPM-Domain-Namen verwendet.
+  - Identische `.home`-Konvention wird dadurch zentral verwaltet; doppelte Logik entfällt.
+- `main.py` verwendet jetzt durchgängig die zentrale Variable `hostname` anstelle separater Variablen wie `pihole_hostname`.
+
+#### Architektur
+- Zentrale `build_hostname()` in `config.py` verhindert künftige Duplikation, falls weitere Services (z. B. UFW) dieselbe `.home`-Konvention benötigen.
+- NPM folgt jetzt derselben Validierungspipeline wie Uptime Kuma und Pi-hole:
+
+```
+build → validate
+```
+
+#### Hinweis
+- NPM verhindert das Anlegen doppelter Domains bereits serverseitig (durch manuellen Test bestätigt).
+- Die zusätzliche Validierung sorgt für eine kontrollierte und konsistente Fehlermeldung, bevor der serverseitige Fehler auftritt – analog zum Verhalten bei Uptime Kuma und Pi-hole.
+- Der Dry-Run-Hinweis für NPM (`[INFO] Würde NPM Proxy Host erstellen`) wird bewusst erst zusammen mit der eigentlichen Erstellungsfunktion in v0.6.4 ergänzt, um das bisherige Vorgehen bei den anderen Integrationen beizubehalten.
+
+#### Verifikation
+- Duplikat-Fall (Domain bereits vorhanden) erfolgreich getestet: korrekter Programmabbruch mit verständlicher Fehlermeldung.
+- Neu-Fall (Domain noch nicht vorhanden) erfolgreich getestet: Ablauf läuft bis zum Ende des Dry-Runs ohne Fehler durch.
+- Vollständiger Programmablauf (kein Dry-Run) mit der zentralen `build_hostname()`-Funktion erfolgreich getestet: Uptime-Kuma-Monitor und Pi-hole-DNS-Eintrag werden weiterhin korrekt erstellt.
+
 
 ### v0.6.1
 **Datum:** 2026-07-15
