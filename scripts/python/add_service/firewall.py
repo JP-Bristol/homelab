@@ -5,6 +5,11 @@ from output import print_ok, print_error
 
 logger = logging.getLogger(__name__)
 
+
+def is_port_protected(port, protected_ports):
+    return port in protected_ports
+
+
 def open_service_port(port):
 
     """ Öffnet einen Port über ufw (Uncomplicated Firewall). """

@@ -3,6 +3,30 @@
 Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neueste Version zuerst.
 
 ---
+### v0.7.1
+**Datum:** 2026-07-16
+
+#### Neu
+- `PROTECTED_PORTS` als neue Umgebungsvariable eingeführt (kommagetrennte Liste kritischer Ports, z. B. `22,53,80,81,3001`).
+- `config.py` um eine `security`-Kategorie erweitert:
+  - `load_env_config()` wandelt `PROTECTED_PORTS` direkt in eine fertige Liste von Integern um, konsistent zu den übrigen Konfigurationswerten.
+- `is_port_protected()` implementiert:
+  - Prüft, ob ein gegebener Port in der Liste der geschützten Ports enthalten ist.
+
+#### Architektur
+- Sicherheitsrelevante Konfiguration von der Firewall-Logik getrennt.
+- Geschützte Ports werden zentral über die Konfiguration verwaltet und nicht im Code hinterlegt.
+- Weitere Sicherheitsregeln können künftig über die `security`-Kategorie ergänzt werden, ohne Änderungen an der Geschäftslogik vorzunehmen.
+
+#### Hinweis
+- Geschützt werden aktuell SSH (22) sowie die Ports der bestehenden Kern-Services (Pi-hole, NPM, Uptime Kuma), damit `add_service.py` diese niemals versehentlich verändert.
+- Die Integration von `is_port_protected()` in `open_service_port()` sowie die vollständige Einbindung in `main.py` (inklusive Dry-Run) folgen gemeinsam in `v0.7.2`.
+
+#### Verifikation
+- `is_port_protected()` isoliert getestet:
+  - geschützter Port (`22`) wird korrekt als `True` erkannt.
+  - normaler Port (`23`) wird korrekt als `False` erkannt.
+- `load_env_config()` erfolgreich mit mehreren geschützten Ports getestet; `PROTECTED_PORTS` wird korrekt in eine `list[int]` umgewandelt.
 
 ### v0.7.0
 **Datum:** 2026-07-16
@@ -188,7 +212,7 @@ build → validate
 - Strukturiertes `key=value`-Format (logfmt-Stil) für erfolgreich angelegte Services:
 
 ```
-service=zabbix | monitor_url=http://192.168.2.90:123 port=123 | dns_hostname=zabbix.home ip=192.168.2.90
+service=zabbix | monitor_url=http://192.168.2.x:123 port=123 | dns_hostname=zabbix.home ip=192.168.2.x
 ```
 
   - Dient als maschinenlesbare Datenquelle für den späteren Runbook Agent.

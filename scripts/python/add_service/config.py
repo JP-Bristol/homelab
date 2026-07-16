@@ -22,8 +22,12 @@ def load_env_config():
         },
         "network": {
             "target_ip": os.getenv("TARGET_IP")
+        },
+        "security":{
+            "protected_ports": [int(port) for port in os.getenv("PROTECTED_PORTS").split(",")]
         }
     }
+
 
 def build_hostname(service_name):
 

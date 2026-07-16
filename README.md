@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.7.1` – Geschützte Ports definieren
+- `add_service.py v0.7.2` – Port öffnen + Dry-Run (letzter Schritt vor v1.0)
 
 
 
