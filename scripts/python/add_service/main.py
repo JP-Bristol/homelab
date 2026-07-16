@@ -33,7 +33,8 @@ from npm import(
     disconnect_from_npm,
     fetch_proxy_hosts,
     build_proxy_host_records,
-    build_proxy_host_payload
+    build_proxy_host_payload,
+    add_proxy_host_record
 )
 
 from config import load_env_config,build_hostname
@@ -168,6 +169,7 @@ def main():
         if args.dry_run:
             print_info(logger,f"Würde Uptime-Kuma-Monitor '{args.service}' auf {monitor_url} erstellen")
             print_info(logger,f"Würde Pi-hole DNS-Eintrag '{hostname}' auf {target_ip} erstellen")
+            print_info(logger,f"Würde NPM Proxy-Eintrag '{hostname}' auf {f"http://{target_ip}:{args.port}"} erstellen")
 
         else:
             success_add_uptime_monitor = add_uptime_monitor(session_uptime_kuma, args.service, monitor_url)
@@ -182,15 +184,24 @@ def main():
             if not success_add_pihole_local_dns:
                 return
             
+            success_add_npm_proxy_host = add_proxy_host_record(session_npm,config["npm"]["api_url"],proxy_host_payload)
+
+            if not success_add_npm_proxy_host:
+                return
+            
+            proxy_url = f"http://{target_ip}:{args.port}"
+            
             runbook_message = (
                 f"service={args.service} "
                 f"monitor_url={monitor_url} port={args.port} "
-                f"dns_hostname={hostname} ip={target_ip}"
+                f"dns_hostname={hostname} ip={target_ip} "
+                f"domain_name={hostname} destination={proxy_url}"
                 )
             runbook_logger.info(runbook_message )
             
             print_ok(logger,"Uptime-Kuma-Monitor erfolgreich erstellt")
             print_ok(logger,"Pi-hole DNS-Eintrag erfolgreich erstellt")
+            print_ok(logger,"NPM-Proxy-Host-Eintrag erfolgreich erstellt")
 
 
     

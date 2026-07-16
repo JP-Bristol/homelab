@@ -5,7 +5,7 @@ Kurze Übersicht aller eigenen Automatisierungs- und Monitoring-Skripte im Homel
 |---|---|---|---|  
 | `uptime_kuma.py` | Service-Status aus Uptime Kuma anzeigen | `python3 uptime_kuma.py` | ✅ v0.1 |  
 | `backup_log.py` | Backup-Log auswerten | `python3 backup_log.py` | ✅ v0.1 |  
-| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.6.3 |
+| `add_service/` | Neuen Service vorbereiten | `python3 add_service/main.py` | ✅ v0.6.4 |
 
 ### 1.1 Ablageort
 ```bash  
@@ -176,7 +176,7 @@ Bekannte Permission-Fehler (z. B. `logrotate` oder `letsencrypt`) werden separat
 | Feld | Wert |  
 | - | - |  
 | Sprache | Python |  
-| Version | v0.6.3 |  
+| Version | v0.6.4 |  
 | Status |  ✅ Aktiv|  
 | Kategorie | Automatisierung |
 

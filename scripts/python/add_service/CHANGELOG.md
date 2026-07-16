@@ -4,6 +4,27 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.6.4
+**Datum:** 2026-07-16
+
+#### Neu
+- `add_proxy_host_record()` implementiert:
+  - Erstellt einen neuen Proxy Host über `POST /api/nginx/proxy-hosts`.
+  - Nutzt den von `build_proxy_host_payload()` erzeugten Request-Body.
+  - Vollständige, differenzierte Fehlerbehandlung (`HTTPError` mit `get_http_error_message()`, `ConnectionError`, `Timeout`, generischer Fallback), analog zu den übrigen API-Funktionen.
+- NPM-Erstellung in den Programmablauf (`main.py`) integriert (Phase 5), inklusive Dry-Run-Unterstützung.
+- Erstellung läuft weiterhin sequenziell (Kuma → Pi-hole → NPM, jeweils nur bei Erfolg des vorherigen Schritts), um inkonsistente Zwischenzustände über alle drei Systeme hinweg zu vermeiden.
+- `runbook_message` um NPM-Daten erweitert (`domain_name`, `destination`) — der Service-Log-Eintrag enthält jetzt vollständige Informationen zu allen drei Integrationen.
+
+#### Hinweis
+- NPM erwartet `forward_scheme` als Pflichtfeld; ein Test mit unvollständiger Payload (ohne `forward_scheme`) schlug mit HTTP 400 fehl und bestätigte, dass `build_proxy_host_payload()` bereits korrekt aufgebaut ist.
+- Ein separater v0.6.5-Schritt für die Runbook-Log-Erweiterung entfällt, da diese direkt in v0.6.4 mit umgesetzt wurde.
+
+#### Verifikation
+- Vollständiger Programmablauf (Dry-Run) mit allen drei Integrationen erfolgreich getestet.
+- Vollständiger, normaler Programmablauf (kein Dry-Run) erfolgreich getestet: Uptime-Kuma-Monitor, Pi-hole-DNS-Eintrag und NPM-Proxy-Host wurden korrekt erstellt.
+- `runbook_message` mit vollständigen Daten aus allen drei Systemen in `logs/service_events.log` verifiziert.
+
 ### v0.6.3
 **Datum:** 2026-07-15
 

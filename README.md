@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.6.4` – Proxy Host erstellen + Dry-Run
+- `add_service.py v0.7.x` – UFW-Port automatisch freigeben
 
 
 
@@ -151,7 +151,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
     -   (abgeschlossen) v0.3 – Pi-hole DNS-Eintrag automatisch erstellen
     -   (abgeschlossen) v0.4.x – Ressourcenverwaltung, Konfiguration, Ausgabe & Fehlerbehandlung vereinheitlicht
     -   (abgeschlossen) v0.5.x – Logging-System & Service-Events für den Runbook Agent
-    -   v0.6.x – Nginx Proxy Manager Proxy Host erstellen
+    -   (abgeschlossen) v0.6.x – Nginx Proxy Manager Proxy Host erstellen
     -   v0.7.x – UFW-Port automatisch freigeben
     -   v1.0 – Vollständige Service-Automatisierung
 -   Zabbix in das Monitoring integrieren
@@ -172,16 +172,23 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 
 ### Langfristig
 
--   Touch Dashboard für den Homelab-Betrieb
-    -   `uptime_api.py` → eigenes Modul (Umbenennung + Modul-Ordner, sobald Dashboard-Anbindung startet)
-    -   `backup_log.py` → eigenes Modul (analog)
-    -   Architektur: getrennte Module pro Datenquelle, Dashboard bündelt nur die Daten, keine eigene API-Anbindung
--   Runbook Agent (eigenes Projekt-Repo, RAG mit Qdrant)
-    -   Start: nach `add_service.py` v1.0
-    -   Nutzt `service_log.txt` aus `add_service.py` als zusätzliche strukturierte Datenquelle
--   Self-hosted KI-Workspace
--   Nextcloud
--   Lokale GPU für KI-Anwendungen
+- Touch Dashboard (Delamain)
+  - `uptime_api.py` → eigenes Modul
+  - `backup_log.py` → eigenes Modul
+  - Architektur: getrennte Module pro Datenquelle
+  - Umsetzung via Coding Agent (KI-Workspace)
+- Runbook Agent (eigenes Repo, RAG mit Qdrant)
+  - Start: nach `add_service.py` v1.0
+  - Nutzt `service_events.log` als Datenquelle
+- Self-hosted KI-Workspace
+  - Multi-Agent-Architektur (Manager + Sub-Agents)
+  - Token-/Kosten-Tracking & Visualisierung
+- Nextcloud
+- Lokale GPU für KI-Anwendungen
+- Graduated Failover Monitoring
+  - Phase 1: Docker-Fallback auf Arasaka
+  - Phase 2: Proxmox-VM-Failover auf Mikoshi
+  - Automatischer Watchdog via Cronjob
 
 ## Repo-Struktur
 ``` 

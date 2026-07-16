@@ -146,3 +146,29 @@ def build_proxy_host_payload(domain_name, forward_host, forward_port):
         "forward_port": forward_port 
     }
 
+def add_proxy_host_record(session, npm_api_url, payload):
+
+    """ Erstellt einen NPM-Proxy-Host-Eintrag über die NPM REST-API."""
+
+    try:
+        response = session.post(f"{npm_api_url}/nginx/proxy-hosts", 
+                                json=payload)
+        response.raise_for_status()
+        return True
+
+    except requests.exceptions.HTTPError as err:
+        message = get_http_error_message(err.response.status_code)
+        print_error(logger,f"NPM: {message} (HTTP {err.response.status_code})")
+        return False
+
+    except requests.exceptions.ConnectionError as err:
+        print_error(logger,f"Datenübertragung zu NPM fehlgeschlagen: {err}")
+        return False
+
+    except requests.exceptions.Timeout as err:
+        print_error(logger,f"Zeitüberschreitung beim Übertragen des NPM-Proxy-Host-Eintrags: {err}")
+        return False
+
+    except Exception as err:
+        print_error(logger,f"Unbekannter Fehler: {err}")
+        return False
