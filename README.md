@@ -129,7 +129,7 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.7.x` – UFW-Port automatisch freigeben
+- `add_service.py v0.7.1` – Geschützte Ports definieren
 
 
 

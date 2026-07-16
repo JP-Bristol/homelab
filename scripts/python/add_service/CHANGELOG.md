@@ -4,6 +4,33 @@ Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neu
 
 ---
 
+### v0.7.0
+**Datum:** 2026-07-16
+
+#### Neu
+- Neues Modul `firewall.py` für die Anbindung an UFW (Uncomplicated Firewall) eingeführt.
+- `open_service_port()` implementiert:
+  - Öffnet einen TCP-Port über `subprocess.run(["sudo", "ufw", "allow", ...])`.
+  - Prüft den `returncode` des Befehls (`0` = Erfolg, sonst Fehler).
+  - Fehlerdetails aus `result.stderr` werden in die Fehlermeldung übernommen.
+  - Fehlerbehandlung für `FileNotFoundError` (falls `ufw` oder `sudo` nicht verfügbar sind) sowie generischer `Exception`-Fallback.
+- `sudoers`-Konfiguration eingerichtet (`NOPASSWD` ausschließlich für `/usr/sbin/ufw`), damit `add_service.py` Portfreigaben ohne interaktive Passworteingabe automatisieren kann.
+
+#### Architektur
+- Firewall-Funktionen bewusst in einem eigenen Modul gekapselt und damit in die bestehende Integrationsarchitektur eingeordnet.
+- UFW stellt keine HTTP-API bereit; die Kommunikation erfolgt bewusst über `subprocess.run()` mit Rückgabecode-Auswertung anstelle einer Netzwerkbibliothek.
+
+#### Hinweis
+- Modul bewusst `firewall.py` statt `ufw.py` genannt, da letzteres mit dem bereits installierten Systempaket (`/usr/lib/python3/dist-packages/ufw/`) kollidierte und zu einem `ImportError` führte.
+- `ufw allow` ist idempotent. Mehrfaches Ausführen mit demselben Port erzeugt weder einen Fehler noch doppelte Regeln.
+- Ein expliziter Port-Duplikatcheck ist daher nicht erforderlich. Portkonflikte zwischen Services werden bereits durch `validate_uptime_monitor()` erkannt, da dort IP und Port gemeinsam geprüft werden.
+- Geschützte Ports (z. B. SSH) sowie die Integration in `main.py` inklusive Dry-Run folgen in den nächsten Versionen (`v0.7.1`, `v0.7.2`).
+
+#### Verifikation
+- `open_service_port()` isoliert in der Sandbox erfolgreich getestet.
+- Ergebnis mit `sudo ufw status` auf Betriebssystemebene verifiziert (IPv4- und IPv6-Regel korrekt angelegt).
+- Test-Port nach erfolgreicher Verifikation wieder entfernt (`sudo ufw delete allow ...`).
+
 ### v0.6.4
 **Datum:** 2026-07-16
 
