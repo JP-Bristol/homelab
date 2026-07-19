@@ -39,6 +39,7 @@ from npm import(
 
 from config import load_env_config,build_hostname
 from logging_config import setup_logging
+from firewall import open_service_port, is_port_protected
 
 setup_logging()
 
@@ -68,6 +69,11 @@ def main():
 
     if not validate_env(config):
         return   
+    
+
+    if is_port_protected(args.port, config["security"]["protected_ports"]):
+        print_error(logger, f"Port {args.port}/tcp ist geschützt und darf nicht verwendet werden")
+        return
 
     print_status(args)
 
@@ -170,6 +176,7 @@ def main():
             print_info(logger,f"Würde Uptime-Kuma-Monitor '{args.service}' auf {monitor_url} erstellen")
             print_info(logger,f"Würde Pi-hole DNS-Eintrag '{hostname}' auf {target_ip} erstellen")
             print_info(logger,f"Würde NPM Proxy-Eintrag '{hostname}' auf {f"http://{target_ip}:{args.port}"} erstellen")
+            print_info(logger,f"Port {args.port}/TCP würde in UFW freigeschaltet werden")
 
         else:
             success_add_uptime_monitor = add_uptime_monitor(session_uptime_kuma, args.service, monitor_url)
@@ -187,6 +194,11 @@ def main():
             success_add_npm_proxy_host = add_proxy_host_record(session_npm,config["npm"]["api_url"],proxy_host_payload)
 
             if not success_add_npm_proxy_host:
+                return
+            
+            success_port = open_service_port(args.port, config["security"]["protected_ports"]) 
+            
+            if not success_port:
                 return
             
             proxy_url = f"http://{target_ip}:{args.port}"

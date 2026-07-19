@@ -129,7 +129,8 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   
 **Nächster Meilenstein**  
   
-- `add_service.py v0.7.2` – Port öffnen + Dry-Run (letzter Schritt vor v1.0)
+- Runbook Agent (RAG mit Qdrant, eigenes Repo) — `add_service.py` hat mit v1.0 seinen Umfang erreicht
+
 
 
 
@@ -138,9 +139,8 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
 ### Aktueller Fokus
 
 -   Repository aufräumen und Dokumentation vereinheitlichen
--   Python-Automatisierung für das Homelab weiterentwickeln
--   `add_service.py` bis zur produktiven Version ausbauen
 -   Wiki.js als zentrale Wissensbasis erweitern
+-   Vorbereitung des Runbook-Agent-Projekts
 
 ----------
 
@@ -152,8 +152,8 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
     -   (abgeschlossen) v0.4.x – Ressourcenverwaltung, Konfiguration, Ausgabe & Fehlerbehandlung vereinheitlicht
     -   (abgeschlossen) v0.5.x – Logging-System & Service-Events für den Runbook Agent
     -   (abgeschlossen) v0.6.x – Nginx Proxy Manager Proxy Host erstellen
-    -   v0.7.x – UFW-Port automatisch freigeben
-    -   v1.0 – Vollständige Service-Automatisierung
+    -   (abgeschlossen) v0.7.x – UFW-Port automatisch freigeben
+    -   🎉 **(abgeschlossen) v1.0 – Vollständige Service-Automatisierung**
 -   Zabbix in das Monitoring integrieren
 -   `ufw-setup.sh` entwickeln
 -   Syncthing auf dem iPhone einrichten
@@ -178,11 +178,12 @@ Jeder produktive Service besitzt eine eigene Dokumentation, einschließlich Konf
   - Architektur: getrennte Module pro Datenquelle
   - Umsetzung via Coding Agent (KI-Workspace)
 - Runbook Agent (eigenes Repo, RAG mit Qdrant)
-  - Start: nach `add_service.py` v1.0
+  - Voraussetzung erfüllt: `add_service.py` v1.0 abgeschlossen
   - Nutzt `service_events.log` als Datenquelle
 - Self-hosted KI-Workspace
   - Multi-Agent-Architektur (Manager + Sub-Agents)
   - Token-/Kosten-Tracking & Visualisierung
+  - Erste Experimente laufen bereits (Task-Zerlegung, Rollentrennung Coding/Test/Manager Agent, Modellvergleich lokal)
 - Nextcloud
 - Lokale GPU für KI-Anwendungen
 - Graduated Failover Monitoring

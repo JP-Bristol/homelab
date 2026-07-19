@@ -3,6 +3,44 @@
 Alle nennenswerten Änderungen an `add_service.py` werden hier dokumentiert, neueste Version zuerst.
 
 ---
+
+## add_service.py v1.0 — Vollständige Service-Automatisierung
+
+Mit v0.7.2 sind alle vier geplanten Integrationen vollständig implementiert:
+
+- Uptime Kuma (Monitor-Erstellung)
+- Pi-hole (Local-DNS-Eintrag)
+- Nginx Proxy Manager (Proxy Host)
+- UFW (Port-Freigabe)
+
+Jede Integration folgt derselben, einheitlichen Pipeline:
+
+`connect` → `fetch` → `parse` → `build` → `validate` → `add` → `disconnect`
+
+mit konsistenter Namensgebung, differenzierter Fehlerbehandlung, strukturiertem Logging (Konsole + Datei + Runbook-Log) und vollständiger Dry-Run-Unterstützung über den gesamten Ablauf.
+
+### v0.7.2
+**Datum:** 2026-07-19
+
+#### Neu
+- `is_port_protected()` in `open_service_port()` integriert: Ein geschützter Port wird nicht an ufw übergeben, sondern führt zu einem sofortigen, kontrollierten Abbruch mit Fehlermeldung.
+- Zusätzlicher, früher Schutz-Check direkt in `main.py`, unmittelbar nach dem Laden der Konfiguration: Ein geschützter Port bricht den gesamten Ablauf ab, bevor irgendeine API-Verbindung (Kuma, Pi-hole, NPM) aufgebaut wird.
+- ufw-Freigabe in den Programmablauf integriert (Phase 5, letzter Schritt nach Kuma, Pi-hole und NPM), inklusive Dry-Run-Unterstützung.
+
+#### Architektur
+- Bewusste doppelte Absicherung des Port-Schutzes ("Defense in Depth"): einmal früh in `main.py` (verhindert unnötige Verbindungen bei geschütztem Port), einmal in `open_service_port()` selbst (macht die Funktion auch bei eigenständiger Nutzung sicher).
+- Der frühe Check in `main.py` folgt dem „Fail Fast"-Prinzip: Ein ungültiger Port wird erkannt, bevor Ressourcen (Netzwerkverbindungen, angelegte Einträge) investiert werden.
+- Erstellung bleibt vollständig sequenziell (Kuma → Pi-hole → NPM → ufw), jeder Schritt nur bei Erfolg des vorherigen — ufw als letzter, kritischster Schritt wird nur erreicht, wenn alle vorherigen Ressourcen bereits erfolgreich angelegt wurden.
+
+#### Verifikation
+- Geschützter Port (22) erfolgreich getestet: Ablauf bricht sofort ab, ohne dass eine Verbindung zu Kuma, Pi-hole oder NPM aufgebaut wird.
+- Dry-Run mit ungeschütztem Port erfolgreich getestet: Alle vier Integrationen (Kuma, Pi-hole, NPM, ufw) zeigen korrekte Simulationsmeldungen.
+- Vollständiger, echter Programmablauf erfolgreich getestet: Uptime-Kuma-Monitor, Pi-hole-DNS-Eintrag, NPM-Proxy-Host und ufw-Portfreigabe wurden alle korrekt erstellt.
+- ufw-Regel auf Betriebssystemebene mit `sudo ufw status` verifiziert (IPv4- und IPv6-Regel korrekt angelegt).
+- Test-Port nach Verifikation wieder entfernt (`sudo ufw delete allow ...`).
+
+---
+
 ### v0.7.1
 **Datum:** 2026-07-16
 
