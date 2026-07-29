@@ -1,143 +1,315 @@
-## DNS Configuration
-**Zweck**
+# DNS-Konfiguration
+
+| Metadatum | Wert |
+|---|---|
+| Dokumentstatus | `AKTIV` |
+| Infrastrukturkomponente | DNS |
+| Primärer DNS-Dienst | Pi-hole |
+| Aktiver Upstream-Resolver | Quad9 |
+| Verantwortlich | `TODO` |
+| Letzte technische Prüfung | `TODO – nach vollständiger Prüfung setzen` |
+
+---
+
+## 1. Zweck
+
 Dieses Dokument beschreibt die DNS-Infrastruktur des Homelabs.
 
-Ziel ist es, die verwendeten DNS-Server, Upstream-Resolver und lokalen Namensauflösungen nachvollziehbar zu dokumentieren.
+Ziel ist es, den primären DNS-Dienst, den verwendeten Upstream-Resolver, die DNS-Verteilung an Clients sowie die lokalen Namensauflösungen nachvollziehbar zu dokumentieren.
 
+---
 
-### 1. DNS Architektur
-```
+## 2. DNS-Architektur
+
+```text
 Clients
-    │
-    ▼
+   |
+   v
 Pi-hole
-(192.168.2.x)
-    │
-    ▼
-Upstream DNS
-(Quad9)
+192.168.2.x:53
+   |
+   v
+Quad9
+9.9.9.9
 ```
-### 2. Primärer DNS-Server
 
-| Eigenschaften | Wert |
-|-|-|
+Pi-hole dient als zentraler DNS-Filter und DNS-Forwarder für das lokale Netzwerk.
+
+DNS-Anfragen der Clients werden zunächst an Pi-hole gesendet. Externe Anfragen, die nicht lokal beantwortet werden können, leitet Pi-hole an Quad9 weiter.
+
+---
+
+## 3. Primärer DNS-Server
+
+| Eigenschaft | Wert |
+|---|---|
 | Dienst | Pi-hole |
-| Host | Raspberry Pi 5 |
-| IP-Adresse | 192.168.2.x |
-| Port | 53 TCP/UDP |
-| Rolle | Lokaler DNS Resolver & Ad Blocker |
+| Host | Raspberry Pi 5 `Arasaka` |
+| IP-Adresse | `192.168.2.x` |
+| Port | `53/TCP` und `53/UDP` |
+| Rolle | Lokaler DNS-Filter und DNS-Forwarder |
+| Service-Pfad | `~/homelab/services/pihole/` |
 
-### 3. Upstream DNS Server
-Pi-hole leitet DNS-Anfragen an folgende Upstream Resolver weiter:
+---
 
-| Anbieter | DNS Server |
-|-|-|
-| Quad9 | 9.9.9.9 |
-| Cloudflare | 1.1.1.1 |
-| Google DNS| 8.8.8.8 |
+## 4. Upstream-DNS-Server
 
-Aktiv verwendet:
-```
-Quad9 (9.9.9.9)
-```
-### 4. DNS Clients
+Pi-hole leitet externe DNS-Anfragen an folgenden Upstream-Resolver weiter:
 
-| Gerät | DNS Server |
-|-|-|
-| Raspberry Pi | Pi-hole |
-| Desktop PC | Pi-hole |
-| Laptop| Pi-hole |
-| Smartphone| Pi-hole |
+| Anbieter | DNS-Server | Status |
+|---|---|---|
+| Quad9 | `9.9.9.9` | Aktiv |
+
+Cloudflare und Google DNS werden aktuell nicht als Upstream-Resolver verwendet.
+
+---
+
+## 5. DNS-Clients
+
+| Gerätetyp | DNS-Server |
+|---|---|
+| Raspberry Pis | Pi-hole |
+| Desktop-PC | Pi-hole |
+| Laptop | Pi-hole |
+| Smartphone | Pi-hole |
 | Tablet | Pi-hole |
-DNS wird über DHCP bzw. manuelle Konfiguration verteilt.
 
-### 5. Lokale DNS Einträge
-#### 5.1 Host Records
-| Hostname| IP-Adresse|
-|-|-|
-| pihole.home | 192.168.2.x |
-| uptime.home | 192.168.2.x |
-| npm.home | 192.168.2.x |
-| wiki.home | 192.168.2.x |
-| vaultwarden.home | 192.168.2.x |
-| syncthing.home | 192.168.2.x |
+Die DNS-Konfiguration wird aktuell auf den einzelnen Clients manuell vorgenommen.
 
-**Hinweis:** 
+Eine zentrale Verteilung der Pi-hole-Adresse als DNS-Server über DHCP ist mit der eingesetzten EasyBox derzeit nicht möglich beziehungsweise funktioniert in der vorhandenen Konfiguration nicht zuverlässig.
+
+Voraussetzung für die lokale Namensauflösung und DNS-Filterung ist daher, dass Pi-hole auf jedem Client manuell als DNS-Server eingetragen wird.
+
+```text
+TODO: DNS-Verteilung erneut prüfen, falls der Router ersetzt oder ein eigener DHCP-Server eingerichtet wird.
+```
+
+---
+
+## 6. Lokale DNS-Einträge
+
+### 6.1 Host-Records
+
+| Hostname | IP-Adresse |
+|---|---|
+| `pihole.home` | `192.168.2.x` |
+| `uptime.home` | `192.168.2.x` |
+| `npm.home` | `192.168.2.x` |
+| `wiki.home` | `192.168.2.x` |
+| `vaultwarden.home` | `192.168.2.x` |
+| `syncthing.home` | `192.168.2.x` |
+
 Die Hostnamen sind als Local DNS Records in Pi-hole hinterlegt.
 
-Voraussetzung ist, dass die Clients Pi-hole als DNS-Server verwenden. Eine manuelle Konfiguration der hosts-Datei auf den Clients ist dadurch nicht erforderlich.
+Eine manuelle Konfiguration der lokalen `hosts`-Datei auf den Clients ist dadurch nicht erforderlich.
 
-Der Zugriff erfolgt über den jeweiligen Hostnamen. Die Weiterleitung auf den entsprechenden Service übernimmt der Nginx Proxy Manager.Domains sind als lokale DNS-Einträge direkt in Pi-hole hinterlegt.
-Erreichbar automatisch von allen Geräten im Netzwerk — keine manuelle hosts-Datei Konfiguration nötig.
-Ports werden über Nginx Proxy Manager weitergeleitet.
+### 6.2 Zusammenspiel mit Nginx Proxy Manager
 
-### 6. Verifikation
+Die Local DNS Records in Pi-hole lösen die Hostnamen auf die IP-Adresse des Reverse-Proxy-Hosts auf.
 
-#### 6.1 DNS-Auflösung testen
+Nginx Proxy Manager wertet anschließend den Hostnamen der HTTP- oder HTTPS-Anfrage aus und leitet die Anfrage an den jeweiligen internen Service weiter.
 
-```Bash
-dig vaultwarden.home 
+```text
+Client
+   |
+   | DNS-Anfrage: vaultwarden.home
+   v
+Pi-hole
+   |
+   | Antwort: 192.168.2.x
+   v
+Nginx Proxy Manager
+   |
+   | Weiterleitung anhand des Hostnamens
+   v
+Vaultwarden
+```
+
+DNS übernimmt dabei ausschließlich die Namensauflösung. Die Weiterleitung an den jeweiligen internen Service erfolgt durch Nginx Proxy Manager.
+
+---
+
+## 7. Verifikation
+
+### 7.1 Verwendeten DNS-Server prüfen
+
+Auf einem Client prüfen, welcher DNS-Server verwendet wird.
+
+Linux:
+
+```bash
+resolvectl status
+```
+
+Windows:
+
+```powershell
+ipconfig /all
 ```
 
 Erwartung:
 
-```
-;; SERVER: 192.168.2.x#53
+```text
+DNS-Server: 192.168.2.x
 ```
 
+### 7.2 Pi-hole direkt abfragen
+
+```bash
+dig @192.168.2.x vaultwarden.home
 ```
-;; ANSWER SECTION: 
+
+Alternativ:
+
+```bash
+nslookup vaultwarden.home 192.168.2.x
+```
+
+Erwartete Antwort:
+
+```text
 vaultwarden.home. IN A 192.168.2.x
 ```
 
-Der verwendete DNS-Server muss die Pi-hole-IP sein.
+Der antwortende DNS-Server muss die IP-Adresse von Pi-hole sein.
 
-**Hinweis:**
+### 7.3 Reguläre Namensauflösung prüfen
 
-Früher waren die Hostnamen ausschließlich in der Windows-hosts-Datei eingetragen.
+```bash
+dig vaultwarden.home
+```
 
-Jetzt werden sie über die Local DNS Records in Pi-hole aufgelöst und stehen damit allen Geräten im Netzwerk zur Verfügung, sofern diese Pi-hole als DNS-Server verwenden.
+Erwartung:
 
-#### 6.2 Ereichbarkeit pürfen
+- der verwendete DNS-Server ist Pi-hole
+- `vaultwarden.home` wird auf `192.168.2.x` aufgelöst
+
+### 7.4 Externe DNS-Auflösung prüfen
+
+```bash
+dig @192.168.2.x example.com
+```
+
+Erwartung:
+
+- Pi-hole beantwortet die Anfrage
+- externe Domains werden über Quad9 aufgelöst
+
+### 7.5 Weboberflächen und Reverse Proxy prüfen
 
 Im Browser öffnen:
 
-`http://pihole.home/admin`
-`http://uptime.home`
-`http://npm.home`
-`http://wiki.home`
-`http://vaultwarden.home`
-`http://syncthing.home`
+```text
+http://pihole.home/admin
+http://uptime.home
+http://npm.home
+http://wiki.home
+http://vaultwarden.home
+http://syncthing.home
+```
+
 Erwartung:
 
-- Alle Hostnamen werden erfolgreich aufgelöst.
-- Die jeweiligen Weboberflächen sind erreichbar.
-- Die Weiterleitung erfolgt über den Nginx Proxy Manager.
+- alle Hostnamen werden erfolgreich aufgelöst
+- die jeweiligen Weboberflächen sind erreichbar
+- die HTTP- oder HTTPS-Weiterleitung erfolgt über Nginx Proxy Manager
 
+Ein erfolgreicher DNS-Test bestätigt nur die Namensauflösung. Die Erreichbarkeit der Weboberfläche hängt zusätzlich von Nginx Proxy Manager und dem jeweiligen Zielservice ab.
 
-### 7. Failure Scenarios
+---
 
-#### 7.1 DNS antwortet nicht
-Prüfen:
+## 8. Bekannte Störungen und Diagnose
 
+### 8.1 Schnellübersicht
+
+| Störung | Erste Prüfung | Troublelog |
+|---|---|---|
+| Lokale Domain wird nicht aufgelöst | verwendeten DNS-Server und Local DNS Record prüfen | [2026-06-06 – Fehler Domainauflösung in Uptime Kuma](../../troubleshooting/log.md) |
+| Container kann externe Domains nicht auflösen | DNS-Konfiguration und Erreichbarkeit von Quad9 prüfen | [2026-05-28 – Uptime Kuma: Keine Discord-Benachrichtigung (DNS-Fehler)](../../troubleshooting/log.md) |
+| Raspberry Pi verwendet die EasyBox statt Pi-hole als DNS-Server | aktiven DNS-Server und NetworkManager-Verbindung prüfen | [2026-06-06 – Raspberry Pi nutzt noch den DNS-Server der EasyBox](../../troubleshooting/log.md) |
+| EasyBox verteilt Pi-hole nicht zuverlässig per DHCP | DHCP- und DNS-Konfiguration des Routers sowie den DNS-Server des Clients prüfen | [2026-05-26 – EasyBox 803 verteilt DNS nicht an Geräte](../../troubleshooting/log.md) |
+
+### 8.2 Basisdiagnose
+
+In das Pi-hole-Serviceverzeichnis wechseln:
+
+```bash
+cd ~/homelab/services/pihole
 ```
-docker logs pihole
+
+Containerstatus prüfen:
+
+```bash
+docker compose ps
 ```
 
+Logs prüfen:
+
+```bash
+docker compose logs --tail 100 pihole
 ```
-docker exec pihole pihole status
+
+Pi-hole-Status prüfen:
+
+```bash
+docker compose exec pihole pihole status
 ```
 
-Mögliche Ursachen:
+Port 53 prüfen:
 
--   Pi-hole Container gestoppt
--   Port 53 blockiert
--   Router verteilt falschen DNS
--   Upstream DNS nicht erreichbar
+```bash
+sudo ss -tulpn | grep :53
+```
 
-### 8. Änderungen
-| Datum | Änderung |
-|-|-|
-| 2026-06 | Initiale Erstellung |
-| 2026-06-27 | Lokale DNS-Einträge in Pi-hole eingerichtet — hosts-Datei nicht mehr nötig |
+Quad9 direkt testen:
 
+```bash
+dig @9.9.9.9 example.com
+```
+
+Pi-hole lokal testen:
+
+```bash
+dig @127.0.0.1 example.com
+```
+
+### 8.3 Häufige Ursachen
+
+- Pi-hole-Container läuft nicht
+- Port `53/TCP` oder `53/UDP` ist nicht verfügbar
+- Client verwendet nicht Pi-hole als DNS-Server
+- Router verteilt einen falschen DNS-Server
+- Local DNS Record fehlt oder enthält eine falsche IP-Adresse
+- Quad9 ist nicht erreichbar
+- Firewall blockiert DNS-Anfragen
+- Container verwendet eine fehlerhafte DNS-Konfiguration
+
+Ausführliche Ursachen, Maßnahmen und Lessons Learned werden im zentralen Troublelog dokumentiert.
+
+---
+
+## 9. Verweise
+
+### 9.1 Interne Dokumentation
+
+- [Pi-hole-Service-Runbook](../../services/pihole/README.md)
+- [Nginx-Proxy-Manager-Service-Runbook](../../services/nginx-proxy-manager/README.md)
+- [Netzwerkübersicht](network-overview.md)
+- [Zentrales Störungs- und Troublelog](../../troubleshooting/log.md)
+- [Firewall-Dokumentation](../security/firewall.md)
+
+### 9.2 Externe Dokumentation
+
+TODO: Offizielle Pi-hole-Dokumentation verlinken.
+
+TODO: Offizielle Quad9-Dokumentation verlinken.
+
+---
+
+## 10. Änderungsverlauf
+
+| Version | Datum | Änderung |
+|---|---|---|
+| 1.0 | 2026-06 | Initiale Erstellung |
+| 1.1 | 2026-06-27 | Lokale DNS-Einträge in Pi-hole eingerichtet; lokale `hosts`-Dateien sind nicht mehr erforderlich |
+| 1.2 | 2026-07-29 | DNS-Architektur, Verifikation, Diagnose und manuelle DNS-Konfiguration der Clients dokumentiert |
