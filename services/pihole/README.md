@@ -2,7 +2,7 @@
 
 | Metadatum | Wert |
 |---|---|
-| Dokumentstatus | `DRAFT` |
+| Dokumentstatus | `AKTIV` |
 | Service-Status | Produktiv |
 | Service-Typ | DNS-Server und Netzwerkfilter |
 | Verantwortlich | `TODO` |

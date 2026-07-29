@@ -2,7 +2,7 @@
 
 | Metadatum | Wert |
 |---|---|
-| Dokumentstatus | `DRAFT` |
+| Dokumentstatus | `AKTIV` |
 | Planungshorizont | Langfristig |
 | Letzte Aktualisierung | `2026-07-28` |
 | Verantwortlich | `TODO` |
