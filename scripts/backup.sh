@@ -17,6 +17,7 @@ rsync -av --ignore-errors ~/homelab/services/nginx-proxy-manager/data/ $BACKUP_D
 rsync -av --ignore-errors ~/homelab/services/wikijs/data/ $BACKUP_DIR/wikijs-data/
 rsync -av --ignore-errors ~/homelab/services/vaultwarden/data/ $BACKUP_DIR/vaultwarden-data/
 rsync -av --ignore-errors ~/homelab/services/syncthing/data/ $BACKUP_DIR/syncthing-data/
+sudo rsync -av --ignore-errors ~/homelab/services/gitea/gitea/ $BACKUP_DIR/gitea-data/
 
 echo "Backup fertig: $BACKUP_DIR"
 
