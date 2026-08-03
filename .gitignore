@@ -14,3 +14,6 @@ __pycache__/
 .vscode/
 
 services/gitea/gitea/ssh/
+
+services/gitea/gitea/
+services/gitea/git/
