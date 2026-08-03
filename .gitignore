@@ -12,3 +12,5 @@ __pycache__/
 *.pyc
 
 .vscode/
+
+services/gitea/gitea/ssh/
