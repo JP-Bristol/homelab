@@ -991,3 +991,118 @@ In diesem Fall unterstützt `uptime-kuma-api-v2` die Änderungen von Uptime Kuma
 -   Es tritt kein `SQLITE_CONSTRAINT`-Fehler mehr auf.
 -   Der neue Monitor erscheint im Uptime-Kuma-Dashboard.
 -   Die Statusüberwachung startet erfolgreich.
+
+## 2026-08-03 - Gitea: Repository kann über SSH nicht geklont werden
+
+**Symptom:**
+
+Nach dem Einrichten von Gitea und dem Hinterlegen des SSH-Keys schlägt das Klonen eines Test-Repositorys fehl.
+
+Fehlermeldung:
+
+```text
+git@localhost: Permission denied (publickey).
+fatal: Could not read from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+```
+
+**Ursache:**
+
+Der ursprüngliche Git-Clone-Aufruf verwendete für `localhost` nicht automatisch die für Gitea benötigte SSH-Konfiguration.
+
+Gitea ist in diesem Setup erreichbar über:
+
+- SSH-Port `222`
+- Benutzer `git`
+- separaten Private Key `~/.ssh/gitea_homelab`
+
+Ohne explizite SSH-Konfiguration verwendet SSH standardmäßig Port `22` und versucht die üblichen Standard-Keys.
+
+**Fix:**
+
+1. SSH-Verbindung mit explizitem Key prüfen
+
+```bash
+ssh -T \
+  -p 222 \
+  -i ~/.ssh/gitea_homelab \
+  git@localhost
+```
+
+Erwartung:
+
+```text
+Hi there, <name>! You've successfully authenticated with the key named homelab, but Gitea does not provide shell access.
+If this is unexpected, please log in with password and setup Gitea under another user.
+```
+
+Damit ist bestätigt:
+
+- Gitea ist über Port `222` erreichbar.
+- Der Private Key wird akzeptiert.
+- Der zugehörige Public Key ist korrekt in Gitea hinterlegt.
+
+2. SSH-Config anlegen
+
+```bash
+nano ~/.ssh/config
+```
+
+Folgenden Eintrag hinzufügen:
+
+```sshconfig
+Host gitea-homelab
+    HostName localhost
+    Port 222
+    User git
+    IdentityFile ~/.ssh/gitea_homelab
+    IdentitiesOnly yes
+```
+
+Berechtigungen setzen:
+
+```bash
+chmod 600 ~/.ssh/config
+```
+
+**Hinweis**
+
+`gitea-homelab` ist ein lokaler SSH-Alias. Dadurch müssen Port, Benutzer und Key nicht bei jedem Git-Befehl erneut angegeben werden.
+
+`IdentitiesOnly yes` sorgt dafür, dass SSH gezielt den angegebenen Gitea-Key verwendet und nicht zuerst andere geladene Schlüssel ausprobiert.
+
+**Verifikation:**
+
+SSH-Verbindung über den Alias testen:
+
+```bash
+ssh -T gitea-homelab
+```
+
+Anschließend Repository klonen:
+
+```bash
+git clone gitea-homelab:jp/test-repo.git
+```
+
+Erwartung:
+
+```text
+Cloning into 'test-repo'...
+```
+
+Zusätzlich prüfen:
+
+```bash
+cd test-repo
+git remote -v
+```
+
+Erwartung:
+
+```text
+origin  gitea-homelab:jp/test-repo.git (fetch)
+origin  gitea-homelab:jp/test-repo.git (push)
+```
