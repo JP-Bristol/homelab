@@ -1,4 +1,4 @@
-#!/bin/bash
+sudo /home/jp/homelab/scripts/cleanup_backup.sh#!/bin/bash
 
 DATE=$(date +%Y-%m-%d)
 BACKUP_DIR="/mnt/backup/$DATE"
@@ -21,4 +21,4 @@ sudo rsync -av --ignore-errors ~/homelab/services/gitea/gitea/ $BACKUP_DIR/gitea
 
 echo "Backup fertig: $BACKUP_DIR"
 
-find /mnt/backup -maxdepth 1 -type d -mtime +7 -exec rm -rf {} \;
+sudo /home/jp/homelab/scripts/cleanup_backup.sh
